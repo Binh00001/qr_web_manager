@@ -5,7 +5,7 @@ import logo from '~/components/assets/image/gunther.jpg'
 
 const cx = classNames.bind(styles)
 
-function DefaultLayout() {
+function DefaultLayout({children}) {
     return (
         <div className={cx("dWrapper")}>
             <div className={cx("dContent")}>
@@ -23,6 +23,7 @@ function DefaultLayout() {
                     <div className={cx("dLogout")}>Đăng Xuất</div>
                 </div>
             </div>
+            <div>{children}</div>
         </div>
     )
 }
