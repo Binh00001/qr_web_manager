@@ -67,8 +67,9 @@ function Home() {
     }
     return (
         <Fragment>
+        <div className={cx("Wrapper")}>
             <div className={cx("blackBar")}>
-                <div className={cx("hTopBar")}>
+                <div className={cx("TopBar")}>
                     <div className={cx("hLeftContainer")}>
                         <div className={cx("hText")}>Quản Lý Bàn Ăn:</div>
                         <div className={cx("hAllActiveGroup")}>
@@ -81,7 +82,6 @@ function Home() {
                         <div className={cx("hText")}>Quản Lý Yêu Cầu(sau 5 phút yêu cầu sẽ bị ẩn):</div>
                     </div>
                 </div>
-
             </div>
             <div className={cx("hBody")}>
                 <div className={cx("hLeftContainer")}>
@@ -109,6 +109,7 @@ function Home() {
                     </div>
                 </div>
             </div>
+        </div>
         </Fragment>
     )
 }

@@ -34,6 +34,23 @@
 
   .hLeftContainer {
     width: 55%;
+    
+//     main
+// .Wrapper{
+//     background-color: #bdc3c7;
+//     position: relative;
+// }
+// .blackBar{
+//     width: 100%;
+//     height: 60px;
+//     background-color: #202124; 
+//     color: #fff;
+// }
+// .TopBar{
+//     width: 70%;
+//     max-width: 1200px;
+//     margin: 0 auto;
+    
     display: flex;
     justify-content: space-between;
     border-right: 1px solid #202124;
@@ -99,6 +116,35 @@
       display: flex;
       justify-content: space-around;
       flex-wrap: wrap;
+      
+      
+//       main
+// .hBody{
+//     background-color: #fff;
+//     max-width: 1200px;
+//     margin: 0 auto;
+//     display: flex;
+//     justify-content: space-between;
+//     .hLeftContainer{
+//         min-height: 730px;
+//         height: 100vh;
+//         width: 55%;
+//         border-right: #202124 2px solid;
+//         button{
+//             height: 70px;
+//             width: 70px;
+//             margin: 5% 5% 5% 5%;
+//             border: none;
+//             background-color: #f04d4d;
+//             font-size: 1.2rem;
+//             color: #fff;
+//             border-radius: 10px;
+//         }
+//         .hAllTable{
+//             display: flex;
+//             justify-content: space-around;
+//             flex-wrap: wrap;
+//         }
     }
   }
 
