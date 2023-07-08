@@ -1,11 +1,11 @@
-
 import { Fragment, useState } from "react";
 import classNames from "classnames";
-import styles from "./AddDish.scss"
+import styles from "./AddDish.scss";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const cx = classNames.bind(styles)
+const cx = classNames.bind(styles);
+
 function AddDish() {
     const navigate = useNavigate();
     const [state, setState] = useState({
@@ -54,7 +54,18 @@ function AddDish() {
     };
 
     const { description, name, category, price } = state;
-    console.log(state);
+
+    function handleFileInputChange(event) {
+        const fileInput = event.target;
+        const fileLabel = document.getElementById('file-label');
+
+        if (fileInput.files && fileInput.files.length > 0) {
+            fileLabel.innerText = fileInput.files[0].name;
+        } else {
+            fileLabel.innerText = 'Choose File';
+        }
+    }
+
     return (
         <Fragment>
             <div className={cx("Wrapper")}>
@@ -81,7 +92,6 @@ function AddDish() {
                                 type="text"
                                 value={name}
                                 placeholder="Tên món ăn ...."
-
                             />
                         </div>
                     </div>
@@ -90,7 +100,6 @@ function AddDish() {
                             <label htmlFor="description">Mô Tả:</label>
                             <textarea
                                 onChange={changeHandler}
-                                type="text"
                                 name="description"
                                 id="description"
                                 value={description}
@@ -122,30 +131,37 @@ function AddDish() {
                                 name="price"
                                 id="price"
                                 value={price}
-                                required />
+                                required
+                            />
                         </div>
                     </div>
                     <div className={cx("aItem")}>
                         <div className="aAddImage">
                             <label htmlFor="image_detail">Ảnh Minh Hoạ:</label>
-                            <input
-                                onChange={changeHandler}
-                                type="file"
-                                id="image_detail"
-                                name="image_detail"
-                                accept="image/png,image/jpeg,image/jpg"
-                                required />
-                            {/* Click Để Chọn Ảnh */}
+                            <div className="custom-file">
+                                <input
+                                    onChange={handleFileInputChange}
+                                    type="file"
+                                    id="image_detail"
+                                    name="image_detail"
+                                    accept="image/png,image/jpeg,image/jpg"
+                                    required
+                                    className="custom-file-input"
+                                />
+                                <label id="file-label" className="custom-file-label" htmlFor="image_detail"></label>
+                            </div>
                         </div>
                     </div>
-                    <button className={cx("submitButton")}
+                    <button
+                        className={cx("submitButton")}
                         onClick={submitHandler}
-                    >Tạo Món Ăn
+                    >
+                        Tạo Món Ăn
                     </button>
                 </div>
             </div>
-        </Fragment >
-    )
+        </Fragment>
+    );
 }
 
 export default AddDish;

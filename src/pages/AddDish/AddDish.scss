@@ -1,62 +1,112 @@
-.aBody{
+.aBody {
     background-color: #fff;
     max-width: 1200px;
     margin: 0 auto;
     min-height: 100vh;
     height: max-content;
     position: relative;
-    .margintopbody{
+
+    .margintopbody {
         width: 100%;
         height: 10vh;
     }
-    .aItem{
+
+    .aItem {
         position: relative;
-        width: 60%;
+        width: 65%;
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 50px;
-        div{
+
+        div {
+            display: flex;
             align-items: center;
             font-size: 1.1rem;
         }
-        textarea{
+
+        textarea {
             width: 80%;
             height: 100%;
             border-radius: 10px;
         }
-        .aName{
+
+        input {
+            width: 80%;
+            border-radius: 5px;
+            height: 30px;
+            border: 1px solid black;
+        }
+
+        .aName {
             display: flex;
             justify-content: space-between;
         }
-        .aDescription{
+
+        .aDescription {
             display: flex;
             justify-content: space-between;
-            textarea{
+
+            textarea {
                 height: 84px;
             }
         }
-        .aType{
+
+        .aType {
             display: flex;
             justify-content: space-between;
         }
-        .aPrice{
+
+        .aPrice {
             display: flex;
             justify-content: space-between;
         }
-        .aAddImage{
+
+        .aAddImage {
             display: flex;
-            button{
-                margin-left: 35px;
-                border: none;
-                color: #fff;
-                background-color: #f04d4d;
-                height: 42px;
-                border-radius: 10px;
+
+            // button{
+            //     margin-left: 35px;
+            //     border: none;
+            //     color: #fff;
+            //     background-color: #f04d4d;
+            //     height: 42px;
+            //     border-radius: 10px;
+            // }
+            .custom-file-input {
+                display: none;  
+                /* Hide the default file input button */
             }
+
+            .custom-file-label {
+                display: inline-block;
+                padding: 5px 15px;
+                background-color: #f04d4d;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1rem;
+                color: #fff;
+                margin-left: 35px;
+            }
+
+            .custom-file-label::after {
+                content: ' Choose File';
+                // font-weight: bold;
+            }
+
+            .custom-file-input:focus+.custom-file-label {
+                outline: 2px solid #4a90e2;
+                /* Add focus style */
+            }
+            // .custom-file .custom-file-label::after {
+            //     content: 'Choose File';
+            //     display: block;
+            //     height: 30px; /* Adjust the desired space */
+            // }
         }
-        
+
     }
-    .submitButton{
+
+    .submitButton {
         margin-left: calc(40%);
         height: 42px;
         width: 180px;
