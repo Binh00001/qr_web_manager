@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
 import Detail from "~/components/Detail/index";
+import xIcon from "~/components/assets/image/x_icon_150997.png"
 const cx = classNames.bind(styles)
 
 function Menu() {
@@ -65,6 +66,9 @@ function Menu() {
             });
     };
 
+    const cancelHandler = () => {
+        setDetail(false)
+    };
     const submitHideDishHandler = (id) => {
         axios
             .put(`http://117.4.194.207:3003/dish/active/${id}`, { isActive: false })
@@ -152,7 +156,16 @@ function Menu() {
                 </div>
 
             </div>
-            {detail && <Detail obj={obj} />}
+            {detail && (
+                <Fragment>
+                <div
+                    onClick={cancelHandler}
+                    className="overlay">
+                </div>
+                <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img>
+                <Detail obj={obj} />
+                </Fragment>
+            )}
         </div >
     )
 }

@@ -159,3 +159,10 @@
     margin: 0;
   }
 }
+.cancelIcon{
+  height: 40px;
+  position: fixed;
+  z-index: 110;
+  top: calc(47vh - 200px);
+  left: calc(83vw - 350px);
+}

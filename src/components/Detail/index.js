@@ -10,7 +10,7 @@ function Detail(props) {
     const dish = props.obj
     return (
         <Fragment>
-            <div className={cx("overlay")}>
+            <div>
                 <div className={cx("dtItem")}>
                     <div className={cx("dtName")}>{dish.name}</div>
                     <div className={cx("dtContent")}>
@@ -19,8 +19,12 @@ function Detail(props) {
                         </div>
                         <div className={cx("dtInfo")}>
                             <div className={cx("dtDescription")}>{dish.description}</div>
-                            <div className={cx("dtPrice")}>Giá: {dish.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
-                            <div className={cx("dtOption")}>Các Lựa Chọn: {dish.options}</div>
+                            <div className={cx("dtPrice")}>Giá: <span>{dish.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span></div>
+                            <div className={cx("dtOption")}>Các Lựa Chọn: 
+                                {dish.options.map((opt, index) => (
+                                    <span className={cx("dtOptionItem")}>{opt}<br /></span>
+                                ))} 
+                            </div>
                         </div>
                     </div>
                     <div className={cx("dtButtonGroup")}>

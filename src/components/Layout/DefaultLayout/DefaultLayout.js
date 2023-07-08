@@ -31,7 +31,7 @@ function DefaultLayout({ children }) {
                 </div>
                 <div className={cx("dRightContainer")}>
                     <div className={cx("UserName dItem")}></div>
-                    <div className={cx("dLogin")}>Đăng Nhập</div>
+                    <div className={cx("dLogin")} onClick={() => navigate('/login')}>Đăng Nhập</div>
                     <div className={cx("dLogout")}>Đăng Xuất</div>
                 </div>
             </div>
