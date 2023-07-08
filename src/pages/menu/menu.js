@@ -3,7 +3,7 @@ import axios from "axios";
 import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
-
+import Detail from "~/components/Detail/index";
 const cx = classNames.bind(styles)
 
 function Menu() {
@@ -74,11 +74,12 @@ function Menu() {
             });
     };
 
-    console.log(state);
+    // console.log(state);
     const { amount } = state;
 
     return (
         <div className={cx("Wrapper")}>
+           
             <div className={cx("blackBar")}>
                 <div className={cx("TopBar")}>
                     <div className={cx("mTopBar")}>
@@ -89,6 +90,7 @@ function Menu() {
                 </div>
             </div>
             <div className={cx("mBody")}>
+                
                 <div className={cx("mNavBar")}>
                     <button className={cx("mNavButton", { active: type === null })} onClick={() => setType(null)}>Tất Cả</button>
                     <button className={cx("mNavButton", { active: type === "bestseller" })} onClick={() => setType('bestseller')}>Bestseller</button>
@@ -139,14 +141,11 @@ function Menu() {
                                 <div className={cx("optionsHoverBox")} onClick={() => submitHideDishHandler(food._id)} > Ẩn món</div>
                             </div>
                         </div>
-
                     ))}
-
-
-
-
                 </div>
+              
             </div>
+            {true && <Detail />}
         </div >
     )
 }
