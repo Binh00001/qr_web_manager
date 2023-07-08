@@ -5,6 +5,7 @@ const cx = classNames.bind(styles)
 
 function Home() {
     return (
+        <Fragment>
         <div className={cx("Wrapper")}>
             <div className={cx("blackBar")}>
                 <div className={cx("TopBar")}>
@@ -64,6 +65,7 @@ function Home() {
                 </div>
             </div>
         </div>
+        </Fragment>
     )
 }
 

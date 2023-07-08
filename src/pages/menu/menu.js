@@ -1,6 +1,8 @@
 
 
 import { Fragment } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 
@@ -9,6 +11,29 @@ import gunther from '~/components/assets/image/gunther.jpg'
 const cx = classNames.bind(styles)
 
 function Menu() {
+    const [category, setCategory] = useState([]);
+    const [listDish, setListDish] = useState([]);
+    useEffect(() => {
+        axios
+            .get("http://117.4.194.207:3003/category/all")
+            .then((response) => {
+                setCategory(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios
+            .get("http://117.4.194.207:3003/dish/menu/all-actived")
+            .then((response) => {
+                setListDish(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    console.log(listDish);
+
     return (
         <div className={cx("Wrapper")}>
             <div className={cx("blackBar")}>
@@ -23,57 +48,29 @@ function Menu() {
             <div className={cx("mBody")}>
                 <div className={cx("mNavBar")}>
                     <button className={cx("mNavButton")}>Tất Cả</button>
-                    <button className={cx("mNavButton")}>Cơm</button>
-                    <button className={cx("mNavButton")}>Nước</button>
+                    {category.map((cat, index) => (
+                        <button className={cx("mNavButton")}>{cat.name}</button>
+                    ))}
                 </div>
                 <div className={cx("mContent")}>
-                    <div className={cx("mItem")}>
-                        <div className={cx("mImageBorder")}>
-                            <img src={gunther} alt="FoodImage"></img>
+                    {listDish.map((food, index) => (
+                        <div
+                            key={index}
+                            className={cx("mItem")}>
+                            <div className={cx("mImageBorder")}>
+                                <img src={food.image_detail.path} alt="FoodImage"></img>
+                            </div>
+                            <div className={cx("mItemInfo")}>
+                                <div className={cx("mName")}>{food.name}</div>
+                                <div className={cx("mPrice")}>{food.price}đ</div>
+                                <div className={cx("mQuantity")}>Số lượng: {food.amount}</div>
+                            </div>
                         </div>
-                        <div className={cx("mItemInfo")}>
-                            <div className={cx("mName")}>Bánh Mì</div>
-                            <div className={cx("mPrice")}>25000đ</div>
-                            <div className={cx("mQuantity")}>Số lượng: 200</div>
-                        </div>
-                    </div>
-                    <div className={cx("mItem")}>
-                        <div className={cx("mImageBorder")}>
-                            <img src={gunther} alt="FoodImage"></img>
-                        </div>
-                        <div className={cx("mItemInfo")}>
-                            <div className={cx("mName")}>Bánh Mì</div>
-                            <div className={cx("mPrice")}>25000đ</div>
-                            <div className={cx("mQuantity")}>Số lượng: 200</div>
-                        </div>
-                    </div> <div className={cx("mItem")}>
-                        <div className={cx("mImageBorder")}>
-                            <img src={gunther} alt="FoodImage"></img>
-                        </div>
-                        <div className={cx("mItemInfo")}>
-                            <div className={cx("mName")}>Bánh Mì</div>
-                            <div className={cx("mPrice")}>25000đ</div>
-                            <div className={cx("mQuantity")}>Số lượng: 200</div>
-                        </div>
-                    </div> <div className={cx("mItem")}>
-                        <div className={cx("mImageBorder")}>
-                            <img src={gunther} alt="FoodImage"></img>
-                        </div>
-                        <div className={cx("mItemInfo")}>
-                            <div className={cx("mName")}>Bánh Mì</div>
-                            <div className={cx("mPrice")}>25000đ</div>
-                            <div className={cx("mQuantity")}>Số lượng: 200</div>
-                        </div>
-                    </div> <div className={cx("mItem")}>
-                        <div className={cx("mImageBorder")}>
-                            <img src={gunther} alt="FoodImage"></img>
-                        </div>
-                        <div className={cx("mItemInfo")}>
-                            <div className={cx("mName")}>Bánh Mì</div>
-                            <div className={cx("mPrice")}>25000đ</div>
-                            <div className={cx("mQuantity")}>Số lượng: 200</div>
-                        </div>
-                    </div>
+                    ))}
+
+
+
+
                 </div>
             </div>
         </div>
