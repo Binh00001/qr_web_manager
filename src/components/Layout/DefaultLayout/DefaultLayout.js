@@ -1,19 +1,25 @@
 import styles from './DefaultLayout.scss'
 import classNames from 'classnames';
-import logo from '~/components/assets/image/gunther.jpg'
+import logo from '~/components/assets/image/food-logo-design-template-restaurant-free-png.webp'
+import { useNavigate } from "react-router-dom";
 
 
 const cx = classNames.bind(styles)
 
-function DefaultLayout({children}) {
+function DefaultLayout({ children }) {
+
+    const navigate = useNavigate();
+    const handleClickLogo = () => {
+        navigate(`/`);
+    };
     return (
         <div className={cx("dWrapper")}>
             <div className={cx("dContent")}>
                 <div className={cx("dLeftContainer")}>
                     <div className={cx("LogoBorder")}>
-                        <img src={logo} alt='LOGO'></img>
+                        <img onClick={handleClickLogo} src={logo} alt='LOGO'></img>
                     </div>
-                    <div className={cx("dItem")}>Trang Chủ</div>
+                    <div className={cx("dItem")} onClick={handleClickLogo}>Trang Chủ</div>
                     <div className={cx("dItem")}>Thực Đơn</div>
                     <div className={cx("dItem")}>Hoá Đơn</div>
                 </div>
