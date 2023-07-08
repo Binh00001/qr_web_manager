@@ -15,6 +15,9 @@ function DefaultLayout({ children }) {
     const handleClickMenu = () => {
         navigate(`/menu`);
     };
+    const handleClickBill = () => {
+        navigate(`/bill`);
+    };
     return (
         <div className={cx("dWrapper")}>
             <div className={cx("dContent")}>
@@ -24,7 +27,7 @@ function DefaultLayout({ children }) {
                     </div>
                     <div className={cx("dItem")} onClick={handleClickLogo}>Trang Chủ</div>
                     <div className={cx("dItem")} onClick={handleClickMenu}>Thực Đơn</div>
-                    <div className={cx("dItem")}>Hoá Đơn</div>
+                    <div className={cx("dItem")} onClick={handleClickBill}>Hoá Đơn</div>
                 </div>
                 <div className={cx("dRightContainer")}>
                     <div className={cx("UserName dItem")}></div>
