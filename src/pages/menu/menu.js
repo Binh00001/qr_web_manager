@@ -13,6 +13,8 @@ function Menu() {
     const [clickAddAmount, setClickAddAmount] = useState(null);
     const [isAmount, setIsAmount] = useState(false);
     const [reload, setReload] = useState(false);
+    const [obj, setObj] = useState({});
+    const [detail, setDetail] = useState(false);
 
     const [state, setState] = useState({
         amount: '',
@@ -79,18 +81,18 @@ function Menu() {
 
     return (
         <div className={cx("Wrapper")}>
-           
+
             <div className={cx("blackBar")}>
                 <div className={cx("TopBar")}>
                     <div className={cx("mTopBar")}>
                         <div className={cx("mText active")}>Quản Lý Thực Đơn</div>
-                        <div className={cx("mText")}  onClick={() => navigate('/hidden-menu')}>Các Món Đã Ẩn</div>
+                        <div className={cx("mText")} onClick={() => navigate('/hidden-menu')}>Các Món Đã Ẩn</div>
                         <div className={cx("mText")} onClick={() => navigate('/addDish')}>Thêm Món Ăn</div>
                     </div>
                 </div>
             </div>
             <div className={cx("mBody")}>
-                
+
                 <div className={cx("mNavBar")}>
                     <button className={cx("mNavButton", { active: type === null })} onClick={() => setType(null)}>Tất Cả</button>
                     <button className={cx("mNavButton", { active: type === "bestseller" })} onClick={() => setType('bestseller')}>Bestseller</button>
@@ -107,7 +109,8 @@ function Menu() {
                     ).map((food, index) => (
                         <div
                             key={index}
-                            className={cx("mItem")}>
+                            className={cx("mItem")}
+                        >
                             <div className={cx("mItemBox")}>
                                 <div className={cx("mImageBorder")}>
                                     <img src={food.image_detail.path} alt="FoodImage"></img>
@@ -119,7 +122,11 @@ function Menu() {
                                 </div>
                             </div>
                             <div className={cx("mHoverBox")}>
-                                <div className={cx("optionsHoverBox")}>Chi tiết</div>
+                                <div className={cx("optionsHoverBox")}
+                                    onClick={() => (
+                                        setObj(food), setDetail(true)
+                                    )}
+                                >Chi tiết</div>
                                 {clickAddAmount !== index && <div
                                     className={cx("optionsHoverBox")}
                                     onClick={() => {
@@ -143,9 +150,9 @@ function Menu() {
                         </div>
                     ))}
                 </div>
-              
+
             </div>
-            {true && <Detail />}
+            {detail && <Detail obj={obj} />}
         </div >
     )
 }
