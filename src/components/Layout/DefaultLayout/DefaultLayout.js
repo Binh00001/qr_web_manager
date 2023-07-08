@@ -12,6 +12,9 @@ function DefaultLayout({ children }) {
     const handleClickLogo = () => {
         navigate(`/`);
     };
+    const handleClickMenu = () => {
+        navigate(`/menu`);
+    };
     return (
         <div className={cx("dWrapper")}>
             <div className={cx("dContent")}>
@@ -20,7 +23,7 @@ function DefaultLayout({ children }) {
                         <img onClick={handleClickLogo} src={logo} alt='LOGO'></img>
                     </div>
                     <div className={cx("dItem")} onClick={handleClickLogo}>Trang Chủ</div>
-                    <div className={cx("dItem")}>Thực Đơn</div>
+                    <div className={cx("dItem")} onClick={handleClickMenu}>Thực Đơn</div>
                     <div className={cx("dItem")}>Hoá Đơn</div>
                 </div>
                 <div className={cx("dRightContainer")}>
