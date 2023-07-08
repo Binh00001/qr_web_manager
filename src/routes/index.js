@@ -5,6 +5,7 @@
 import Home from "~/pages/home/home.js";
 import Menu from "~/pages/menu/menu"
 import AddDish from "~/pages/AddDish/index"
+import Bill from "~/pages/Bill/Bill"
 import { Fragment } from "react";
 
 export const publicRoutes = [
@@ -12,6 +13,7 @@ export const publicRoutes = [
   { path: "/", component: Home },
   { path: "/menu", component: Menu},
   { path: "/addDish", component: AddDish},
+  { path: "/bill", component: Bill},
 //   { path: "/cart", component: Cart, layout: null },
 //   { path: "/showall", component: ShowAll, layout: null },
 

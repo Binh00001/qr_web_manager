@@ -1,0 +1,81 @@
+.bBody {
+    background-color: #fff;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: 100vh;
+
+    .bMarginTop {
+        height: 40px;
+    }
+
+    .bItem {
+        min-height: 200px;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 40px;
+        display: flex;
+        border: 1px solid black;
+        border-radius: 20px;
+        .bItemLeftContainer {
+            width: 50%;
+            border-right: 1px dotted black;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            margin-left: 20px;
+        }
+
+        .bItemRightContainer {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 50%;
+
+            .bTopTitle {
+                width: 90%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 5px;
+            }
+
+            .bFoodItem {
+                width: 90%;
+                margin: 0 auto;
+                display: flex;
+                margin-bottom: 10px;
+                // justify-content: space-between;
+                .bFoodName{
+                    max-width: 33%;
+                    word-wrap: break-word;
+                }
+                .bFoodOption{
+                        width: 33%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                }
+                .bFoodQuantity{
+                    width: 30%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: end;
+                }
+            }
+
+            .bPrintButton {
+                display: flex;
+                align-self: end;
+                button{
+                    border: 1px #f04d4d solid;
+                    background-color: #fff;
+                    padding: 10px;
+                    border-radius: 10px;
+                    margin-right: 20px;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+}
