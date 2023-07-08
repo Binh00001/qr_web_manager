@@ -87,9 +87,8 @@
                 color: #fff;
                 margin-left: 35px;
             }
-
-            .custom-file-label::after {
-                content: ' Choose File';
+            .custom-file-label::before {
+                // content: 'Choose File ';
                 // font-weight: bold;
             }
 
