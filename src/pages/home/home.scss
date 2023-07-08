@@ -1,11 +1,13 @@
-
+.Wrapper{
+    background-color: #bdc3c7;
+}
 .blackBar{
     width: 100%;
     height: 60px;
     background-color: #202124; 
     color: #fff;
 }
-.hTopBar{
+.TopBar{
     width: 70%;
     max-width: 1200px;
     margin: 0 auto;
@@ -41,6 +43,7 @@
 }
 
 .hBody{
+    background-color: #fff;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -53,7 +56,7 @@
         button{
             height: 70px;
             width: 70px;
-            margin: 5% 10% 5% 0;
+            margin: 5% 5% 5% 5%;
             border: none;
             background-color: #f04d4d;
             font-size: 1.2rem;
