@@ -1,50 +1,53 @@
-
 .dWrapper {
-    width: 100%;
-    height: 80px;
-    border-bottom: 1px solid black;
-    .dContent{
-        height: 100%;
-        width: 70%;
-        max-width: 1200px;
-        display: flex;
-        justify-content: space-between;
-        margin: 0 auto;
-        
-        .dLeftContainer{
-            width: 60%;
-            display: flex;
-            justify-content: space-around;
-            margin-left: -45px;
-            .LogoBorder{
-                height: 80px;
-                width: 80px;
-                img{
-                    height: 100%;
-                    width: 100%;
-                    
-                }   
-            }
-            .dItem{
-                align-self: center;
-                font-size: 1.3rem;
-            }
-        }
+  width: 100%;
+  height: 80px;
+  border-bottom: 1px solid black;
+  .dContent {
+    height: 100%;
+    width: 70%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
 
-        .dRightContainer{
-            width: 20%;
-            display: flex;
-            justify-content: space-between; 
-            font-size: 1.3rem;
-            margin-right: 3%;
-            .dLogin{
-                align-self: center;
-                font-size: 1rem;
-            }
-            .dLogout{
-                align-self: center;
-                font-size: 1rem;
-            }
+    .dLeftContainer {
+      width: 60%;
+      display: flex;
+      justify-content: space-around;
+      margin-left: -45px;
+      .LogoBorder {
+        height: 80px;
+        width: 80px;
+        img {
+          height: 100%;
+          width: 100%;
+          cursor: pointer;
         }
+      }
+      .dItem {
+        align-self: center;
+        font-size: 1.3rem;
+        cursor: pointer;
+        &:hover {
+          color: #009ef7;
+        }
+      }
     }
+
+    .dRightContainer {
+      width: 20%;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3rem;
+      margin-right: 3%;
+      .dLogin {
+        align-self: center;
+        font-size: 1rem;
+      }
+      .dLogout {
+        align-self: center;
+        font-size: 1rem;
+      }
+    }
+  }
 }
