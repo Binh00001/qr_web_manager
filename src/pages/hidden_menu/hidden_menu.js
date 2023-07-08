@@ -15,7 +15,7 @@ function HiddenMenu() {
 
     useEffect(() => {
         axios
-            .get("http://117.4.194.207:3003/dish/menu/all-actived")
+            .get("http://117.4.194.207:3003/dish/menu/all-hidden")
             .then((response) => {
                 setListDish(response.data);
             })
@@ -28,7 +28,7 @@ function HiddenMenu() {
 
     const submitActiveDishHandler = (id) => {
         axios
-            .put(`http://117.4.194.207:3003/dish/active/${id}`, { isActive: false })
+            .put(`http://117.4.194.207:3003/dish/active/${id}`, { isActive: true })
             .then((response) => {
                 setReload(!reload)
             })
@@ -72,7 +72,7 @@ function HiddenMenu() {
                             <div className={cx("mHoverBox")}>
                                 <div className={cx("optionsHoverBox")}>Chi tiết</div>
 
-                                <div className={cx("optionsHoverBox")} onClick={() => submitActiveDishHandler(food._id)} > Ẩn món</div>
+                                <div className={cx("optionsHoverBox")} onClick={() => submitActiveDishHandler(food._id)} > Hiện món</div>
                             </div>
                         </div>
 
