@@ -10,6 +10,13 @@ function Menu() {
     const [category, setCategory] = useState([]);
     const [listDish, setListDish] = useState([]);
     const [type, setType] = useState(null);
+    const [clickAddAmount, setClickAddAmount] = useState(null);
+    const [isAmount, setIsAmount] = useState(false);
+    const [reload, setReload] = useState(false);
+
+    const [state, setState] = useState({
+        amount: '',
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,9 +39,43 @@ function Menu() {
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }, [reload]);
 
-    console.log(listDish);
+    const changeHandler = (e) => {
+        setState({ [e.target.name]: e.target.value });
+    }
+
+    const submitAddAmountHandler = (id) => {
+        axios
+            .put(`http://117.4.194.207:3003/dish/update/${id}`, { amount: state.amount })
+            .then((response) => {
+                setClickAddAmount(null)
+                const updatedListDishes = listDish.map(dish => {
+                    if (dish._id === id) {
+                        return { ...dish, amount: response.data.amount };
+                    }
+                    return dish;
+                });
+                setListDish(updatedListDishes);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const submitHideDishHandler = (id) => {
+        axios
+            .put(`http://117.4.194.207:3003/dish/active/${id}`, { isActive: false })
+            .then((response) => {
+                setReload(!reload)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    console.log(state);
+    const { amount } = state;
 
     return (
         <div className={cx("Wrapper")}>
@@ -42,7 +83,7 @@ function Menu() {
                 <div className={cx("TopBar")}>
                     <div className={cx("mTopBar")}>
                         <div className={cx("mText active")}>Quản Lý Thực Đơn</div>
-                        <div className={cx("mText")}>Các Món Đã Ẩn</div>
+                        <div className={cx("mText")}  onClick={() => navigate('/hidden-menu')}>Các Món Đã Ẩn</div>
                         <div className={cx("mText")} onClick={() => navigate('/addDish')}>Thêm Món Ăn</div>
                     </div>
                 </div>
@@ -65,15 +106,40 @@ function Menu() {
                         <div
                             key={index}
                             className={cx("mItem")}>
-                            <div className={cx("mImageBorder")}>
-                                <img src={food.image_detail.path} alt="FoodImage"></img>
+                            <div className={cx("mItemBox")}>
+                                <div className={cx("mImageBorder")}>
+                                    <img src={food.image_detail.path} alt="FoodImage"></img>
+                                </div>
+                                <div className={cx("mItemInfo")}>
+                                    <div className={cx("mName")}>{food.name}</div>
+                                    <div className={cx("mPrice")}>{food.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
+                                    <div className={cx("mQuantity")}>Số lượng: {food.amount}</div>
+                                </div>
                             </div>
-                            <div className={cx("mItemInfo")}>
-                                <div className={cx("mName")}>{food.name}</div>
-                                <div className={cx("mPrice")}>{food.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
-                                <div className={cx("mQuantity")}>Số lượng: {food.amount}</div>
+                            <div className={cx("mHoverBox")}>
+                                <div className={cx("optionsHoverBox")}>Chi tiết</div>
+                                {clickAddAmount !== index && <div
+                                    className={cx("optionsHoverBox")}
+                                    onClick={() => {
+                                        setClickAddAmount(index);
+                                        setState({ ...state, amount: null });
+                                    }}>Thay đổi số lượng</div>}
+                                {clickAddAmount === index && <div className={cx("addAmount optionsHoverBox")}>
+                                    <input
+                                        id="amount"
+                                        type="number"
+                                        name="amount"
+                                        value={amount}
+                                        onChange={changeHandler}
+                                        required
+                                        placeholder="số lượng ..." />
+                                    {amount && <div className={cx("AcpBtn")} onClick={() => submitAddAmountHandler(food._id)}>OK</div>}
+                                    {!amount && <div className={cx("AcpBtn")} onClick={() => setClickAddAmount(null)}>Hủy</div>}
+                                </div>}
+                                <div className={cx("optionsHoverBox")} onClick={() => submitHideDishHandler(food._id)} > Ẩn món</div>
                             </div>
                         </div>
+
                     ))}
 
 
@@ -81,7 +147,7 @@ function Menu() {
 
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

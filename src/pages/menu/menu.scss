@@ -50,32 +50,112 @@
       height: 20%;
       margin-right: 5%;
       margin-bottom: 30px;
-      border: 1px solid black;
-      cursor: pointer;
-      .mImageBorder {
-        height: 12vh;
-        min-width: 210px;
-        min-height: 165px;
-        border-bottom: 1px solid black;
-        overflow: hidden;
-        img {
-          width: 210px;
-          height: 165px;
-          object-fit: cover;
+      overflow: hidden;
+      position: relative;
+      //   cursor: pointer;
+      .mItemBox {
+        border: 1px solid black;
+        min-height: 250px;
+
+        .mImageBorder {
+          height: 12vh;
+          min-width: 210px;
+          min-height: 165px;
+          border-bottom: 1px solid black;
+          overflow: hidden;
+          img {
+            width: 210px;
+            height: 165px;
+            object-fit: cover;
+          }
+        }
+        .mItemInfo {
+          text-align: center;
+          .mName {
+            margin-top: 3%;
+            max-width: 210px;
+          }
+          .mPrice {
+            color: #f04d4d;
+          }
+          .mQuantity {
+          }
         }
       }
-      .mItemInfo {
-        text-align: center;
-        .mName {
-          margin-top: 3%;
-          max-width: 210px;
+
+      .mHoverBox {
+        height: 100%;
+        // width:50vh ;
+        min-height: 165px;
+        background-color: rgba(0, 0, 0, 0.6);
+        transition: background-color 0.3s ease-in-out;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        display: grid;
+        align-content: space-evenly;
+        // bottom: 0%;
+
+        .optionsHoverBox {
+          cursor: pointer;
+          width: 75%;
+          height: 40px;
+          //   padding: 5% 0px;
+          padding: 0;
+          margin: auto;
+          background-color: #fff;
+          //   border: 2px solid #f04d4d;
+          text-align: center;
+          //   overflow: hidden;
+          border-radius: 15px;
+          display: grid;
+          align-items: center;
+
+          &:hover {
+            background-color: #f04d4d;
+            color: #fff;
+            // font-size: 16px;
+          }
         }
-        .mPrice {
-          color: #f04d4d;
+        .addAmount {
+          display: flex;
+          border-radius: 15px;
+          overflow: hidden;
+          input {
+            padding-left: 15px;
+            font-size: 16px;
+            padding-top: 4px;
+            width: 75%;
+            display: inline-block;
+            height: 100%;
+            &:focus {
+              outline: none;
+              box-shadow: none;
+            }
+          }
+          .AcpBtn {
+            color: #fff;
+            align-items: center;
+            height: 40px;
+            background-color: #f04d4d;
+            width: 25%;
+            border: none;
+            text-align: center;
+            display: grid;
+            &:hover {
+              background-color: #d80d0d;
+            }
+          }
         }
-        .mQuantity {
-        }
+      }
+      &:hover .mHoverBox {
+        bottom: 0%;
       }
     }
+  }
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 }

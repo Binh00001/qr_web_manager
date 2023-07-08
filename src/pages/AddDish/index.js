@@ -73,7 +73,7 @@ function AddDish() {
                     <div className={cx("TopBar")}>
                         <div className={cx("mTopBar")}>
                             <div className={cx("mText")} onClick={() => navigate('/menu')} > Quản Lý Thực Đơn</div>
-                            <div className={cx("mText")}>Các Món Đã Ẩn</div>
+                            <div className={cx("mText")} onClick={() => navigate('/hidden-menu')} >Các Món Đã Ẩn</div>
                             <div className={cx("mText active")}>Thêm Món Ăn</div>
                         </div>
                     </div>
