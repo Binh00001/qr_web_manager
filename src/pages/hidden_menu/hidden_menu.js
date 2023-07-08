@@ -49,6 +49,7 @@ function HiddenMenu() {
                 </div>
             </div>
             <div className={cx("mBody")}>
+            <div className={cx("mNavBar")}></div>
                 <div className={cx("mContent")}>
                     {(type === null
                         ? listDish
