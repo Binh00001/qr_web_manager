@@ -6,7 +6,7 @@ import Home from "~/pages/home/home.js";
 import Menu from "~/pages/menu/menu";
 import AddDish from "~/pages/AddDish/index";
 import Bill from "~/pages/Bill/Bill";
-import Login from "~/pages/Login/index";
+import Login from "~/pages/Login/login";
 import { Fragment } from "react";
 import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 
