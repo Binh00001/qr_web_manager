@@ -162,7 +162,7 @@ function Menu() {
                     onClick={cancelHandler}
                     className="overlay">
                 </div>
-                <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img>
+                {/* <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img> */}
                 <Detail obj={obj} />
                 </Fragment>
             )}
