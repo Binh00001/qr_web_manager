@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import classNames from "classnames";
 import styles from '~/pages/Login/Login.scss';
 import { useNavigate } from "react-router-dom";
@@ -17,6 +16,8 @@ function Login() {
                         </div>
                     </div>
                 </div>
+                <p>login</p>
+
             </div>
     );
 }

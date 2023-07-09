@@ -62,7 +62,7 @@ function Bill() {
                                     {
                                         cart.order.map((order, orderIndex) => (
                                             <div className={cx("bFoodItem")} key={orderIndex}>
-                                                <div className={cx("bFoodName")}>{order.dish_id}</div>
+                                                <div className={cx("bFoodName")}>{order.dish_name}</div>
                                                 <div className={cx("bFoodOption")}>
                                                     {Array.isArray(order.options) &&
                                                         order.options.map((option, optionIndex) => (
