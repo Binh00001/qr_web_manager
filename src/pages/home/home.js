@@ -30,7 +30,7 @@ function Home() {
   useEffect(() => {
     const fetchData = () => {
       axios
-        .get("http://117.4.194.207:3003/call-staff/all")
+        .get("http://117.4.194.207:3003/call-staff/all?time=60")
         .then((response) => {
           // console.log(response);
           setRequests(response.data);
@@ -83,7 +83,7 @@ function Home() {
       .duration(currentTime.diff(requestTime))
       .asMinutes(); // Tính khoảng thời gian trong phút
 
-    return timeDifference <= 5; // Trả về true nếu trong vòng 5 phút, ngược lại trả về false
+    return timeDifference <= 10; // Trả về true nếu trong vòng 5 phút, ngược lại trả về false
   };
 
   // console.log(activeTable);
