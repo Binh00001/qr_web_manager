@@ -8,7 +8,7 @@
     align-items: center;
 }
 
-.dtItem{
+.dtItem {
     top: calc(45vh - 200px);
     left: calc(50vw - 350px);
     position: fixed;
@@ -20,62 +20,107 @@
     flex-direction: column;
     // justify-content: space-around;
     align-items: center;
-    .dtName{
+    input{
+        padding-left: 10px;
+        border-radius: 10px;
+        border: 1px solid #95a5a6;
+    }
+    .dtName {
         font-size: 1.4rem;
         font-weight: 600;
         height: 80px;
         display: flex;
         align-items: center;
     }
-    .dtContent{
+
+    .dtInputName {
+        width: fit-content;
+        font-size: 1.4rem;
+        font-weight: 600;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .dtContent {
         height: 63%;
         max-height: 250px;
-        width: 90%  ;
+        width: 90%;
         display: flex;
         justify-content: space-around;
-        .dtImageBorder{
+
+        .dtImageBorder {
             height: 165px;
             width: 180px;
             border: 1px solid black;
             overflow: hidden;
-            img{
+
+            img {
                 object-fit: cover;
                 height: 165px;
                 width: 100%;
-            }   
+            }
         }
-        .dtInfo{
+
+        .dtInfo {
             width: 60%;
-            
-            .dtDescription{
+
+            .dtDescription {
                 margin-bottom: 5%;
                 font-size: 1.3rem;
             }
-            .dtPrice{
+
+            .dtInputDes {
                 margin-bottom: 5%;
-                span{
+                font-size: 1.3rem;
+                height: 30px;
+            }
+
+            .dtPrice {
+                margin-bottom: 5%;
+
+                span {
                     color: #f04d4d;
                 }
             }
-            .dtOption{
-                .dtOptionItem{
+
+            .dtInputPrice {
+                margin-bottom: 5%;
+                height: 22px;
+                span {
+                    color: #f04d4d;
+                }
+            }
+
+            .dtOption {
+                .dtOptionItem {
                     margin-left: 110px;
                 }
-                :first-child{
+
+                :first-child {
                     margin-left: 10px;
                 }
             }
         }
+
     }
-    .dtButtonGroup{
+
+    .dtButtonGroup {
         width: 50%;
         display: flex;
         justify-content: space-between;
-        button{
+
+        button {
             background-color: #fff;
             border: 1px solid #f04d4d;
             padding: 7px;
             border-radius: 10px;
         }
+    }
+
+    .hided {
+        display: none;
     }
 }
