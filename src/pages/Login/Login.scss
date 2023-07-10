@@ -1,92 +1,117 @@
+.lgBody {
+  max-width: 90vw;
+  margin: 0 auto;
+  min-height: 85vh;
+  .lgContent {
+    display: flex;
+    justify-content: space-between;
+    .lgLeftContainer {
+      margin-top: 20vh;
+      width: 60%;
+      margin-left: 10%;
+      .lgResName {
+        font-size: 4rem;
+        font-weight: bold;
+        color: #3498db;
+      }
 
-.lgBody{
-    max-width: 90vw;
-    margin: 0 auto;
-    min-height: 85vh;
-    .lgContent{
-        display: flex;
-        justify-content: space-between;
-        .lgLeftContainer{
-            margin-top: 20vh;
-            width: 60%;
-            margin-left: 10%;
-            .lgResName{
-                font-size: 4rem;
-                font-weight: bold;
-                color: #3498db;
-            }
+      .lgResDes {
+        margin-top: 3vh;
+        max-width: 75%;
+        font-size: 1.2rem;
+      }
 
-            .lgResDes{
-                margin-top: 3vh;
-                max-width: 75%;
-                font-size: 1.2rem;
-            }
-            
-            .lg4flex{
-                position: absolute;
-                bottom: 20vh;
-                font-size: 1.2rem;
-            }
-        }
-        .lgRightContainer{
-            background-color: #fff;
-            margin-top: 15vh;
-            width: 35%;
-            height: 50vh;
-            margin-right: 20%;
-            border-radius: 15px;
-            .lgBox{
-                height: 60%;
-                width: 100%;
-                // border-bottom: 1px solid black;
-                input{
-                    width: 100%;
-                    height: 45px;
-                    border: 1px #bdc3c7 solid;
-                    padding-left: 25px;
-                    border-radius: 10px;
-                    background-color: #fff;
-                }
-                .lgAccountBox{
-                    width: 80%;
-                    margin: 2vh auto;
-                    margin-top: 5vh;
-                }
-                .lgPasswordBox{
-                    width: 80%;
-                    margin: 2vh auto;
-                }
-                .lgLoginButtonBox{
-                    width: 80%;
-                    margin: 2vh auto;
-                    input{
-                        width: 102%;
-                        margin-top: 4vh;
-                        background-color: #3498db;
-                        color: #fff;
-                        font-size: 1.3rem;
-                        border: none;
-                        border-radius: 10px;
-                        padding: 0;
-                    }
-                }
-            }
-            .lgRegisterBox{
-                border-top: #3498db 1px solid;
-                width: 90%;
-                margin: 0 auto;
-                input{
-                    height: 45px;
-                    width: 81.5%;
-                    margin-left: 2.3vw;
-                    margin-top: 5vh;
-                    border-radius: 10px;
-                    border: none;
-                    background-color: #2ecc71;
-                    color: #fff;
-                    font-size: 1.3rem;
-                }
-            }
-        }
+      .lg4flex {
+        position: absolute;
+        bottom: 20vh;
+        font-size: 1.2rem;
+      }
     }
+    .lgRightContainer {
+      background-color: #fff;
+      margin-top: 15vh;
+      width: 35%;
+      height: 50vh;
+      margin-right: 20%;
+      border-radius: 15px;
+      .lgBox {
+        height: 60%;
+        width: 100%;
+        // border-bottom: 1px solid black;
+        input {
+          width: 100%;
+          height: 45px;
+          border: 1px #bdc3c7 solid;
+          padding-left: 25px;
+          border-radius: 10px;
+          background-color: #fff;
+        }
+        .lgAccountBox {
+          width: 80%;
+          margin: 2vh auto;
+          margin-top: 5vh;
+        }
+        .lgPasswordBox {
+          width: 80%;
+          margin: 2vh auto;
+        }
+        .lgLoginButtonBox {
+          width: 80%;
+          margin: 2vh auto;
+          input {
+            width: 102%;
+            margin-top: 4vh;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+          }
+          button {
+            width: 102%;
+            margin-top: 4vh;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            height: 45px;
+            cursor: pointer;
+            &:hover {
+              background-color: #006bb3;
+            }
+          }
+        }
+      }
+      .lgRegisterBox {
+        border-top: #3498db 1px solid;
+        width: 90%;
+        margin: 0 auto;
+        input {
+          height: 45px;
+          width: 81.5%;
+          margin-left: 2.3vw;
+          margin-top: 5vh;
+          border-radius: 10px;
+          border: none;
+          background-color: #2ecc71;
+          color: #fff;
+          font-size: 1.3rem;
+        }
+        button {
+          height: 45px;
+          width: 81.5%;
+          margin-left: 2.3vw;
+          margin-top: 5vh;
+          border-radius: 10px;
+          border: none;
+          background-color: #2ecc71;
+          color: #fff;
+          font-size: 1.3rem;
+        }
+      }
+    }
+  }
 }
