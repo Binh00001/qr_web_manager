@@ -20,11 +20,13 @@
   flex-direction: column;
   // justify-content: space-around;
   align-items: center;
+
   input {
     padding-left: 10px;
     border-radius: 10px;
     border: 1px solid #95a5a6;
   }
+
   .dtName {
     font-size: 1.4rem;
     font-weight: 600;
@@ -56,6 +58,44 @@
       width: 180px;
       border: 1px solid black;
       overflow: hidden;
+      .custom-file-input {
+        display: none;
+        /* Hide the default file input button */
+      }
+      .custom-file{
+        display: flex;
+      }
+      .custom-file-label {
+        width: 180px;
+        height: 165px;
+        display: flex;
+        background-color: #fff;
+        // opacity: 0.6;
+        cursor: pointer;
+        font-size: 1rem;
+        color: #000;
+        align-items: center;
+        padding-left: 10px;
+        // word-wrap: break-word;
+        // white-space: pre-wrap;
+      }
+
+      .custom-file-label::before {
+        // content: 'Choose File ';
+        // font-weight: bold;
+      }
+
+      .custom-file-input:focus+.custom-file-label {
+        outline: 2px solid #4a90e2;
+        /* Add focus style */
+      }
+
+      input {
+        height: 100%;
+        width: 100%;
+        padding: 0;
+        border-radius: 0;
+      }
 
       img {
         object-fit: cover;
@@ -89,6 +129,7 @@
       .dtInputPrice {
         margin-bottom: 5%;
         height: 22px;
+
         span {
           color: #f04d4d;
         }
@@ -123,6 +164,7 @@
     display: none;
   }
 }
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;

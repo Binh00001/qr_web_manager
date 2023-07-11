@@ -32,7 +32,9 @@
       background-color: #fff;
       margin-top: 15vh;
       width: 35%;
+      min-width: fit-content;
       height: 50vh;
+      min-height: 340px;
       margin-right: 20%;
       border-radius: 15px;
       .lgBox {
@@ -40,7 +42,7 @@
         width: 100%;
         // border-bottom: 1px solid black;
         input {
-          width: 100%;
+          width: 90%;
           height: 45px;
           border: 1px #bdc3c7 solid;
           padding-left: 25px;
@@ -60,7 +62,7 @@
           width: 80%;
           margin: 2vh auto;
           input {
-            width: 102%;
+            width: 90%;
             margin-top: 4vh;
             background-color: #3498db;
             color: #fff;

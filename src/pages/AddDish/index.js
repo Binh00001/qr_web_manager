@@ -62,7 +62,7 @@ function AddDish() {
         if (fileInput.files && fileInput.files.length > 0) {
             fileLabel.innerText = fileInput.files[0].name;
         } else {
-            fileLabel.innerText = 'Choose File';
+            fileLabel.innerText = 'Ấn Để Chọn Ảnh';
         }
     }
 
@@ -148,7 +148,7 @@ function AddDish() {
                                     required
                                     className="custom-file-input"
                                 />
-                                <label id="file-label" className="custom-file-label" htmlFor="image_detail"></label>
+                                <label id="file-label" className="custom-file-label" htmlFor="image_detail">Ấn Để Chọn Ảnh</label>
                             </div>
                         </div>
                     </div>

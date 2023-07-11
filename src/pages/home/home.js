@@ -140,9 +140,14 @@ function Home() {
           <div className={cx("TopBar")}>
             <div className={cx("hLeftContainer")}>
               <div className={cx("hText")}>
-                Quản Lý Yêu Cầu(sau 5 phút yêu cầu sẽ bị ẩn):
+                Tất Cả Các Bàn:
               </div>
             </div>
+            <div className={cx("hRightContainer")}>
+              <div className={cx("hText")}>
+                Quản Lý Yêu Cầu(sau 5 phút yêu cầu sẽ bị ẩn):
+              </div>
+              </div>
           </div>
         </div>
         <div className={cx("hBody")}>

@@ -1,6 +1,4 @@
-import React from "react";
-import { Fragment } from "react";
-import { useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Detail.scss";
 import axios from "axios";
@@ -20,6 +18,20 @@ function Detail(props) {
     image_detail: null,
   });
 
+  // useEffect(() => {
+  //   const file = document.getElementById("inImg");
+  //   const img = document.getElementById("imageChanged");
+
+  //   file.addEventListener("change", (e) => {
+  //     img.src = URL.createObjectURL(e.target.files[0]);
+  //     console.log(e.target.files[0]);
+  //   });
+
+  //   return () => {
+  //     file.removeEventListener("change", () => { });
+  //   };
+  // }, []);
+
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
       const file = e.target.files[0];
@@ -33,6 +45,17 @@ function Detail(props) {
     }
     setFormChanged(true);
   };
+
+  function handleFileInputChange(event) {
+    const fileInput = event.target;
+    const fileLabel = document.getElementById('file-label');
+
+    if (fileInput.files && fileInput.files.length > 0) {
+        fileLabel.innerText = fileInput.files[0].name;
+    } else {
+        fileLabel.innerText = 'Ấn Để Chọn Ảnh';
+    }
+}
 
   const isImageFile = (file) => {
     const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
@@ -69,11 +92,12 @@ function Detail(props) {
   };
 
   const { description, name, category, price } = state;
+
   return (
     <Fragment>
       <div>
         <div className={cx("dtItem")}>
-          <div className={cx("dtName", { hided: hideBox || "" })}>
+          <div className={cx("dtName", { hided: hideBox || "" })} id="image">
             {updatedDish.name}
           </div>
           <input
@@ -87,8 +111,25 @@ function Detail(props) {
 
           <div className={cx("dtContent")}>
             <div className={cx("dtImageBorder")}>
-              <img src={dish.image_detail.path} alt="FoodImage"></img>
+              <div className={cx("custom-file", { hided: !hideBox || "" })}>
+                <label id="file-label" className="custom-file-label" htmlFor="image_detail">Ấn Để Chọn Ảnh</label>
+                <input
+                  onChange={handleFileInputChange}
+                  type="file"
+                  id="image_detail"
+                  name="image_detail"
+                  accept="image/png,image/jpeg,image/jpg"
+                  required
+                  className="custom-file-input"
+                />
+
+              </div>
+              <img
+                src={dish.image_detail.path}
+                alt="FoodImage"
+                className={cx({ hided: hideBox || "" })}></img>
             </div>
+
             <div className={cx("dtInfo")}>
               <div className={cx("dtDescription", { hided: hideBox || "" })}>
                 {updatedDish.description}
