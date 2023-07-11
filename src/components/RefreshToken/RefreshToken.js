@@ -13,7 +13,7 @@ const refreshApi = createRefresh({
     try {
       const response = await axios.post(
         "http://117.4.194.207:3003/cashier-auth/refresh",
-        { refreshToken: refreshToken },
+        { 'refreshToken': refreshToken },
         {
           headers: { Authorization: `Bearer ${authToken}` },
         }

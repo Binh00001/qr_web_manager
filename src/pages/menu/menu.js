@@ -42,7 +42,7 @@ function Menu() {
             .catch((error) => {
                 console.log(error);
             });
-    }, [reload]);
+    }, [reload, detail]);
 
     const changeHandler = (e) => {
         setState({ [e.target.name]: e.target.value });

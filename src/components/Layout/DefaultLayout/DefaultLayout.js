@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
   const singOut = useSignOut();
+  let cashier = JSON.parse(localStorage.getItem("token_state")) || [];
 
   const navigate = useNavigate();
   const handleClickLogo = () => {
@@ -41,13 +42,11 @@ function DefaultLayout({ children }) {
           </div>
         </div>
         <div className={cx("dRightContainer")}>
-          <div className={cx("dLogin")} onClick={() => navigate("/login")}>
-            Đăng Nhập
-          </div>
+          <div className={cx("dCashierName")}>{cashier.cashierName}</div>
           {/* <div className={cx("UserName dItem")}></div> */}
-          <div className={cx("dLogout")} onClick={logout}>
+          <button className={cx("dLogout")} onClick={logout}>
             Đăng Xuất
-          </div>
+          </button>
         </div>
       </div>
       <div>{children}</div>

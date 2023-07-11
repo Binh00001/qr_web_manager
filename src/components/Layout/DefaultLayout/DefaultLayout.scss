@@ -35,18 +35,33 @@
     }
 
     .dRightContainer {
-      width: 20%;
+      margin-right: 0;
+      // width: 20%;
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       font-size: 1.3rem;
-      margin-right: 3%;
-      .dLogin {
+      // margin-right: 3%;
+      .dCashierName {
         align-self: center;
-        font-size: 1rem;
+        font-size: 1.4rem;
+        margin-right: 1vw;
+        
       }
       .dLogout {
+        cursor: pointer;
         align-self: center;
-        font-size: 1rem;
+        font-size: 0.7rem;
+        // border-bottom: 1px solid ;
+        // text-decoration: underline;
+        margin-top: 1.2vh;
+        border: none;
+        background-color: #f04d4d;
+        padding: 3px 3px;
+        color: #fff;
+        border-radius: 5px;
+        &:hover{
+          background-color: #c70505;
+        }
       }
     }
   }
