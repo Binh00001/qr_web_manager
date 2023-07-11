@@ -72,7 +72,7 @@
 
 
 .hBody {
-  min-height: fit-content;
+  min-height: calc(100vh - 140px);
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -134,6 +134,18 @@
         font-size: 1.2rem;
         border-radius: 15px;
         font-weight: 600;
+        .redDot{
+          width: 14px;
+          height: 14px;
+          background-color: #f04d4d;
+          border-radius: 50%;
+          position: absolute;
+          margin-left: -15%;
+          margin-bottom: 0%;
+        }
+        .redDotHided{
+          display: none;
+        }
       }
     }
   }
