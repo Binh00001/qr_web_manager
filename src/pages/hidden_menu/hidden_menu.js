@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,Fragment } from "react";
 import axios from "axios";
 import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
+import Detail from "~/components/Detail/index";
 
 const cx = classNames.bind(styles)
 
@@ -10,7 +11,8 @@ function HiddenMenu() {
     const [listDish, setListDish] = useState([]);
     const [type, setType] = useState(null);
     const [reload, setReload] = useState(false);
-
+    const [obj, setObj] = useState({});
+    const [detail, setDetail] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,7 +26,9 @@ function HiddenMenu() {
             });
     }, [reload]);
 
-
+    const cancelHandler = () => {
+        setDetail(false)
+    };
 
     const submitActiveDishHandler = (id) => {
         axios
@@ -49,7 +53,7 @@ function HiddenMenu() {
                 </div>
             </div>
             <div className={cx("mBody")}>
-            <div className={cx("mNavBar")}></div>
+                <div className={cx("mNavBar")}></div>
                 <div className={cx("mContent")}>
                     {(type === null
                         ? listDish
@@ -71,7 +75,11 @@ function HiddenMenu() {
                                 </div>
                             </div>
                             <div className={cx("mHoverBox")}>
-                                <div className={cx("optionsHoverBox")}>Chi tiết</div>
+                                <div className={cx("optionsHoverBox")}
+                                    onClick={() => (
+                                        setObj(food), setDetail(true)
+                                    )}
+                                >Chi tiết</div>
 
                                 <div className={cx("optionsHoverBox")} onClick={() => submitActiveDishHandler(food._id)} > Hiện món</div>
                             </div>
@@ -84,6 +92,16 @@ function HiddenMenu() {
 
                 </div>
             </div>
+            {detail && (
+                <Fragment>
+                <div
+                    onClick={cancelHandler}
+                    className="overlay">
+                </div>
+                {/* <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img> */}
+                <Detail obj={obj} />
+                </Fragment>
+            )}
         </div >
     )
 }

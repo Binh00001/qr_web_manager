@@ -51,11 +51,11 @@ function Detail(props) {
     const fileLabel = document.getElementById('file-label');
 
     if (fileInput.files && fileInput.files.length > 0) {
-        fileLabel.innerText = fileInput.files[0].name;
+      fileLabel.innerText = fileInput.files[0].name;
     } else {
-        fileLabel.innerText = 'Ấn Để Chọn Ảnh';
+      fileLabel.innerText = 'Ấn Để Chọn Ảnh';
     }
-}
+  }
 
   const isImageFile = (file) => {
     const acceptedFormats = ["image/png", "image/jpeg", "image/jpg"];
@@ -111,18 +111,19 @@ function Detail(props) {
 
           <div className={cx("dtContent")}>
             <div className={cx("dtImageBorder")}>
-              <div className={cx("custom-file", { hided: !hideBox || "" })}>
-                <label id="file-label" className="custom-file-label" htmlFor="image_detail">Ấn Để Chọn Ảnh</label>
-                <input
-                  onChange={handleFileInputChange}
-                  type="file"
-                  id="image_detail"
-                  name="image_detail"
-                  accept="image/png,image/jpeg,image/jpg"
-                  required
-                  className="custom-file-input"
-                />
-
+              <div className={cx({ hided: !hideBox || "" })}>
+                <div className={cx("custom-file")}>
+                  <label id="file-label" className={cx("custom-file-label")} htmlFor="image_detail">Ấn Để Chọn Ảnh</label>
+                  <input
+                    onChange={handleFileInputChange}
+                    type="file"
+                    id="image_detail"
+                    name="image_detail"
+                    accept="image/png,image/jpeg,image/jpg"
+                    required
+                    className={cx("custom-file-input")}
+                  />
+                </div>
               </div>
               <img
                 src={dish.image_detail.path}
