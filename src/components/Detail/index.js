@@ -147,7 +147,7 @@ function Detail(props) {
               <div className={cx("dtPrice", { hided: hideBox || "" })}>
                 Giá:
                 <span>
-                  {updatedDish.price.toLocaleString("vi-VN", {
+                  {" " + updatedDish.price.toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
@@ -159,6 +159,21 @@ function Detail(props) {
                 value={price}
                 name="price"
                 type="number"
+                onChange={changeHandler}
+              ></input>
+
+              <div className={cx("dtCategory", { hided: hideBox || "" })}>
+                Loại: 
+                <span>
+                  {" " +  dish.category}
+                </span>
+              </div>
+              <input
+                className={cx("dtInputCategory", { hided: !hideBox || "" })}
+                placeholder={updatedDish.category}
+                value={category}
+                name="category"
+                type="text"
                 onChange={changeHandler}
               ></input>
 
