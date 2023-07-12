@@ -2,7 +2,8 @@ import React, { Fragment, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Detail.scss";
 import axios from "axios";
-
+import emptyStar from "~/components/assets/image/emptyStar.png"
+import filledStar from "~/components/assets/image/filledStar.png"
 const cx = classNames.bind(styles);
 
 function Detail(props) {
@@ -10,6 +11,7 @@ function Detail(props) {
   const [hideBox, setHideBox] = useState(false);
   const [updatedDish, setUpdatedDish] = useState(dish);
   const [formChanged, setFormChanged] = useState(false);
+  const [isBestSale, setIsBestSale] = useState(false);
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -31,6 +33,10 @@ function Detail(props) {
   //     file.removeEventListener("change", () => { });
   //   };
   // }, []);
+
+  const setStar = () =>{
+    setIsBestSale(!isBestSale)
+  }
 
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
@@ -97,17 +103,29 @@ function Detail(props) {
     <Fragment>
       <div>
         <div className={cx("dtItem")}>
-          <div className={cx("dtName", { hided: hideBox || "" })} id="image">
-            {updatedDish.name}
+          <div className={cx("dtTopWrapper")}>
+            <div className={cx("dtName", { hided: hideBox || "" })} id="image">
+              {updatedDish.name}
+            </div>
+            <input
+              className={cx("dtInputName", { hided: !hideBox || "" })}
+              type="text"
+              placeholder={updatedDish.name}
+              onChange={changeHandler}
+              name="name"
+              value={name}
+            ></input>
+            <div className={cx("Star")}>
+              {!isBestSale &&
+                <img src={emptyStar} onClick={setStar}></img>
+              }
+              {isBestSale  &&
+                <img src={filledStar} onClick={setStar}></img>
+              }
+
+            </div>
           </div>
-          <input
-            className={cx("dtInputName", { hided: !hideBox || "" })}
-            type="text"
-            placeholder={updatedDish.name}
-            onChange={changeHandler}
-            name="name"
-            value={name}
-          ></input>
+
 
           <div className={cx("dtContent")}>
             <div className={cx("dtImageBorder")}>
@@ -163,9 +181,9 @@ function Detail(props) {
               ></input>
 
               <div className={cx("dtCategory", { hided: hideBox || "" })}>
-                Loại: 
+                Loại:
                 <span>
-                  {" " +  dish.category}
+                  {" " + dish.category}
                 </span>
               </div>
               <input

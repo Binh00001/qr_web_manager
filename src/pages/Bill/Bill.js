@@ -36,7 +36,10 @@ function Bill() {
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
             <div className={cx("mTopBar")}>
-              <div className={cx("mText")}>Tất Cả Hoá Đơn:</div>
+              <div className={cx("mText")}>
+                Tất Cả Hoá Đơn:
+                  <nav></nav>
+              </div>
             </div>
           </div>
         </div>

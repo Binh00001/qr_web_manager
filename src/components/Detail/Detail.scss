@@ -27,24 +27,48 @@
     border: 1px solid #95a5a6;
   }
 
-  .dtName {
-    font-size: 1.4rem;
-    font-weight: 600;
-    height: 80px;
+  .dtTopWrapper {
     display: flex;
-    align-items: center;
+    width: 100%;
+    // align-items: center;
+    justify-content: center;
+    position: relative;
+    .Star{
+      width: 60px;
+      height: 60px;
+      // background-color: #f04d4d;
+      position: absolute;
+      top: 15px;
+      right: 30px;
+      img{
+        height: 100%;
+        width: 100%;
+        background-color: transparent;
+      }
+    }
+    .dtName {
+      font-size: 1.4rem;
+      font-weight: 600;
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+
+    .dtInputName {
+      width: fit-content;
+      font-size: 1.4rem;
+      font-weight: 600;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .hided{
+      display: none;
+    }
   }
 
-  .dtInputName {
-    width: fit-content;
-    font-size: 1.4rem;
-    font-weight: 600;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
 
   .dtContent {
     height: 63%;
@@ -61,10 +85,12 @@
 
       .custom-file {
         display: flex;
+
         .custom-file-input {
           display: none;
           /* Hide the default file input button */
         }
+
         .custom-file-label {
           width: 180px;
           height: 165px;
@@ -79,16 +105,16 @@
           // word-wrap: break-word;
           // white-space: pre-wrap;
         }
-  
+
         .custom-file-label::before {
           // content: 'Choose File ';
           // font-weight: bold;
         }
-  
+
         .custom-file-input:focus+.custom-file-label {
           outline: 2px solid #4a90e2;
           /* Add focus style */
-        } 
+        }
       }
 
       input {
@@ -109,6 +135,7 @@
       width: 60%;
       display: flex;
       flex-direction: column;
+
       .dtDescription {
         margin-bottom: 5%;
         font-size: 1.3rem;
@@ -136,6 +163,7 @@
           color: #f04d4d;
         }
       }
+
       .dtCategory {
         margin-bottom: 5%;
 
