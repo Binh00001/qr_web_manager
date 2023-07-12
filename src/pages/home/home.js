@@ -14,9 +14,13 @@ const cx = classNames.bind(styles);
 function Home() {
   const [tables, setTables] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [oldRequest, setOldRequest] = useState([]);
+  const [listTenMin, setListTenMin] = useState([]);
   const [isAllActive, setIsAllActive] = useState(true);
   const [isNewRequest, setIsNewRequest] = useState(false);
-  const [oldRequest, setOldRequest] = useState([]);
+  const [clickAddTable, setClickAddTable] = useState(false);
+  const [tableNewNumber, setTableNewNumber] = useState({ newTable: '', })
+
   const audioRef = useRef(null);
 
 
@@ -37,8 +41,8 @@ function Home() {
         .get("http://117.4.194.207:3003/call-staff/all?time=60")
         .then((response) => {
           const newRequests = response.data;
-          setRequests(newRequests); 
-          
+          setRequests(newRequests);
+
         })
         .catch((error) => {
           console.log(error);
@@ -57,16 +61,37 @@ function Home() {
   }, []);
 
   useEffect(() => {
+    const updatedListTenMin = listTenMin.filter(request => {
+      const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
+      const currentTime = moment();
+      const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+      return timeDifference <= 10;
+    });
+  
+    setListTenMin(updatedListTenMin);
+  
     if (requests.length > 0) {
       const { _id } = requests[0];
       setOldRequest(_id);
     }
+  
+    requests.forEach(request => {
+      const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
+      const currentTime = moment();
+      const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+  
+      if (timeDifference <= 10 && !listTenMin.some(listRequest => listRequest._id === request._id)) {
+        setListTenMin(prevListTenMin => [...prevListTenMin, request]);
+      } else if (timeDifference > 10 && listTenMin.some(listRequest => listRequest._id === request._id)) {
+        setListTenMin(prevListTenMin => prevListTenMin.filter(listRequest => listRequest._id !== request._id));
+      }
+    });
   }, [requests]);
 
   useEffect(() => {
-    playSound()
+    // playSound()
   }, [oldRequest]);
-  
+
 
   const playSound = () => {
     if (audioRef.current) {
@@ -90,6 +115,18 @@ function Home() {
       return false
     }
   };
+
+  const handleAddTable = () => {
+    setClickAddTable(!clickAddTable)
+    // console.log(clickAddTable);
+  }
+
+  const changeHandler = (e) => {
+    setTableNewNumber({ [e.target.name]: e.target.value });
+  }
+
+
+  const { newTable } = tableNewNumber;
 
   const clickHandler = (table) => {
     const updatedTable = {
@@ -128,6 +165,7 @@ function Home() {
     return <div>Loading...</div>;
   }
 
+
   return (
     <Fragment>
 
@@ -147,7 +185,7 @@ function Home() {
               <div className={cx("hText")}>
                 Quản Lý Yêu Cầu(sau 5 phút yêu cầu sẽ bị ẩn):
               </div>
-              </div>
+            </div>
           </div>
         </div>
         <div className={cx("hBody")}>
@@ -164,10 +202,51 @@ function Home() {
                   <p>Bàn {table.name}</p>
                 </button>
               ))}
+              {clickAddTable &&
+                  <button
+                    onClick={handleAddTable}
+                    className={cx("hAddTable")}
+                  >
+                    <p>+</p>
+                  </button>
+              }
+              {!clickAddTable &&
+                <Fragment>
+                  <div className={cx("hAddTableBox")}>
+                    <input
+                      id="table"
+                      type="number"
+                      name="newTable"
+                      // value={amount}
+                      onChange={changeHandler}
+                      placeholder="Số Bàn:..."
+                      required
+                    >
+                    </input>
+                    {newTable &&
+                      <div className={cx("hAcpBtn")}
+                        // onClick={() => submitAddAmountHandler(food._id)}
+                        onClick={handleAddTable}
+                      >
+                        <p>OK</p>
+                      </div>}
+                    {!newTable &&
+                      <div className={cx("hAcpBtn")}
+                        // onClick={() => setClickAddAmount(null)}
+                        onClick={handleAddTable}
+                      >
+                        <p>Huỷ</p>
+                      </div>}
+                  </div>
+                </Fragment>
+              }
             </div>
           </div>
           <div className={cx("hRightContainer")}>
             <div className={cx("hAllNotification")}>
+              {listTenMin.length === 0 && 
+                <div className={cx("hEmptyNotification")}>Không có yêu cầu nào trong 10 phút</div>
+              }
               {requests
                 .filter((request) => isWithin5Minutes(request.createdAt))
                 .map((request, index) => (
