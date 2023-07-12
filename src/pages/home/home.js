@@ -16,6 +16,8 @@ function Home() {
   const [requests, setRequests] = useState([]);
   const [isAllActive, setIsAllActive] = useState(true);
   const [isNewRequest, setIsNewRequest] = useState(false);
+  const [clickAddTable, setClickAddTable] = useState(false);
+  const [tableNewNumber, setTableNewNumber] = useState({ newTable: '', })
   const [oldRequest, setOldRequest] = useState([]);
   const audioRef = useRef(null);
 
@@ -37,8 +39,8 @@ function Home() {
         .get("http://117.4.194.207:3003/call-staff/all?time=60")
         .then((response) => {
           const newRequests = response.data;
-          setRequests(newRequests); 
-          
+          setRequests(newRequests);
+
         })
         .catch((error) => {
           console.log(error);
@@ -64,9 +66,9 @@ function Home() {
   }, [requests]);
 
   useEffect(() => {
-    playSound()
+    // playSound()
   }, [oldRequest]);
-  
+
 
   const playSound = () => {
     if (audioRef.current) {
@@ -90,6 +92,18 @@ function Home() {
       return false
     }
   };
+
+  const handleAddTable = () => {
+    setClickAddTable(!clickAddTable)
+    console.log(clickAddTable);
+  }
+
+  const changeHandler = (e) => {
+    setTableNewNumber({ [e.target.name]: e.target.value });
+  }
+
+
+  const { newTable } = tableNewNumber;
 
   const clickHandler = (table) => {
     const updatedTable = {
@@ -147,7 +161,7 @@ function Home() {
               <div className={cx("hText")}>
                 Quản Lý Yêu Cầu(sau 5 phút yêu cầu sẽ bị ẩn):
               </div>
-              </div>
+            </div>
           </div>
         </div>
         <div className={cx("hBody")}>
@@ -164,6 +178,44 @@ function Home() {
                   <p>Bàn {table.name}</p>
                 </button>
               ))}
+              {clickAddTable &&
+                  <button
+                    onClick={handleAddTable}
+                    className={cx("hAddTable")}
+                  >
+                    <p>+</p>
+                  </button>
+              }
+              {!clickAddTable &&
+                <Fragment>
+                  <div className={cx("hAddTableBox")}>
+                    <input
+                      id="table"
+                      type="number"
+                      name="newTable"
+                      // value={amount}
+                      onChange={changeHandler}
+                      placeholder="Số Bàn:..."
+                      required
+                    >
+                    </input>
+                    {newTable &&
+                      <div className={cx("hAcpBtn")}
+                        // onClick={() => submitAddAmountHandler(food._id)}
+                        onClick={handleAddTable}
+                      >
+                        <p>OK</p>
+                      </div>}
+                    {!newTable &&
+                      <div className={cx("hAcpBtn")}
+                        // onClick={() => setClickAddAmount(null)}
+                        onClick={handleAddTable}
+                      >
+                        <p>Huỷ</p>
+                      </div>}
+                  </div>
+                </Fragment>
+              }
             </div>
           </div>
           <div className={cx("hRightContainer")}>
