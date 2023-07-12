@@ -109,7 +109,9 @@ function Login() {
               </div>
             </form>
             <div className={cx("lgRegisterBox")}>
-              <button type="submit" value="Sign Up">
+              <button type="submit" value="Sign Up" 
+              // onClick={ navigate(`/signup`)}
+              >
                 Sign Up
               </button>
             </div>
