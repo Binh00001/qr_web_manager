@@ -113,14 +113,16 @@
         margin-left: 5px;
       }
     }
+
     .hAddTable {
       border: 2px black dashed;
       border-radius: 10px;
-        p {
-          margin: 0;
-          font-size: 2.5rem;
-        }
+
+      p {
+        margin: 0;
+        font-size: 2.5rem;
       }
+    }
 
     .hAllTable {
       display: flex;
@@ -134,6 +136,10 @@
     width: 30%;
 
     .hAllNotification {
+      .hEmptyNotification{
+        font-size: 1.2rem;
+        margin-top: 15px; 
+      }
       .hNotification {
         display: flex;
         justify-content: space-around;
@@ -167,6 +173,7 @@
 .hAddTableBox {
   display: flex;
   margin: 4% 5% 5% 5%;
+
   input {
     height: 70px;
     width: 100px;
@@ -187,7 +194,8 @@
     border-left: none;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    p{
+
+    p {
       padding: 10px 10px;
       font-size: 1.1rem;
       // background-color: #f04d4d;

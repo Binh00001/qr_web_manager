@@ -14,11 +14,13 @@ const cx = classNames.bind(styles);
 function Home() {
   const [tables, setTables] = useState([]);
   const [requests, setRequests] = useState([]);
+  const [oldRequest, setOldRequest] = useState([]);
+  const [listTenMin, setListTenMin] = useState([]);
   const [isAllActive, setIsAllActive] = useState(true);
   const [isNewRequest, setIsNewRequest] = useState(false);
   const [clickAddTable, setClickAddTable] = useState(false);
   const [tableNewNumber, setTableNewNumber] = useState({ newTable: '', })
-  const [oldRequest, setOldRequest] = useState([]);
+
   const audioRef = useRef(null);
 
 
@@ -59,10 +61,31 @@ function Home() {
   }, []);
 
   useEffect(() => {
+    const updatedListTenMin = listTenMin.filter(request => {
+      const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
+      const currentTime = moment();
+      const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+      return timeDifference <= 10;
+    });
+  
+    setListTenMin(updatedListTenMin);
+  
     if (requests.length > 0) {
       const { _id } = requests[0];
       setOldRequest(_id);
     }
+  
+    requests.forEach(request => {
+      const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
+      const currentTime = moment();
+      const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+  
+      if (timeDifference <= 10 && !listTenMin.some(listRequest => listRequest._id === request._id)) {
+        setListTenMin(prevListTenMin => [...prevListTenMin, request]);
+      } else if (timeDifference > 10 && listTenMin.some(listRequest => listRequest._id === request._id)) {
+        setListTenMin(prevListTenMin => prevListTenMin.filter(listRequest => listRequest._id !== request._id));
+      }
+    });
   }, [requests]);
 
   useEffect(() => {
@@ -95,7 +118,7 @@ function Home() {
 
   const handleAddTable = () => {
     setClickAddTable(!clickAddTable)
-    console.log(clickAddTable);
+    // console.log(clickAddTable);
   }
 
   const changeHandler = (e) => {
@@ -141,6 +164,7 @@ function Home() {
   if (!tables || !requests) {
     return <div>Loading...</div>;
   }
+
 
   return (
     <Fragment>
@@ -220,6 +244,9 @@ function Home() {
           </div>
           <div className={cx("hRightContainer")}>
             <div className={cx("hAllNotification")}>
+              {listTenMin.length === 0 && 
+                <div className={cx("hEmptyNotification")}>Không có yêu cầu nào trong 10 phút</div>
+              }
               {requests
                 .filter((request) => isWithin5Minutes(request.createdAt))
                 .map((request, index) => (
