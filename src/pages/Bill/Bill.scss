@@ -1,7 +1,14 @@
+.bWrapper{
+    background-color: #ecf0f1;
+    position: relative;
+    min-height: calc(100vh - 80px);
+}
 .TopBar{
     .mTopBar{
+        margin-left: 4%;
         .bText{
             input{
+                width: 120px;
                 margin-left:15px;
                 padding: 5px 10px;
                 font-size: 1rem;
@@ -15,8 +22,15 @@
     background-color: #fff;
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 100vh;
-
+    padding-bottom: 50px;
+    min-height: calc(100vh - 190px);
+    .emptyCart{
+        font-size: 2rem;
+        p{
+            margin: 0 auto;
+            width: fit-content;
+        }
+    }
     .bMarginTop {
         height: 40px;
     }

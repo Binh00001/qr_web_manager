@@ -7,6 +7,7 @@ import tabelNonActive from "~/components/assets/image/table_and_chair_non_active
 import tabelActive from "~/components/assets/image/table_and_chair_active.png";
 import moment from "moment";
 import ting from "~/components/assets/sound/Herta Kurukuru Kururin 1 (mp3cut.net) (5).mp3";
+import Loading from "~/components/loadingScreen/loadingScreen"
 import "moment/locale/vi";
 
 const cx = classNames.bind(styles);
@@ -184,7 +185,7 @@ function Home() {
   };
 
   if (!tables || !requests) {
-    return <div>Loading...</div>;
+    return <div>{<Loading />}</div>;
   }
   return (
     <Fragment>
