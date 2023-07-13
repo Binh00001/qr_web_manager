@@ -1,7 +1,8 @@
 .Wrapper {
   background-color: #ecf0f1;
   position: relative;
-  min-height: calc(100vh - 140px);
+  // min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 80px);
 }
 
 .TopBar {
@@ -28,6 +29,7 @@
     .hAllActiveGroup {
       display: flex;
       margin-right: 5%;
+      overflow-y: auto;
 
       button {
         background-color: #f04d4d;
@@ -134,7 +136,8 @@
   .hRightContainer {
     min-height: 730px;
     width: 30%;
-
+    overflow-x: hidden;
+    overflow-y: auto;
     .hAllNotification {
       .hEmptyNotification{
         font-size: 1.2rem;
