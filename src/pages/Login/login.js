@@ -33,12 +33,12 @@ function Login() {
       signIn({
         token: accessToken,
         tokenType: "Bearer",
-        expiresIn: 10,
+        expiresIn: 20,
         authState: {
           cashierName: formData.cashierName,
         },
         refreshToken: refreshToken,
-        refreshTokenExpireIn: 10,
+        refreshTokenExpireIn: 60,
       });
       navigate("/");
       window.location.reload();

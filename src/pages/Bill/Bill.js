@@ -13,7 +13,7 @@ function Bill() {
   useEffect(() => {
     const fetchData = () => {
       axios
-        .get("http://117.4.194.207:3003/cart/menu/all?time=180")
+        .get("http://117.4.194.207:3003/cart/menu/all?time=120")
         .then((response) => {
           setListCart(response.data);
         })
