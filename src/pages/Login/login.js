@@ -53,7 +53,7 @@ function Login() {
     }
   };
   return (
-    <div className={cx("Wrapper")}>
+    <div className={cx("lgWrapper")}>
       <div className={cx("blackBar")}>
         <div className={cx("TopBar")}>
           <div className={cx("mTopBar")}></div>
