@@ -9,6 +9,11 @@ const cx = classNames.bind(styles);
 
 function Bill() {
   const [listCart, setListCart] = useState([]);
+  const handleDate = (event) => {
+    event.preventDefault(); // Prevents the default form submission behavior
+    const date = document.getElementById('billDay').value; // Get the value of the date input element
+    console.log(date);
+  }
 
   useEffect(() => {
     const fetchData = () => {
@@ -36,9 +41,10 @@ function Bill() {
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
             <div className={cx("mTopBar")}>
-              <div className={cx("mText")}>
-                Tất Cả Hoá Đơn:
-                  <nav></nav>
+              <div className={cx("bText")}>
+                <label for="billDay">Chọn Ngày</label>
+                <input type="date" id="billDay" name="billDay" />
+                <input type="submit" onClick={(event) => handleDate(event)} />
               </div>
             </div>
           </div>
