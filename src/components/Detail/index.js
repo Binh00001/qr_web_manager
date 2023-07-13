@@ -2,8 +2,8 @@ import React, { Fragment, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Detail.scss";
 import axios from "axios";
-import emptyStar from "~/components/assets/image/emptyStar.png"
-import filledStar from "~/components/assets/image/filledStar.png"
+import emptyStar from "~/components/assets/image/emptyStar.png";
+import filledStar from "~/components/assets/image/yellowStar.png";
 const cx = classNames.bind(styles);
 
 function Detail(props) {
@@ -34,12 +34,38 @@ function Detail(props) {
   //   };
   // }, []);
 
-  const setStar = () =>{
-    setIsBestSale(!isBestSale)
-  }
-
+  const setStar = () => {
+    setIsBestSale(!isBestSale);
+  };
+  const setStarHandler = (dish) => {
+    const updatedBestSeller = {
+      isBestSeller: !dish.isBestSeller,
+    };
+    axios
+      .put(
+        `http://117.4.194.207:3003/dish/best-seller/${dish._id}`,
+        updatedBestSeller
+      )
+      .then((response) => {
+        const updatedStar = {
+          isBestSeller: response.data.isBestSeller,
+        };
+        setUpdatedDish({ ...dish, ...updatedStar });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
+      const fileInput = e.target;
+      const fileLabel = document.getElementById("file-label");
+      if (fileInput.files && fileInput.files.length > 0) {
+        fileLabel.innerText = fileInput.files[0].name;
+      } else {
+        fileLabel.innerText = "Ấn Để Chọn Ảnh";
+      }
       const file = e.target.files[0];
       if (file && isImageFile(file)) {
         setState({ ...state, [e.target.name]: file });
@@ -54,12 +80,12 @@ function Detail(props) {
 
   function handleFileInputChange(event) {
     const fileInput = event.target;
-    const fileLabel = document.getElementById('file-label');
+    const fileLabel = document.getElementById("file-label");
 
     if (fileInput.files && fileInput.files.length > 0) {
       fileLabel.innerText = fileInput.files[0].name;
     } else {
-      fileLabel.innerText = 'Ấn Để Chọn Ảnh';
+      fileLabel.innerText = "Ấn Để Chọn Ảnh";
     }
   }
 
@@ -83,11 +109,12 @@ function Detail(props) {
     axios
       .put(`http://117.4.194.207:3003/dish/update/${dish._id}`, formData)
       .then((response) => {
-        console.log(response);
         const updatedFields = {
           name: state.name || dish.name,
           description: state.description || dish.description,
           price: state.price || dish.price,
+          category: state.category || dish.category,
+          image_detail: response.data.image_detail || dish.image_detail,
         };
         setUpdatedDish({ ...dish, ...updatedFields });
         setFormChanged(false);
@@ -97,6 +124,19 @@ function Detail(props) {
       });
   };
 
+  const cancelHandler = () => {
+    setHideBox(false);
+    setFormChanged(false);
+    setState({
+      name: "",
+      description: "",
+      category: "",
+      price: "",
+      image_detail: null,
+    });
+  };
+
+  
   const { description, name, category, price } = state;
 
   return (
@@ -116,24 +156,35 @@ function Detail(props) {
               value={name}
             ></input>
             <div className={cx("Star")}>
-              {!isBestSale &&
-                <img src={emptyStar} onClick={setStar}></img>
-              }
-              {isBestSale  &&
-                <img src={filledStar} onClick={setStar}></img>
-              }
-
+              {!updatedDish.isBestSeller && (
+                <img
+                  src={emptyStar}
+                  onClick={() => setStarHandler(updatedDish)}
+                ></img>
+              )}
+              {updatedDish.isBestSeller && (
+                <img
+                  src={filledStar}
+                  onClick={() => setStarHandler(updatedDish)}
+                ></img>
+              )}
             </div>
           </div>
-
 
           <div className={cx("dtContent")}>
             <div className={cx("dtImageBorder")}>
               <div className={cx({ hided: !hideBox || "" })}>
                 <div className={cx("custom-file")}>
-                  <label id="file-label" className={cx("custom-file-label")} htmlFor="image_detail">Ấn Để Chọn Ảnh</label>
+                  <label
+                    id="file-label"
+                    className={cx("custom-file-label")}
+                    htmlFor="image_detail"
+                  >
+                    Ấn Để Chọn Ảnh
+                  </label>
                   <input
-                    onChange={handleFileInputChange}
+                    // onChange={handleFileInputChange}
+                    onChange={changeHandler}
                     type="file"
                     id="image_detail"
                     name="image_detail"
@@ -144,9 +195,10 @@ function Detail(props) {
                 </div>
               </div>
               <img
-                src={dish.image_detail.path}
+                src={updatedDish.image_detail.path}
                 alt="FoodImage"
-                className={cx({ hided: hideBox || "" })}></img>
+                className={cx({ hided: hideBox || "" })}
+              ></img>
             </div>
 
             <div className={cx("dtInfo")}>
@@ -165,10 +217,11 @@ function Detail(props) {
               <div className={cx("dtPrice", { hided: hideBox || "" })}>
                 Giá:
                 <span>
-                  {" " + updatedDish.price.toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
+                  {" " +
+                    updatedDish.price.toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
                 </span>
               </div>
               <input
@@ -182,9 +235,7 @@ function Detail(props) {
 
               <div className={cx("dtCategory", { hided: hideBox || "" })}>
                 Loại:
-                <span>
-                  {" " + dish.category}
-                </span>
+                <span>{" " + updatedDish.category}</span>
               </div>
               <input
                 className={cx("dtInputCategory", { hided: !hideBox || "" })}
@@ -207,7 +258,15 @@ function Detail(props) {
             </div>
           </div>
           <div className={cx("dtButtonGroup")}>
-            <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button>
+            {/* <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button> */}
+            {!hideBox && (
+              <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button>
+            )}
+            {hideBox && (
+              <button className={cx("dtAddOption")} onClick={cancelHandler}>
+                Hủy
+              </button>
+            )}
             <button
               className={cx("dtChangeInfo")}
               onClick={() => {

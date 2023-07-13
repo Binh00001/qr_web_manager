@@ -4,7 +4,7 @@ import AddDish from "~/pages/AddDish/index";
 import Bill from "~/pages/Bill/Bill";
 import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
-// import Signup from "~/pages/signup/signup";
+import Signup from "~/pages/signup/signup";
 import { RequireAuth } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
@@ -23,15 +23,7 @@ const MainRoutes = () => {
           }
           exact
         />
-        {/* <Route
-          path={"/signup"}
-          element={
-            // <DefaultLayout>
-            <Signup />
-            // </DefaultLayout>
-          }
-          exact
-        /> */}
+        <Route path={"/signup"} element={<Signup />} exact />
         <Route
           path={"/"}
           element={
