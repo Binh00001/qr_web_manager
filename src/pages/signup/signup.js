@@ -89,7 +89,7 @@ function Login() {
             </div>
             <div className={cx("lg4flex")}>Powered by 4flex</div>
           </div>
-          <div className={cx("lgRightContainer")}>
+          <div className={cx("spRightContainer")}>
             <form className={cx("spBox")} onSubmit={handleSubmit}>
               <div className={cx("spUserNameBox")}>
                 <input
