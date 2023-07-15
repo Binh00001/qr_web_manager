@@ -17,10 +17,10 @@ function Home() {
   const [requests, setRequests] = useState([]);
   const [oldRequest, setOldRequest] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
-  const [isNewRequest, setIsNewRequest] = useState(false);
   const [clickAddTable, setClickAddTable] = useState(true);
-  const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
+  // const [isNewRequest, setIsNewRequest] = useState(false);
   const [tableChanged, setTableChanged] = useState(false);
+  const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
 
   const audioRef = useRef(null);
 
@@ -29,6 +29,7 @@ function Home() {
       .get("http://117.4.194.207:3003/table/all")
       .then((response) => {
         setTables(response.data);
+        console.log(tables);
       })
       .catch((error) => {
         console.log(error);
@@ -184,6 +185,16 @@ function Home() {
     return timeDifference <= 10;
   };
 
+
+
+  // const handleMouseEnter = () => {
+  //   setIsHovered(true);
+  // };
+
+  // const handleMouseLeave = () => {
+  //   setIsHovered(false);
+  // };
+
   if (!tables || !requests) {
     return <div>{<Loading />}</div>;
   }
@@ -192,7 +203,6 @@ function Home() {
       <audio ref={audioRef}>
         <source src={ting} type="audio/mpeg" />
       </audio>
-
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
@@ -253,7 +263,7 @@ function Home() {
                       <div
                         className={cx("hAcpBtn")}
                         onClick={() => setClickAddTable(!clickAddTable)}
-                        // onClick={handleAddTable}
+                      // onClick={handleAddTable}
                       >
                         <p>Huỷ</p>
                       </div>

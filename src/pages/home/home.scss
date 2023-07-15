@@ -130,6 +130,51 @@
       display: flex;
       // justify-content: space-around;
       flex-wrap: wrap;
+      position: relative;
+      .hHoverBox{
+        // height: 100%;
+        // width:50vh ;
+        // min-height: 165px;
+        // background-color: rgba(0, 0, 0, 0.6);
+        transition: background-color 0.3s ease-in-out;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        // bottom: 0%;
+        .hover-button {
+          button{
+            color:transparent;
+            width: 40px;
+            height: 40px;
+            margin-top: 20px;
+            margin-left: 25px;
+          }
+          position: absolute;
+          height: 100px;
+          width: 120px;
+          top: 0%;
+          left: 110%;
+          transform: translate(-50%, -50%);
+          padding: 15px 16px;
+          // background-color: #ff9900;
+          color: transparent;
+          border: none;
+          border-radius: 4px;
+          font-size: 2rem;
+          cursor: pointer;
+          &:hover {
+            button{
+              background-color: #f04d4d;
+              color: #fff ;
+              font-weight: 600;
+              font-size: 1.5rem;
+              border-radius: 10px;
+            }
+
+            // font-size: 16px;
+          }
+        }
+      }
     }
   }
 
@@ -161,7 +206,7 @@
           background-color: #f04d4d;
           border-radius: 50%;
           position: absolute;
-          margin-left: -15%;
+          margin-left: -275px;
           margin-bottom: 0%;
         }
 

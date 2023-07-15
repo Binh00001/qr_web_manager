@@ -5,6 +5,7 @@ import Bill from "~/pages/Bill/Bill";
 import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
+import Manager from "~/pages/Manager/manager"
 
 import Test from "~/components/loadingScreen/loadingScreen"
 
@@ -82,10 +83,21 @@ const MainRoutes = () => {
           exact
         />
         <Route
+          path={"/manager"}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <Manager />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
+        <Route
           path={"/test"}
           element={
             <RequireAuth loginPath={"/login"}>
-                <Test />
+              <Test />
             </RequireAuth>
           }
           exact
