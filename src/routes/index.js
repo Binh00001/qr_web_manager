@@ -5,6 +5,7 @@ import Bill from "~/pages/Bill/Bill";
 import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
+import TableManager from "~/pages/TableMananger/TableManager";
 
 import Test from "~/components/loadingScreen/loadingScreen"
 
@@ -12,7 +13,8 @@ import { RequireAuth } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
 
-const MainRoutes = () => {
+
+function MainRoutes() {
   return (
     <BrowserRouter>
       {/* <div className="App"> */}
@@ -24,72 +26,63 @@ const MainRoutes = () => {
             <Login />
             // </DefaultLayout>
           }
-          exact
-        />
+          exact />
         <Route path={"/signup"} element={<Signup />} exact />
         <Route
           path={"/"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Home />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <Home />
+            </DefaultLayout>
+          </RequireAuth>}
+          exact />
         <Route
           path={"/menu"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Menu />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <Menu />
+            </DefaultLayout>
+          </RequireAuth>} />
         <Route
           path={"/hidden-menu"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <HiddenMenu />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <HiddenMenu />
+            </DefaultLayout>
+          </RequireAuth>}
+          exact />
         <Route
           path={"/addDish"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <AddDish />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <AddDish />
+            </DefaultLayout>
+          </RequireAuth>}
+          exact />
         <Route
           path={"/bill"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Bill />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-          exact
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <Bill />
+            </DefaultLayout>
+          </RequireAuth>}
+          exact />
+        <Route
+          path={"/tableManager"}
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <TableManager />
+            </DefaultLayout>
+          </RequireAuth>}
+          exact />
         <Route
           path={"/test"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-                <Test />
-            </RequireAuth>
-          }
-          exact
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            {/* <DefaultLayout> */}
+            <Test />
+            {/* </DefaultLayout> */}
+          </RequireAuth>}
+          exact />
       </Routes>
       {/* </div> */}
     </BrowserRouter>
@@ -101,5 +94,5 @@ const MainRoutes = () => {
   // { path: "/addDish", component: AddDish },
   // { path: "/bill", component: Bill },
   // { path: "/login", component: Login },
-};
+}
 export default MainRoutes;

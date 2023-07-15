@@ -17,7 +17,7 @@ function Home() {
   const [requests, setRequests] = useState([]);
   const [oldRequest, setOldRequest] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
-  const [isNewRequest, setIsNewRequest] = useState(false);
+  // const [isNewRequest, setIsNewRequest] = useState(false);
   const [clickAddTable, setClickAddTable] = useState(true);
   const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
   const [tableChanged, setTableChanged] = useState(false);
@@ -215,8 +215,8 @@ function Home() {
                   key={index}
                   className={cx("table")}
                 >
-                  {table.isActive && <img src={tabelActive}></img>}
-                  {!table.isActive && <img src={tabelNonActive}></img>}
+                  {table.isActive && <img src={tabelActive} alt="Table"></img>}
+                  {!table.isActive && <img src={tabelNonActive} alt="Table"></img>}
                   <p>Bàn {table.name}</p>
                 </button>
               ))}
