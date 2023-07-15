@@ -20,6 +20,9 @@ function DefaultLayout({ children }) {
   const handleClickBill = () => {
     navigate(`/bill`);
   };
+  const handleClickTableManager = () => {
+    navigate(`/tableManager`);
+  };
   const logout = () => {
     singOut();
     navigate("/login");
@@ -39,6 +42,9 @@ function DefaultLayout({ children }) {
           </div>
           <div className={cx("dItem")} onClick={handleClickBill}>
             Hoá Đơn
+          </div>
+          <div className={cx("dItem")} onClick={handleClickTableManager}>
+            Quản Lý Bàn
           </div>
         </div>
         <div className={cx("dRightContainer")}>

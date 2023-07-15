@@ -12,7 +12,7 @@ function Menu() {
     const [listDish, setListDish] = useState([]);
     const [type, setType] = useState(null);
     const [clickAddAmount, setClickAddAmount] = useState(null);
-    const [isAmount, setIsAmount] = useState(false);
+    // const [isAmount, setIsAmount] = useState(false);
     const [reload, setReload] = useState(false);
     const [obj, setObj] = useState({});
     const [detail, setDetail] = useState(false);
