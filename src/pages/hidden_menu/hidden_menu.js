@@ -4,6 +4,7 @@ import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
 import Detail from "~/components/Detail/index";
+import Loading from "~/components/loadingScreen/loadingScreen"
 
 const cx = classNames.bind(styles)
 
@@ -40,6 +41,10 @@ function HiddenMenu() {
                 console.log(error);
             });
     };
+
+    if (!listDish) {
+        return <div>{<Loading />}</div>;
+      }
 
     return (
         <div className={cx("Wrapper")}>

@@ -5,6 +5,7 @@ import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
 import Detail from "~/components/Detail/index";
 import xIcon from "~/components/assets/image/x_icon_150997.png"
+import Loading from "~/components/loadingScreen/loadingScreen"
 const cx = classNames.bind(styles)
 
 function Menu() {
@@ -82,6 +83,10 @@ function Menu() {
 
     // console.log(state);
     const { amount } = state;
+
+    if (!category || !listDish) {
+        return <div>{<Loading />}</div>;
+      }
 
     return (
         <div className={cx("Wrapper")}>
