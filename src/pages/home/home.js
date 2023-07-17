@@ -275,7 +275,7 @@ function Home() {
                 .map((request, index) => (
                   <div key={index} className={cx("hNotification")}>
                     <div>Bàn {request.table}</div>
-                    <div>{moment(request.createdAt).format("h:mm A")}</div>
+                    <div>{moment(request.createdAt._i).format("h:mm A")}</div>
                     <div
                       className={cx("redDot", {
                         redDotHided: !removeRedDot(request),
