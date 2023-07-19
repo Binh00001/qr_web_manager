@@ -150,12 +150,12 @@ function Detail(props) {
 
   const submitNewOption = () => {
     if (newOption.trim() !== "") {
-      // If newOption is not empty, add it to the dish options
+      // thêm newOption vào mảng nếu nó khác rỗng 
       const updatedDishOptions = [...dish.options, newOption];
       axios
         .put(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, { options: updatedDishOptions })
         .then((response) => {
-          // If the API call is successful, update the state with the new options
+          // update option
           setUpdatedDish({ ...updatedDish, options: updatedDishOptions });
           setNewOption(""); // Reset the newOption state
           setIsAddOption(false); // Hide the input field after adding the new option
@@ -168,9 +168,9 @@ function Detail(props) {
 
   const removeOptionHandler = (option) => {
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`)
+      .delete(`http://117.4.194.207:3003/dish/remove-option/${dish._id}/${option}`)
       .then((response) => {
-        // If the API call is successful, update the state with the updated options
+        // lọc lấy những option khác với option truyền vào
         const updatedOptions = dish.options.filter((opt) => opt !== option);
         setUpdatedDish({ ...updatedDish, options: updatedOptions });
       })
