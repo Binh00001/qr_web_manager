@@ -14,11 +14,10 @@
   position: fixed;
   z-index: 100;
   width: 700px;
-  height: 400px;
+  min-height: 400px;
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  // justify-content: space-around;
   align-items: center;
 
   input {
@@ -71,8 +70,9 @@
 
 
   .dtContent {
-    height: 63%;
-    max-height: 250px;
+    min-height: 63%;
+    height: max-content;
+    // max-height: 250px;
     width: 90%;
     display: flex;
     justify-content: space-around;
@@ -135,7 +135,7 @@
       width: 60%;
       display: flex;
       flex-direction: column;
-
+      height: max-content;
       .dtDescription {
         margin-bottom: 5%;
         font-size: 1.3rem;
@@ -189,6 +189,27 @@
         :first-child {
           margin-left: 10px;
         }
+        .dtAddOptionGroup{
+          margin-top: 10px;
+          margin-bottom: 10px;
+          :first-child{
+            margin-left: 0;
+          }
+        }
+        .dtInputAddOption{
+          padding: 5px;
+          padding-left: 10px;
+          // border-top-right-radius: 0;
+          // border-bottom-right-radius: 0;
+        }
+        .dtSubmitOption{
+          border-radius: 5px;
+          margin-left: 10px;
+          background-color: #f04d4d;
+          color: #fff;
+          padding: 10px;
+          border: none;
+        }
       }
     }
   }
@@ -197,7 +218,8 @@
     width: 50%;
     display: flex;
     justify-content: space-between;
-
+    margin-top: 30px;
+    margin-bottom: 20px;
     button {
       background-color: #fff;
       border: 1px solid #f04d4d;
