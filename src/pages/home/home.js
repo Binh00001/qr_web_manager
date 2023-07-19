@@ -24,9 +24,12 @@ function Home() {
 
   const audioRef = useRef(null);
 
+  console.log("API URL:", process.env.REACT_MANAGER_API_URL); 
+
   useEffect(() => {
     axios
       .get("http://117.4.194.207:3003/table/all")
+      // .get(`${process.env.REACT_MANAGER_API_URL}/table/all`)
       .then((response) => {
         setTables(response.data);
       })
@@ -39,6 +42,7 @@ function Home() {
     const fetchData = () => {
       axios
         .get("http://117.4.194.207:3003/call-staff/all?time=60")
+        // .get(`${process.env.REACT_MANAGER_API_URL}/call-staff/all?time=60`)
         .then((response) => {
           const newRequests = response.data;
           setRequests(newRequests);
