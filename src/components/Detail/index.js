@@ -9,9 +9,11 @@ const cx = classNames.bind(styles);
 function Detail(props) {
   const dish = props.obj;
   const [hideBox, setHideBox] = useState(false);
+  const [isAddOption, setIsAddOption] = useState(false);
   const [updatedDish, setUpdatedDish] = useState(dish);
   const [formChanged, setFormChanged] = useState(false);
   const [isBestSale, setIsBestSale] = useState(false);
+  const [newOption, setNewOption] = useState("")
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -56,7 +58,7 @@ function Detail(props) {
         console.log(error);
       });
   };
-  
+
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
       const fileInput = e.target;
@@ -136,8 +138,36 @@ function Detail(props) {
     });
   };
 
-  
+  const cancelHandler2 = () => {
+    setIsAddOption(false)
+  }
+
   const { description, name, category, price } = state;
+
+  const handleOptionChange = (e) => {
+    setNewOption(e.target.value);
+  };
+
+  const submitNewOption = () => {
+    if (newOption.trim() !== "") {
+      // If newOption is not empty, add it to the dish options
+      const updatedDishOptions = [...dish.options, newOption];
+      axios
+        .put(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, { options: updatedDishOptions })
+        .then((response) => {
+          // If the API call is successful, update the state with the new options
+          setUpdatedDish({ ...updatedDish, options: updatedDishOptions });
+          setNewOption(""); // Reset the newOption state
+          setIsAddOption(false); // Hide the input field after adding the new option
+        })
+        .catch((error) => {
+          console.log(error);
+          // Handle the error if the API call fails
+          // You might want to show an error message to the user
+        });
+    }
+  };
+
 
   return (
     <Fragment>
@@ -251,16 +281,50 @@ function Detail(props) {
                 {dish.options.map((opt, index) => (
                   <span key={index} className={cx("dtOptionItem")}>
                     {opt}
+                    {isAddOption &&
+                      <span className={cx("removeOption")}>
+                          X
+                      </span>
+                    }
                     <br />
                   </span>
                 ))}
+                {isAddOption && (
+                  <Fragment>
+                    <div className={cx("dtAddOptionGroup")}>
+                    <input
+                      className={cx("dtInputAddOption")}
+                      placeholder="Nhập Tuỳ Chọn Mới"
+                      value={newOption} // Set the value of the input field to the newOption state
+                      onChange={handleOptionChange} // Update the newOption state on input change
+                    />
+                    <button
+                      className={cx("dtSubmitOption", { hided: (newOption.trim() !== "") || "" })}
+                      onClick={cancelHandler2}
+                    >
+                      Huỷ
+                    </button>
+                    <button
+                      className={cx("dtSubmitOption", { hided: !(newOption.trim() !== "") || "" })}
+                      onClick={submitNewOption}
+                    >
+                      OK
+                    </button>
+                    </div>
+                  </Fragment>
+                )}
               </div>
             </div>
           </div>
           <div className={cx("dtButtonGroup")}>
             {/* <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button> */}
             {!hideBox && (
-              <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button>
+              <button
+                className={cx("dtAddOption")}
+                onClick={() => { setIsAddOption(!isAddOption) }}
+              >
+                Thêm Tuỳ Chọn
+              </button>
             )}
             {hideBox && (
               <button className={cx("dtAddOption")} onClick={cancelHandler}>
