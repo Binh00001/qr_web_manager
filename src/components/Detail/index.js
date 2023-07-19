@@ -162,10 +162,21 @@ function Detail(props) {
         })
         .catch((error) => {
           console.log(error);
-          // Handle the error if the API call fails
-          // You might want to show an error message to the user
         });
     }
+  };
+
+  const removeOptionHandler = (option) => {
+    axios
+      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`)
+      .then((response) => {
+        // If the API call is successful, update the state with the updated options
+        const updatedOptions = dish.options.filter((opt) => opt !== option);
+        setUpdatedDish({ ...updatedDish, options: updatedOptions });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
 
@@ -282,8 +293,11 @@ function Detail(props) {
                   <span key={index} className={cx("dtOptionItem")}>
                     {opt}
                     {isAddOption &&
-                      <span className={cx("removeOption")}>
-                          X
+                      <span
+                        className={cx("removeOption")}
+                        onClick={() => removeOptionHandler(opt)}
+                      >
+                        X
                       </span>
                     }
                     <br />
@@ -292,24 +306,24 @@ function Detail(props) {
                 {isAddOption && (
                   <Fragment>
                     <div className={cx("dtAddOptionGroup")}>
-                    <input
-                      className={cx("dtInputAddOption")}
-                      placeholder="Nhập Tuỳ Chọn Mới"
-                      value={newOption} // Set the value of the input field to the newOption state
-                      onChange={handleOptionChange} // Update the newOption state on input change
-                    />
-                    <button
-                      className={cx("dtSubmitOption", { hided: (newOption.trim() !== "") || "" })}
-                      onClick={cancelHandler2}
-                    >
-                      Huỷ
-                    </button>
-                    <button
-                      className={cx("dtSubmitOption", { hided: !(newOption.trim() !== "") || "" })}
-                      onClick={submitNewOption}
-                    >
-                      OK
-                    </button>
+                      <input
+                        className={cx("dtInputAddOption")}
+                        placeholder="Nhập Tuỳ Chọn Mới"
+                        value={newOption} // Set the value of the input field to the newOption state
+                        onChange={handleOptionChange} // Update the newOption state on input change
+                      />
+                      <button
+                        className={cx("dtSubmitOption", { hided: (newOption.trim() !== "") || "" })}
+                        onClick={cancelHandler2}
+                      >
+                        Huỷ
+                      </button>
+                      <button
+                        className={cx("dtSubmitOption", { hided: !(newOption.trim() !== "") || "" })}
+                        onClick={submitNewOption}
+                      >
+                        OK
+                      </button>
                     </div>
                   </Fragment>
                 )}
