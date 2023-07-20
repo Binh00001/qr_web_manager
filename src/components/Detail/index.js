@@ -169,6 +169,8 @@ function Detail(props) {
   };
 
   const removeOptionHandler = (opt) => {
+    const dataDelete = {'option' : opt}
+    console.log(dataDelete);
     axios
       .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, dataDelete)
       .then((response) => {
