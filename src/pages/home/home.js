@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef } from "react";
+import io from 'socket.io-client';
 import classNames from "classnames";
 import styles from "~/pages/home/home.scss";
 import { useState } from "react";
@@ -24,12 +25,18 @@ function Home() {
 
   const audioRef = useRef(null);
 
-  console.log("API URL:", process.env.REACT_MANAGER_API_URL); 
+  useEffect(() => {
+    const socket = io('http://117.4.194.207:3003');
+
+    socket.on('newCallStaff', (response) => {
+      console.log(response);
+    })
+  })
 
   useEffect(() => {
     axios
-      .get("http://117.4.194.207:3003/table/all")
-      // .get(`${process.env.REACT_MANAGER_API_URL}/table/all`)
+      // .get("http://117.4.194.207:3003/table/all")
+      .get(`${process.env.REACT_APP_API_URL}/table/all`)
       .then((response) => {
         setTables(response.data);
       })
@@ -41,14 +48,14 @@ function Home() {
   useEffect(() => {
     const fetchData = () => {
       axios
-        .get("http://117.4.194.207:3003/call-staff/all?time=60")
-        // .get(`${process.env.REACT_MANAGER_API_URL}/call-staff/all?time=60`)
+        // .get("http://117.4.194.207:3003/call-staff/all?time=60")
+        .get(`${process.env.REACT_APP_API_URL}/call-staff/all?time=60`)
         .then((response) => {
           const newRequests = response.data;
           setRequests(newRequests);
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error); 
         });
     };
 
@@ -136,7 +143,7 @@ function Home() {
       return;
     }
     axios
-      .post("http://117.4.194.207:3003/table/create", {
+      .post(`${process.env.REACT_APP_API_URL}/table/create`, {
         name: tableNewNumber.table,
       })
       .then((response) => {
@@ -160,7 +167,7 @@ function Home() {
       isActive: !table.isActive,
     };
     axios
-      .put(`http://117.4.194.207:3003/table/active/${table.name}`, updatedTable)
+      .put(`${process.env.REACT_APP_API_URL}/table/active/${table.name}`, updatedTable)
       .then((response) => {
         const updatedTable = response.data;
         setTables((prevTables) => {
@@ -257,7 +264,7 @@ function Home() {
                       <div
                         className={cx("hAcpBtn")}
                         onClick={() => setClickAddTable(!clickAddTable)}
-                        // onClick={handleAddTable}
+                      // onClick={handleAddTable}
                       >
                         <p>Huỷ</p>
                       </div>
@@ -280,6 +287,7 @@ function Home() {
                   <div key={index} className={cx("hNotification")}>
                     <div>Bàn {request.table}</div>
                     <div>{moment(request.createdAt._i).format("h:mm A")}</div>
+                    {console.log(moment(request.createdAt._i))}
                     <div
                       className={cx("redDot", {
                         redDotHided: !removeRedDot(request),

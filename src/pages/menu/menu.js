@@ -22,6 +22,7 @@ function Menu() {
     });
     const navigate = useNavigate();
 
+
     useEffect(() => {
         axios
             .get("http://117.4.194.207:3003/category/all")
