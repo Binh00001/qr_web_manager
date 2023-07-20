@@ -13,7 +13,7 @@ function Detail(props) {
   const [updatedDish, setUpdatedDish] = useState(dish);
   const [formChanged, setFormChanged] = useState(false);
   const [isBestSale, setIsBestSale] = useState(false);
-  const [newOption, setNewOption] = useState("")
+  const [newOption, setNewOption] = useState("");
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -139,8 +139,8 @@ function Detail(props) {
   };
 
   const cancelHandler2 = () => {
-    setIsAddOption(false)
-  }
+    setIsAddOption(false);
+  };
 
   const { description, name, category, price } = state;
 
@@ -150,14 +150,16 @@ function Detail(props) {
 
   const submitNewOption = () => {
     if (newOption.trim() !== "") {
-      // thêm newOption vào mảng nếu nó khác rỗng 
+      // thêm newOption vào mảng nếu nó khác rỗng
       const updatedDishOptions = [...dish.options, newOption];
       axios
-        .post(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, { 'option':  [newOption]})
+        .post(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, {
+          option: [newOption],
+        })
         .then((response) => {
           // update option
           // console.log(response.data);
-          dish.options = response.data.options
+          dish.options = response.data.options;
           setUpdatedDish({ ...updatedDish, options: updatedDishOptions });
           setNewOption(""); // Reset the newOption state
           setIsAddOption(false); // Hide the input field after adding the new option
@@ -169,20 +171,25 @@ function Detail(props) {
   };
 
   const removeOptionHandler = (opt) => {
-    const dataDelete = {'option' : opt}
-    console.log(dataDelete);
+    console.log({ option: opt });
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, dataDelete)
+      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
+        data: { option: opt }, // Đặt dữ liệu xóa trong trường 'data'
+      })
       .then((response) => {
-        // lọc lấy những option khác với option truyền vào
-        const updatedOptions = dish.options.filter((option) => option !== opt);
-        setUpdatedDish({ ...updatedDish, options: updatedOptions });
+        // Xử lý thành công khi xóa
+        if (response.status === 200) {
+          dish.options = response.data.options;
+          const updatedOptions = updatedDish.options.filter(
+            (option) => option !== opt
+          );
+          setUpdatedDish({ ...updatedDish, options: updatedOptions });
+        }
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
 
   return (
     <Fragment>
@@ -296,14 +303,14 @@ function Detail(props) {
                 {dish.options.map((opt, index) => (
                   <span key={index} className={cx("dtOptionItem")}>
                     {opt}
-                    {isAddOption &&
+                    {isAddOption && (
                       <span
                         className={cx("removeOption")}
                         onClick={() => removeOptionHandler(opt)}
                       >
                         X
                       </span>
-                    }
+                    )}
                     <br />
                   </span>
                 ))}
@@ -317,13 +324,17 @@ function Detail(props) {
                         onChange={handleOptionChange} // Update the newOption state on input change
                       />
                       <button
-                        className={cx("dtSubmitOption", { hided: (newOption.trim() !== "") || "" })}
+                        className={cx("dtSubmitOption", {
+                          hided: newOption.trim() !== "" || "",
+                        })}
                         onClick={cancelHandler2}
                       >
                         Huỷ
                       </button>
                       <button
-                        className={cx("dtSubmitOption", { hided: !(newOption.trim() !== "") || "" })}
+                        className={cx("dtSubmitOption", {
+                          hided: !(newOption.trim() !== "") || "",
+                        })}
                         onClick={submitNewOption}
                       >
                         OK
@@ -339,7 +350,9 @@ function Detail(props) {
             {!hideBox && (
               <button
                 className={cx("dtAddOption")}
-                onClick={() => { setIsAddOption(!isAddOption) }}
+                onClick={() => {
+                  setIsAddOption(!isAddOption);
+                }}
               >
                 Thêm Tuỳ Chọn
               </button>
