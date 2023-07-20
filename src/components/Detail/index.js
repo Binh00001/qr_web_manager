@@ -153,9 +153,11 @@ function Detail(props) {
       // thêm newOption vào mảng nếu nó khác rỗng 
       const updatedDishOptions = [...dish.options, newOption];
       axios
-        .put(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, { options: updatedDishOptions })
+        .post(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, { 'option':  [newOption]})
         .then((response) => {
           // update option
+          // console.log(response.data);
+          dish.options = response.data.options
           setUpdatedDish({ ...updatedDish, options: updatedDishOptions });
           setNewOption(""); // Reset the newOption state
           setIsAddOption(false); // Hide the input field after adding the new option
@@ -166,12 +168,14 @@ function Detail(props) {
     }
   };
 
-  const removeOptionHandler = (option) => {
+  const removeOptionHandler = (opt) => {
+    const dataDelete = {'option' : opt}
+    console.log(dataDelete);
     axios
-      .delete(`http://117.4.194.207:3003/dish/remove-option/${dish._id}/${option}`)
+      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, dataDelete)
       .then((response) => {
         // lọc lấy những option khác với option truyền vào
-        const updatedOptions = dish.options.filter((opt) => opt !== option);
+        const updatedOptions = dish.options.filter((option) => option !== opt);
         setUpdatedDish({ ...updatedDish, options: updatedOptions });
       })
       .catch((error) => {
