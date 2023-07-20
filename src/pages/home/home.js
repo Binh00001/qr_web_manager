@@ -26,12 +26,14 @@ function Home() {
   const audioRef = useRef(null);
 
   useEffect(() => {
-    const socket = io('http://117.4.194.207:3003');
-
+    const socket = io(process.env.REACT_APP_API_URL);
+  
     socket.on('newCallStaff', (response) => {
-      console.log(response);
-    })
-  })
+      console.log(response); // Log the new request response received from the server
+      // Update the 'requests' state with the new request
+      setRequests(prevRequests => [response, ...prevRequests]);
+    });
+  }, []);
 
   useEffect(() => {
     axios
@@ -63,7 +65,7 @@ function Home() {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 10000);
+    }, 60000);
 
     return () => {
       clearInterval(interval);
@@ -286,8 +288,9 @@ function Home() {
                 .map((request, index) => (
                   <div key={index} className={cx("hNotification")}>
                     <div>Bàn {request.table}</div>
-                    <div>{moment(request.createdAt._i).format("h:mm A")}</div>
-                    {console.log(moment(request.createdAt._i))}
+                    
+                    {/* <div>{(moment(request.createdAt)._i)}</div> */}
+                    <div>{moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format("hh:mm A")}</div>
                     <div
                       className={cx("redDot", {
                         redDotHided: !removeRedDot(request),
