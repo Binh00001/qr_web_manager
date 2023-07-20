@@ -25,16 +25,13 @@ function Home() {
 
   const audioRef = useRef(null);
 
-  console.log("API URL:", process.env.REACT_APP_API_URL); 
-
-
   useEffect(() => {
     const socket = io('http://117.4.194.207:3003');
 
-    socket.on('newCallStaff', () => {
-        console.log("conect success");
+    socket.on('newCallStaff', (response) => {
+      console.log(response);
     })
-})
+  })
 
   useEffect(() => {
     axios
@@ -58,7 +55,7 @@ function Home() {
           setRequests(newRequests);
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error); 
         });
     };
 
@@ -267,7 +264,7 @@ function Home() {
                       <div
                         className={cx("hAcpBtn")}
                         onClick={() => setClickAddTable(!clickAddTable)}
-                        // onClick={handleAddTable}
+                      // onClick={handleAddTable}
                       >
                         <p>Huỷ</p>
                       </div>
@@ -290,6 +287,7 @@ function Home() {
                   <div key={index} className={cx("hNotification")}>
                     <div>Bàn {request.table}</div>
                     <div>{moment(request.createdAt._i).format("h:mm A")}</div>
+                    {console.log(moment(request.createdAt._i))}
                     <div
                       className={cx("redDot", {
                         redDotHided: !removeRedDot(request),
