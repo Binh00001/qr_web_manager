@@ -18,7 +18,7 @@ function Home() {
   const [requests, setRequests] = useState([]);
   const [oldRequest, setOldRequest] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
-  // const [isNewRequest, setIsNewRequest] = useState(false);
+  const [isNewRequest, setIsNewRequest] = useState([]);
   const [clickAddTable, setClickAddTable] = useState(true);
   const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
   const [tableChanged, setTableChanged] = useState(false);
@@ -29,9 +29,8 @@ function Home() {
     const socket = io(process.env.REACT_APP_API_URL);
   
     socket.on('newCallStaff', (response) => {
-      console.log(response); // Log the new request response received from the server
-      // Update the 'requests' state with the new request
-      setRequests(prevRequests => [response, ...prevRequests]);
+      setIsNewRequest(response)
+      console.log(isNewRequest._id);
     });
   }, []);
 
@@ -70,7 +69,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [isNewRequest]);
 
   useEffect(() => {
     const updatedListTenMin = listTenMin.filter((request) => {
@@ -79,7 +78,7 @@ function Home() {
       const timeDifference = moment
         .duration(currentTime.diff(requestTime))
         .asMinutes();
-      return timeDifference <= 10;
+      return timeDifference <= 5;
     });
 
     setListTenMin(updatedListTenMin);

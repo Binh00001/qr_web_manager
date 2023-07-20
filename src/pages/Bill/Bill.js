@@ -132,7 +132,7 @@ function Bill() {
                 <div className={cx("bCreateTime")}>
                   Thời Gian Tạo:{" "}
                   <span style={{ color: "#f04d4d" }}>
-                    {moment(cart.createdAt).format("h:mm A")}
+                  {moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format("HH:mm A")}
                   </span>
                 </div>
               </div>
