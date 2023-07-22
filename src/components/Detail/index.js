@@ -4,10 +4,13 @@ import styles from "./Detail.scss";
 import axios from "axios";
 import emptyStar from "~/components/assets/image/emptyStar.png";
 import filledStar from "~/components/assets/image/yellowStar.png";
+import xIcon from "~/components/assets/image/x_icon_150997.png"
 const cx = classNames.bind(styles);
 
 function Detail(props) {
   const dish = props.obj;
+  const hideDetail = props.hideDetail
+  const [warningDelete, setWarningDelete] = useState(false);
   const [hideBox, setHideBox] = useState(false);
   const [isAddOption, setIsAddOption] = useState(false);
   const [updatedDish, setUpdatedDish] = useState(dish);
@@ -191,8 +194,49 @@ function Detail(props) {
       });
   };
 
+  const warningHandle = () => {
+    setWarningDelete(true);
+  }
+
+  const deleteItemHandle = () => {
+    console.log(dish._id);
+    axios
+      .delete(`http://117.4.194.207:3003/dish/delete/${dish._id}`)
+      .then((response) => {
+        // Handle the success response here
+        setWarningDelete(false);
+        hideDetail();
+        console.log("Successfully deleted the item:", response.data);
+        // You may want to perform additional actions, such as redirecting the user or updating the UI.
+        // For example, you can use the history object from react-router-dom to redirect the user:
+        // props.history.push("/items"); // Redirect to a different page after successful deletion
+      })
+      .catch((error) => {
+        // Handle the error response here
+        console.log("Error deleting the item:", error);
+        // You may want to show an error message to the user or perform some other error handling.
+      });
+  };
+  
+
   return (
     <Fragment>
+      {warningDelete && 
+        <div className={cx("warningBox")}>
+          <div className={cx("warningMessage")}>
+            Bạn Có Chắc Muốn Xoá Món Này? <br />
+            Không Thể Hoàn Tác   
+          </div>  
+          <div className={cx("warningGroupButton")}> 
+            <button className={cx("warningCancel")}
+              onClick={() => {setWarningDelete(false)}}
+            >Huỷ</button>
+            <button className={cx("warningConfirm")}
+              onClick={deleteItemHandle}
+            >Xác Nhận</button>
+          </div>
+        </div>
+      }
       <div>
         <div className={cx("dtItem")}>
           <div className={cx("dtTopWrapper")}>
@@ -220,6 +264,11 @@ function Detail(props) {
                   onClick={() => setStarHandler(updatedDish)}
                 ></img>
               )}
+            </div>
+            <div className={cx("xIcon")}
+              onClick={warningHandle} 
+            >
+                Xoá Món
             </div>
           </div>
 
