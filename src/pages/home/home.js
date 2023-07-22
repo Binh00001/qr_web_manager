@@ -7,7 +7,6 @@ import axios from "axios";
 import tabelNonActive from "~/components/assets/image/table_and_chair_non_active.png";
 import tabelActive from "~/components/assets/image/table_and_chair_active.png";
 import moment from "moment";
-import ting from "~/components/assets/sound/Herta Kurukuru Kururin 1 (mp3cut.net) (5).mp3";
 import Loading from "~/components/loadingScreen/loadingScreen"
 import "moment/locale/vi";
 
@@ -27,7 +26,7 @@ function Home() {
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
-  
+
     socket.on('newCallStaff', (response) => {
       setIsNewRequest(response)
       console.log(isNewRequest._id);
@@ -56,7 +55,7 @@ function Home() {
           setRequests(newRequests);
         })
         .catch((error) => {
-          console.log(error); 
+          console.log(error);
         });
     };
 
@@ -112,16 +111,6 @@ function Home() {
       }
     });
   }, [requests]);
-
-  useEffect(() => {
-    // playSound()
-  }, [oldRequest]);
-
-  const playSound = () => {
-    if (audioRef.current) {
-      audioRef.current.play();
-    }
-  };
 
   const removeRedDot = (request) => {
     const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
@@ -201,10 +190,6 @@ function Home() {
   }
   return (
     <Fragment>
-      <audio ref={audioRef}>
-        <source src={ting} type="audio/mpeg" />
-      </audio>
-
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
@@ -287,7 +272,7 @@ function Home() {
                 .map((request, index) => (
                   <div key={index} className={cx("hNotification")}>
                     <div>Bàn {request.table}</div>
-                    
+
                     {/* <div>{(moment(request.createdAt)._i)}</div> */}
                     <div>{moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format("hh:mm A")}</div>
                     <div

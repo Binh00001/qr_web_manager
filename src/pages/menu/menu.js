@@ -4,7 +4,6 @@ import classNames from "classnames";
 import styles from '~/pages/menu/menu.scss';
 import { useNavigate } from "react-router-dom";
 import Detail from "~/components/Detail/index";
-import xIcon from "~/components/assets/image/x_icon_150997.png"
 const cx = classNames.bind(styles)
 
 function Menu() {
@@ -16,7 +15,6 @@ function Menu() {
     const [reload, setReload] = useState(false);
     const [obj, setObj] = useState({});
     const [detail, setDetail] = useState(false);
-
     const [state, setState] = useState({
         amount: '',
     });
@@ -164,7 +162,7 @@ function Menu() {
                     className="overlay">
                 </div>
                 {/* <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img> */}
-                <Detail obj={obj} />
+                <Detail obj={obj} hideDetail={cancelHandler} />
                 </Fragment>
             )}
         </div >

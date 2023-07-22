@@ -42,7 +42,7 @@ function AddDish() {
         formData.append('image_detail', state.image_detail);
         formData.append('category', state.category);
         formData.append('price', state.price);
-
+        console.log(formData);
         axios
             .post("http://117.4.194.207:3003/dish/create", formData)
             .then((response) => {
