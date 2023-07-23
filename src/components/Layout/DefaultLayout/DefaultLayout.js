@@ -20,14 +20,14 @@ function DefaultLayout({ children }) {
         const requestTime = moment(newPing.createdAt, "DD/MM/YYYY, HH:mm:ss");
         const currentTime = moment();
         const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
-        setIsNewPing(timeDifference <= 1);
+        setIsNewPing(timeDifference <= 0.9);
       }
     };
 
     removeRedDot();
 
     // Set up the interval to check for new ping every 1 minute
-    const interval = setInterval(removeRedDot, 59000); // 60000 milliseconds = 1 minute
+    const interval = setInterval(removeRedDot, 5000); // 60000 milliseconds = 1 minute
 
     // Clean up the interval when the component is unmounted
     return () => clearInterval(interval);
