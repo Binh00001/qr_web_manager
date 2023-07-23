@@ -29,7 +29,7 @@ function Home() {
 
     socket.on('newCallStaff', (response) => {
       setIsNewRequest(response)
-      console.log(isNewRequest._id);
+      // console.log(isNewRequest._id);
     });
   }, []);
 
