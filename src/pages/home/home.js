@@ -63,7 +63,7 @@ function Home() {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 60000);
+    }, 30000);
 
     return () => {
       clearInterval(interval);
@@ -77,7 +77,7 @@ function Home() {
       const timeDifference = moment
         .duration(currentTime.diff(requestTime))
         .asMinutes();
-      return timeDifference <= 5;
+      return timeDifference <= 10;
     });
 
     setListTenMin(updatedListTenMin);
