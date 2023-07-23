@@ -63,7 +63,7 @@ function Home() {
 
     const interval = setInterval(() => {
       fetchData();
-    }, 60000);
+    }, 30000);
 
     return () => {
       clearInterval(interval);
