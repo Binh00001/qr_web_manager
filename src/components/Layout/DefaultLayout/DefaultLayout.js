@@ -33,7 +33,6 @@ function DefaultLayout({ children }) {
     return () => clearInterval(interval);
   }, [newPing]);
 
-  console.log(isNewPing);
 
   const singOut = useSignOut();
   let cashier = JSON.parse(localStorage.getItem("token_state")) || [];

@@ -15,14 +15,15 @@ const cx = classNames.bind(styles);
 function Home() {
   const [tables, setTables] = useState([]);
   const [requests, setRequests] = useState([]);
-  const [oldRequest, setOldRequest] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
   const [isNewRequest, setIsNewRequest] = useState([]);
   const [clickAddTable, setClickAddTable] = useState(true);
   const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
   const [tableChanged, setTableChanged] = useState(false);
 
-  const audioRef = useRef(null);
+  const areRequestsOrListTenMinEmpty = () => requests.length === 0 || listTenMin.length === 0;
+
+  const [showContent, setShowContent] = useState(!areRequestsOrListTenMinEmpty());
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
@@ -71,6 +72,10 @@ function Home() {
   }, [isNewRequest]);
 
   useEffect(() => {
+    if (areRequestsOrListTenMinEmpty()) {
+      setShowContent(false);
+      return;
+    }
     const updatedListTenMin = listTenMin.filter((request) => {
       const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
       const currentTime = moment();
@@ -81,12 +86,6 @@ function Home() {
     });
 
     setListTenMin(updatedListTenMin);
-
-    if (requests.length > 0) {
-      const { _id } = requests[0];
-      setOldRequest(_id);
-    }
-
     requests.forEach((request) => {
       const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
       const currentTime = moment();
@@ -110,21 +109,24 @@ function Home() {
         );
       }
     });
+    setShowContent(true);
+
   }, [requests]);
 
   const removeRedDot = (request) => {
-    const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
-    const currentTime = moment();
-    const timeDifference = moment
-      .duration(currentTime.diff(requestTime))
-      .asMinutes();
-    if (timeDifference <= 1) {
-      // request.showRedDot = true;
-      return true;
-    } else {
-      // request.showRedDot = false;
-      return false;
+    if (requests.length > 0 && request) {
+      // If the 'createdAt' property is missing in 'request', provide a default value.
+      // Here, we set it to the current time (moment()).
+      const createdAt = request.createdAt || moment().format("DD/MM/YYYY, HH:mm:ss");
+
+      const requestTime = moment(createdAt, "DD/MM/YYYY, HH:mm:ss");
+      const currentTime = moment();
+      const timeDifference = moment
+        .duration(currentTime.diff(requestTime))
+        .asMinutes();
+      return timeDifference <= 1;
     }
+    return false;
   };
 
   const handleAddTable = () => {
@@ -185,9 +187,10 @@ function Home() {
     return timeDifference <= 10;
   };
 
-  if (!tables || !requests) {
+  if (showContent || table) {
     return <div>{<Loading />}</div>;
   }
+
   return (
     <Fragment>
       <div className={cx("Wrapper")}>
