@@ -188,9 +188,9 @@ function Home() {
     return timeDifference <= 10;
   };
 
-  if (showContent) {
-    return <div>{<Loading />}</div>;
-  }
+  // if (showContent) {
+  //   return <div>{<Loading />}</div>;
+  // }
 
   return (
     <Fragment>
