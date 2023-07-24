@@ -90,7 +90,7 @@ function TableManager() {
                     {tables.map((table, index) => (
                         <div className={cx("tmgItem")} key={index}>
                             <div className={cx("tmgLeftContainer")}>
-                                <div className={cx()}> Token: Yêu Cầu Quyền Admin Để Xem </div>
+                                <div className={cx()}> Token: {table.token} </div>
                                 <div className={cx()}> ID: {table._id} </div>
                                 <div className={cx()}> Tên Bàn: {table.name} </div>
                                 <div className={cx()}>
