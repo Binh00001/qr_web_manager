@@ -139,6 +139,7 @@ function Home() {
         name: tableNewNumber.table,
       })
       .then((response) => {
+        console.log(response.data);
         const updatedNewTable = response.data;
         setClickAddTable(!clickAddTable);
         setTableNewNumber({ table: "" });
@@ -187,9 +188,9 @@ function Home() {
     return timeDifference <= 10;
   };
 
-  if (showContent || table) {
-    return <div>{<Loading />}</div>;
-  }
+  // if (showContent) {
+  //   return <div>{<Loading />}</div>;
+  // }
 
   return (
     <Fragment>
