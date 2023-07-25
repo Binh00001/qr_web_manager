@@ -3,23 +3,25 @@ import classNames from "classnames";
 import logo from "~/components/assets/image/food-logo-design-template-restaurant-free-png.webp";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
-import { useNewPingContext } from '~/App';
+import { useNewPingContext } from "~/App";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/vi";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
-  const newPing = useNewPingContext()
-  const [isNewPing, setIsNewPing] = useState(false)
+  const newPing = useNewPingContext();
+  const [isNewPing, setIsNewPing] = useState(false);
   useEffect(() => {
     const removeRedDot = () => {
-      if (newPing === null) {
+      if (newPing === null || !newPing) {
         setIsNewPing(false);
       } else {
         const requestTime = moment(newPing.createdAt, "DD/MM/YYYY, HH:mm:ss");
         const currentTime = moment();
-        const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+        const timeDifference = moment
+          .duration(currentTime.diff(requestTime))
+          .asMinutes();
         setIsNewPing(timeDifference <= 0.9);
       }
     };
@@ -32,7 +34,6 @@ function DefaultLayout({ children }) {
     // Clean up the interval when the component is unmounted
     return () => clearInterval(interval);
   }, [newPing]);
-
 
   const singOut = useSignOut();
   let cashier = JSON.parse(localStorage.getItem("token_state")) || [];
@@ -62,8 +63,7 @@ function DefaultLayout({ children }) {
           </div>
           <div className={cx("dItem")} onClick={handleClickLogo}>
             Trang Chủ
-            <div className={cx("reddot", { redDotHided: !isNewPing })}>
-          </div>
+            <div className={cx("reddot", { redDotHided: !isNewPing })}></div>
           </div>
           <div className={cx("dItem")} onClick={handleClickMenu}>
             Thực Đơn
