@@ -29,3 +29,28 @@ body{
     // margin-left: 15%;
     // margin-right: 15%;
 }
+/* Apply a global style to hide the default scrollbars on all elements */
+::-webkit-scrollbar {
+    width: 0.5em; /* Set the width of the default scrollbar (optional) */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2); /* Set the color of the thumb (optional) */
+  }
+  
+  /* Apply the overlay scrollbar style to the specific div where you want to hide the scrollbar */
+  .scrollable-div {
+    width: 300px;
+    height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    overflow-y: auto; /* Only show vertical scrollbar when needed */
+    scrollbar-width: thin; /* Hide the default scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide the default scrollbar in IE and Edge */
+  }
+  
+  /* Hide the default scrollbar in WebKit-based browsers (Chrome, Safari, Opera) */
+  .scrollable-div::-webkit-scrollbar {
+    display: none;
+  }
+  

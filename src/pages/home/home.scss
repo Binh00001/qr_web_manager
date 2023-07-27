@@ -75,7 +75,9 @@
 
 
 .hBody {
-  min-height: calc(100vh - 140px);
+  overflow-y: hidden;
+  max-height: calc(100vh - 139px);
+  // max-height: 100vh;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
@@ -136,14 +138,17 @@
   .hRightContainer {
     min-height: 730px;
     width: 30%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow-y: scroll;
+    padding-bottom: 50px;
     .hAllNotification {
+      overflow-x: hidden;
+      overflow-y: auto;
       .hEmptyNotification{
         font-size: 1.2rem;
         margin-top: 15px; 
       }
       .hNotification {
+        position: relative;
         display: flex;
         justify-content: space-around;
         width: 90%;
@@ -154,7 +159,12 @@
         font-size: 1.2rem;
         border-radius: 15px;
         font-weight: 600;
-
+        .hInfo{
+          :last-child{
+            font-size: 1rem ;
+            word-break: normal;
+          }
+        }
         .redDot {
           width: 14px;
           height: 14px;

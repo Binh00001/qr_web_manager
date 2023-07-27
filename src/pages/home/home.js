@@ -21,9 +21,13 @@ function Home() {
   const [tableNewNumber, setTableNewNumber] = useState({ table: "" });
   const [tableChanged, setTableChanged] = useState(false);
 
-  const areRequestsOrListTenMinEmpty = () => requests.length === 0 || listTenMin.length === 0;
-
+  const areRequestsOrListTenMinEmpty = () => {
+    return requests.length === 0 && listTenMin.length === 0;
+  };
+  
   const [showContent, setShowContent] = useState(!areRequestsOrListTenMinEmpty());
+
+
 
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
@@ -92,7 +96,7 @@ function Home() {
       const timeDifference = moment
         .duration(currentTime.diff(requestTime))
         .asMinutes();
-
+      console.log(timeDifference);
       if (
         timeDifference <= 10 &&
         !listTenMin.some((listRequest) => listRequest._id === request._id)
@@ -191,6 +195,8 @@ function Home() {
   // if (showContent) {
   //   return <div>{<Loading />}</div>;
   // }
+console.log(requests);
+console.log(listTenMin);
 
   return (
     <Fragment>
@@ -218,7 +224,7 @@ function Home() {
                 >
                   {table.isActive && <img src={tabelActive} alt="Table"></img>}
                   {!table.isActive && <img src={tabelNonActive} alt="Table"></img>}
-                  <p>Bàn {table.name}</p>
+                  <p>{table.name}</p>
                 </button>
               ))}
               {clickAddTable && (
@@ -275,8 +281,10 @@ function Home() {
                 .filter((request) => isWithin10Minutes(request.createdAt))
                 .map((request, index) => (
                   <div key={index} className={cx("hNotification")}>
-                    <div>Bàn {request.table}</div>
-
+                    <div className={cx("hInfo")}>
+                      <div>Bàn {request.table}</div>
+                      <div>{request.customer_name}</div>
+                    </div>
                     {/* <div>{(moment(request.createdAt)._i)}</div> */}
                     <div>{moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format("hh:mm A")}</div>
                     <div
