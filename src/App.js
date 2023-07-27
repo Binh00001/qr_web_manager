@@ -3,7 +3,7 @@ import refreshApi from "./components/RefreshToken/RefreshToken";
 import MainRoutes from "./routes";
 import { createContext, useContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-import ting from "~/components/assets/sound/kururing.mp3";
+import ting from "~/components/assets/sound/ting.mp3";
 import axios from "axios";
 
 const NewPingContext = createContext();
