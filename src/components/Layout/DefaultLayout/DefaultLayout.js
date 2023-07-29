@@ -69,7 +69,7 @@ function DefaultLayout({ children }) {
             Thực Đơn
           </div>
           <div className={cx("dItem")} onClick={handleClickBill}>
-            Hoá Đơn
+            Tất Cả Hoá Đơn
           </div>
           <div className={cx("dItem")} onClick={handleClickTableManager}>
             Quản Lý Bàn
