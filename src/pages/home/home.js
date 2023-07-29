@@ -307,7 +307,7 @@ function Home() {
                         <div className={cx("hItemStatus")}>Trạng Thái:
                           {cart.status === "IN_PROGRESS" && (<span style={{ color: "#3498db" }}>Đang Chờ</span>)}
                           {/* {cart.status === "COMPLETE" && (<span style={{ color: "#2ecc71" }}>Đã Xong</span>)} */}
-                          {cart.status === "CANCEL" && (<span style={{ color: "#f04d4d", textDecoration: "line-through" }}>Đã Huỷ</span>)}
+                          {/* {cart.status === "CANCEL" && (<span style={{ color: "#f04d4d", textDecoration: "line-through" }}>Đã Huỷ</span>)} */}
                         </div>
                       </div>
                       <div className={cx("hItemTotalPrice")}>
