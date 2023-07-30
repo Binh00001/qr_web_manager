@@ -16,6 +16,12 @@ function AddDish() {
     image_detail: null,
   });
 
+  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
       const file = e.target.files[0];
@@ -63,7 +69,7 @@ function AddDish() {
     console.log(formDataObj);
 
     axios
-      .post("http://117.4.194.207:3003/dish/create", formData)
+      .post("http://117.4.194.207:3003/dish/create", formData, config)
       .then((response) => {
         console.log(response);
       })

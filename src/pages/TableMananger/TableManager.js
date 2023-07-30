@@ -7,14 +7,23 @@ const cx = classNames.bind(styles);
 
 function TableManager() {
   const [tables, setTables] = useState([]);
+  const [tableId, setTableId] = useState("");
   const [tableName, setTableName] = useState("");
   const [isPopup, setIsPopup] = useState(false);
   const [tableChanged, setTableChanged] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+
   useEffect(() => {
     axios
-      .get("http://117.4.194.207:3003/table/all")
+      .get(
+        `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
+      )
       .then((response) => {
         setTables(response.data);
       })
@@ -26,17 +35,18 @@ function TableManager() {
   const cancelHandle = () => {
     setIsPopup(false);
     setIsSuccess(false);
-    setTableName("");
+    setTableId("");
   };
 
-  const handleDeleteTable = (name) => {
+  const handleDeleteTable = (id, name) => {
+    setTableId(id);
     setTableName(name);
     setIsPopup(true);
   };
 
   const confirmHandle = () => {
     axios
-      .delete(`http://117.4.194.207:3003/table/delete/${tableName}`)
+      .delete(`http://117.4.194.207:3003/table/delete/${tableId}`, config)
       .then((response) => {
         console.log("Bàn đã được xoá thành công!");
         setIsPopup(false);
@@ -109,7 +119,9 @@ function TableManager() {
                 </div>
               </div>
               <div className={cx("tmgRightContainer")}>
-                <button onClick={() => handleDeleteTable(table.name)}>
+                <button
+                  onClick={() => handleDeleteTable(table._id, table.name)}
+                >
                   Xoá Bàn
                 </button>
               </div>

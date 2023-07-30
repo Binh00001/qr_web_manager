@@ -15,10 +15,15 @@ function Bill() {
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
   const currentDate = new Date();
 
-  const handleDate = (event) => {
+  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
+  const handleDate = (event) => {
     event.preventDefault();
-    const date = document.getElementById('billDay').value;
+    const date = document.getElementById("billDay").value;
 
     // Convert the input value to a Date object
     const inputDate = new Date(date);
@@ -32,25 +37,27 @@ function Bill() {
     const formattedDate = `${day}/${month}/${year}`;
     // console.log(formattedDate);
     axios
-      .get(`http://117.4.194.207:3003/cart/menu/all?date=${formattedDate}`)
+      .get(
+        `http://117.4.194.207:3003/cart/menu/all/${cashier.cashierId}?date=${formattedDate}`
+      )
       .then((response) => {
-        setDateCart(response.data);
-        setIsSubmited(true)
-        if (response.data.length === 0) {
-          setIsEmpty(true)
+        setIsSubmited(true);
+        if (
+          response.data.length === 0 ||
+          response.data === "No carts created"
+        ) {
+          setIsEmpty(true);
         } else {
-          setIsEmpty(false)
+          setDateCart(response.data);
+          setIsEmpty(false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }
-
-
+  };
 
   useEffect(() => {
-
     const fetchData = () => {
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
@@ -58,9 +65,15 @@ function Bill() {
       // Create the formatted date string
       const formattedCurrentDate = `${day}/${month}/${year}`;
       axios
-        .get(`http://117.4.194.207:3003/cart/menu/all?date=${formattedCurrentDate}`)
+        .get(
+          `http://117.4.194.207:3003/cart/menu/all/${cashier.cashierId}?date=${formattedCurrentDate}`
+        )
         .then((response) => {
-          setListCart(response.data);
+          if (response.data === "No carts created") {
+            setListCart([]);
+          } else {
+            setListCart(response.data);
+          }
           // if (response.data.length === 0) {
           //   setIsTodayEmpty(true)
           // } else {
@@ -80,12 +93,11 @@ function Bill() {
     };
   }, []);
 
-
   let displayCart = [];
   if (!isSubmited) {
-    displayCart = listCart
+    displayCart = listCart;
   } else {
-    displayCart = dateCart
+    displayCart = dateCart;
   }
 
   return (
@@ -104,11 +116,11 @@ function Bill() {
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
-          {isEmpty &&
+          {isEmpty && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
             </div>
-          }
+          )}
           {/* {isTodayEmpty &&
             <div className={cx("emptyCart")}>
               <p>Hôm Nay Chưa Có Hoá Đơn</p>
@@ -132,7 +144,9 @@ function Bill() {
                 <div className={cx("bCreateTime")}>
                   Thời Gian Tạo:{" "}
                   <span style={{ color: "#f04d4d" }}>
-                  {moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format("HH:mm A")}
+                    {moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format(
+                      "HH:mm A"
+                    )}
                   </span>
                 </div>
               </div>

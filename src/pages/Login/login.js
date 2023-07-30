@@ -23,7 +23,7 @@ function Login() {
         `http://117.4.194.207:3003/cashier-auth/login`,
         formData
       );
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken, cashier } = response.data;
       if (!formData.cashierName || !formData.password) {
         return;
       }
@@ -35,7 +35,8 @@ function Login() {
         tokenType: "Bearer",
         expiresIn: 20,
         authState: {
-          cashierName: formData.cashierName,
+          cashierName: cashier.cashierName,
+          cashierId: cashier.id,
         },
         refreshToken: refreshToken,
         refreshTokenExpireIn: 60,

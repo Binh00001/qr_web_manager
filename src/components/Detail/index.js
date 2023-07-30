@@ -4,12 +4,12 @@ import styles from "./Detail.scss";
 import axios from "axios";
 import emptyStar from "~/components/assets/image/emptyStar.png";
 import filledStar from "~/components/assets/image/yellowStar.png";
-import xIcon from "~/components/assets/image/x_icon_150997.png"
+import xIcon from "~/components/assets/image/x_icon_150997.png";
 const cx = classNames.bind(styles);
 
 function Detail(props) {
   const dish = props.obj;
-  const hideDetail = props.hideDetail
+  const hideDetail = props.hideDetail;
   const [warningDelete, setWarningDelete] = useState(false);
   const [hideBox, setHideBox] = useState(false);
   const [isAddOption, setIsAddOption] = useState(false);
@@ -24,6 +24,12 @@ function Detail(props) {
     price: "",
     image_detail: null,
   });
+
+  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   // useEffect(() => {
   //   const file = document.getElementById("inImg");
@@ -49,7 +55,8 @@ function Detail(props) {
     axios
       .put(
         `http://117.4.194.207:3003/dish/best-seller/${dish._id}`,
-        updatedBestSeller
+        updatedBestSeller,
+        config
       )
       .then((response) => {
         const updatedStar = {
@@ -112,7 +119,11 @@ function Detail(props) {
     formData.append("category", state.category);
     formData.append("price", state.price);
     axios
-      .put(`http://117.4.194.207:3003/dish/update/${dish._id}`, formData)
+      .put(
+        `http://117.4.194.207:3003/dish/update/${dish._id}`,
+        formData,
+        config
+      )
       .then((response) => {
         const updatedFields = {
           name: state.name || dish.name,
@@ -156,9 +167,13 @@ function Detail(props) {
       // thêm newOption vào mảng nếu nó khác rỗng
       const updatedDishOptions = [...dish.options, newOption];
       axios
-        .post(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, {
-          option: [newOption],
-        })
+        .post(
+          `http://117.4.194.207:3003/dish/add-option/${dish._id}`,
+          {
+            option: [newOption],
+          },
+          config
+        )
         .then((response) => {
           // update option
           // console.log(response.data);
@@ -178,6 +193,7 @@ function Detail(props) {
     axios
       .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
         data: { option: opt }, // Đặt dữ liệu xóa trong trường 'data'
+        config,
       })
       .then((response) => {
         // Xử lý thành công khi xóa
@@ -196,12 +212,12 @@ function Detail(props) {
 
   const warningHandle = () => {
     setWarningDelete(true);
-  }
+  };
 
   const deleteItemHandle = () => {
     console.log(dish._id);
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete/${dish._id}`)
+      .delete(`http://117.4.194.207:3003/dish/delete/${dish._id}`, config)
       .then((response) => {
         // Handle the success response here
         setWarningDelete(false);
@@ -217,26 +233,30 @@ function Detail(props) {
         // You may want to show an error message to the user or perform some other error handling.
       });
   };
-  
 
   return (
     <Fragment>
-      {warningDelete && 
+      {warningDelete && (
         <div className={cx("warningBox")}>
           <div className={cx("warningMessage")}>
             Bạn Có Chắc Muốn Xoá Món Này? <br />
-            Không Thể Hoàn Tác   
-          </div>  
-          <div className={cx("warningGroupButton")}> 
-            <button className={cx("warningCancel")}
-              onClick={() => {setWarningDelete(false)}}
-            >Huỷ</button>
-            <button className={cx("warningConfirm")}
-              onClick={deleteItemHandle}
-            >Xác Nhận</button>
+            Không Thể Hoàn Tác
+          </div>
+          <div className={cx("warningGroupButton")}>
+            <button
+              className={cx("warningCancel")}
+              onClick={() => {
+                setWarningDelete(false);
+              }}
+            >
+              Huỷ
+            </button>
+            <button className={cx("warningConfirm")} onClick={deleteItemHandle}>
+              Xác Nhận
+            </button>
           </div>
         </div>
-      }
+      )}
       <div>
         <div className={cx("dtItem")}>
           <div className={cx("dtTopWrapper")}>
@@ -265,10 +285,8 @@ function Detail(props) {
                 ></img>
               )}
             </div>
-            <div className={cx("xIcon")}
-              onClick={warningHandle} 
-            >
-                Xoá Món
+            <div className={cx("xIcon")} onClick={warningHandle}>
+              Xoá Món
             </div>
           </div>
 
