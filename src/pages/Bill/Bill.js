@@ -149,6 +149,11 @@ function Bill() {
                     )}
                   </span>
                 </div>
+                <div className={cx("bId")}>Trạng Thái: 
+                  {cart.status === "IN_PROGRESS" && "Đang Chờ"}
+                  {cart.status === "COMPLETED" && "Đã Xong"}
+                  {cart.status === "CANCEL" && "Đã Huỷ"}
+                </div>
               </div>
               <div className={cx("bItemRightContainer")}>
                 <div>
