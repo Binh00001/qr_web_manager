@@ -18,6 +18,7 @@
   margin: 0 auto;
   min-height: 100vh;
   overflow-y: auto;
+  position: relative;
   .mNavBar {
     margin-left: 3%;
     width: 100%;
@@ -41,15 +42,19 @@
     }
   }
   .mContent {
-    width: 90%;
+    width: 100%;
     min-height: fit-content;
-    margin: 0 auto;
+    // margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    // justify-content: space-evenly;
+    // align-content: space-around;
     .mItem {
       min-height: 250px;
       height: 20%;
-      margin-right: 5%;
+      // margin: 0 1% 30px 1%;
+      margin-right: 2.1vw;
+      margin-left: 2.1vw;
       margin-bottom: 30px;
       overflow: hidden;
       position: relative;
@@ -95,7 +100,7 @@
         left: 0;
         display: grid;
         align-content: space-evenly;
-        // bottom: 0%;
+        bottom: 0%;
 
         .optionsHoverBox {
           cursor: pointer;
@@ -149,9 +154,9 @@
           }
         }
       }
-      &:hover .mHoverBox {
-        bottom: 0%;
-      }
+      // &:hover .mHoverBox {
+      //   bottom: 0%;
+      // }
     }
   }
   input[type="number"]::-webkit-inner-spin-button,

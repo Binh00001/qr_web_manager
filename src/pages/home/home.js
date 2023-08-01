@@ -51,7 +51,7 @@ function Home() {
         .get(`${process.env.REACT_APP_API_URL}/cart/menu/all?date=${formattedCurrentDate}`)
         .then((response) => {
           setListCart(response.data);
-          console.log(response.data);
+          // console.log(response.data);
           // if (response.data.length === 0) {
           //   setIsTodayEmpty(true)
           // } else {

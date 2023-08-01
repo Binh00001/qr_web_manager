@@ -15,12 +15,14 @@ function Bill() {
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
   const currentDate = new Date();
 
+  const completedCarts = listCart.filter((cart) => cart.status === "COMPLETED");
+  const totalIncome = completedCarts.reduce((total, cart) => total + cart.total, 0);
+
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-
   const handleDate = (event) => {
     event.preventDefault();
     const date = document.getElementById("billDay").value;
@@ -100,6 +102,8 @@ function Bill() {
     displayCart = dateCart;
   }
 
+  // console.log(listCart.filter(item => item.status === "COMPLETED"));
+
   return (
     <Fragment>
       <div className="bWrapper">
@@ -110,6 +114,9 @@ function Bill() {
                 <label for="billDay">Chọn Ngày</label>
                 <input type="date" id="billDay" name="billDay" />
                 <input type="submit" onClick={(event) => handleDate(event)} />
+              </div>
+              <div className={cx("bText")}>
+                <div className={cx("bTotalIncome")}>Doanh Thu Hôm Nay: {totalIncome.toLocaleString()} vnđ</div>
               </div>
             </div>
           </div>

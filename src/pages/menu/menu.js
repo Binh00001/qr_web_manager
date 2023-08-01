@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import classNames from "classnames";
 import styles from "~/pages/menu/menu.scss";
@@ -7,11 +7,13 @@ import Detail from "~/components/Detail/index";
 const cx = classNames.bind(styles);
 
 function Menu() {
+  // const ref = useRef(null);
+
   const [category, setCategory] = useState([]);
   const [listDish, setListDish] = useState([]);
   const [type, setType] = useState(null);
   const [clickAddAmount, setClickAddAmount] = useState(null);
-  // const [isAmount, setIsAmount] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [reload, setReload] = useState(false);
   const [obj, setObj] = useState({});
   const [detail, setDetail] = useState(false);
@@ -54,6 +56,19 @@ function Menu() {
         console.log(error);
       });
   }, [reload, detail]);
+
+  // useEffect(() => {
+  //   const handleClickOutside = (event) => {
+  //     if (ref.current && !ref.current.contains(event.target)) {
+  //       setSelectedItem(null);
+  //     }
+  //   };
+  //   document.addEventListener("click", handleClickOutside);
+
+  //   return () => {
+  //     document.removeEventListener("click", handleClickOutside);
+  //   };
+  // }, []);
 
   const changeHandler = (e) => {
     setState({ [e.target.name]: e.target.value });
@@ -146,15 +161,18 @@ function Menu() {
             </button>
           ))}
         </div>
-        <div className={cx("mContent")}>
+        <div className={cx("mContent")} 
+        // ref={ref}
+        >
           {(type === null
             ? listDish
             : type === "bestseller"
-            ? listDish.filter((dish) => dish.isBestSeller)
-            : listDish.filter((dish) => dish.category === type.name)
+              ? listDish.filter((dish) => dish.isBestSeller)
+              : listDish.filter((dish) => dish.category === type.name)
           ).map((food, index) => (
-            <div key={index} className={cx("mItem")}>
-              <div className={cx("mItemBox")}>
+            <div key={index} className={cx("mItem")}  
+            >
+              <div className={cx("mItemBox")} onClick={() => setSelectedItem((prevSelectedItem) => (prevSelectedItem === index ? prevSelectedItem : index))}>
                 <div className={cx("mImageBorder")}>
                   <img src={food.image_detail.path} alt="FoodImage"></img>
                 </div>
@@ -169,61 +187,64 @@ function Menu() {
                   <div className={cx("mQuantity")}>Số lượng: {food.amount}</div>
                 </div>
               </div>
-              <div className={cx("mHoverBox")}>
-                <div
-                  className={cx("optionsHoverBox")}
-                  onClick={() => (setObj(food), setDetail(true))}
-                >
-                  Chi tiết
-                </div>
-                {clickAddAmount !== index && (
+              {selectedItem === index && (
+                <div className={cx("mHoverBox")}>
                   <div
                     className={cx("optionsHoverBox")}
-                    onClick={() => {
-                      setClickAddAmount(index);
-                      setState({ ...state, amount: null });
-                    }}
+                    onClick={() => (setObj(food), setDetail(true))}
                   >
-                    Thay đổi số lượng
+                    Chi tiết
                   </div>
-                )}
-                {clickAddAmount === index && (
-                  <div className={cx("addAmount optionsHoverBox")}>
-                    <input
-                      id="amount"
-                      type="number"
-                      name="amount"
-                      value={amount}
-                      onChange={changeHandler}
-                      required
-                      placeholder="số lượng ..."
-                    />
-                    {amount && (
-                      <div
-                        className={cx("AcpBtn")}
-                        onClick={() => submitAddAmountHandler(food._id)}
-                      >
-                        OK
-                      </div>
-                    )}
-                    {!amount && (
-                      <div
-                        className={cx("AcpBtn")}
-                        onClick={() => setClickAddAmount(null)}
-                      >
-                        Hủy
-                      </div>
-                    )}
+                  {clickAddAmount !== index && (
+                    <div
+                      className={cx("optionsHoverBox")}
+                      onClick={() => {
+                        setClickAddAmount(index);
+                        setState({ ...state, amount: null });
+                      }}
+                    >
+                      Thay đổi số lượng
+                    </div>
+                  )}
+                  {clickAddAmount === index && (
+                    <div className={cx("addAmount optionsHoverBox")}>
+                      <input
+                        id="amount"
+                        type="number"
+                        name="amount"
+                        value={amount}
+                        onChange={changeHandler}
+                        required
+                        placeholder="số lượng ..."
+                      />
+                      {amount && (
+                        <div
+                          className={cx("AcpBtn")}
+                          onClick={() => submitAddAmountHandler(food._id)}
+                        >
+                          OK
+                        </div>
+                      )}
+                      {!amount && (
+                        <div
+                          className={cx("AcpBtn")}
+                          onClick={() => setClickAddAmount(null)}
+                        >
+                          Hủy
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <div
+                    className={cx("optionsHoverBox")}
+                    onClick={() => submitHideDishHandler(food._id)}
+                  >
+                    {" "}
+                    Ẩn món
                   </div>
-                )}
-                <div
-                  className={cx("optionsHoverBox")}
-                  onClick={() => submitHideDishHandler(food._id)}
-                >
-                  {" "}
-                  Ẩn món
                 </div>
-              </div>
+              )}
+
             </div>
           ))}
         </div>

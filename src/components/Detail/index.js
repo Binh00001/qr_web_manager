@@ -108,6 +108,7 @@ function Detail(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // console.log(e);
     if (!formChanged) {
       console.log("Không có sự thay đổi trong form.");
       return;
