@@ -10,6 +10,7 @@
         width: 100%;
         .bText{
             display: flex;
+            align-items: center;
             input{
                 width: 120px;
                 margin-left:15px;
@@ -118,13 +119,14 @@
 
 .dropdown{
     min-width: 120px;
-    margin: 0 10px;
+    margin-left: 12px;
     padding: 5px 20px;
     background-color: #ecf0f1;
     color: #000;
     align-self: center;
     position: relative;
     display: inline-block;
+    border-radius: 8px;
 }
 .dropdownWrapper{
     position: absolute;

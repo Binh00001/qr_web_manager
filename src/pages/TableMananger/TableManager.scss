@@ -7,6 +7,38 @@
     z-index: 10;
 }
 
+.TopBar {
+    .tmgTopBarWrapper {
+        align-self: center;
+        margin-left: 10%;
+        display: flex;
+        .tmgText {
+            display: flex;
+            align-items: center;
+            input{
+                width: 100px;
+                height: 32px;
+                border: none;
+                // border-radius: 8px;
+                border-top-left-radius: 8px;
+                border-bottom-left-radius: 8px;
+                padding: 0 10px;
+                margin-left: 15px;
+            }
+            button{
+                border: none;
+                border-left: #000 1px solid;
+                border-top-right-radius: 8px;
+                border-bottom-right-radius: 8px;
+                height: 32px;
+                background-color: #fff;
+                font-size: 1rem;
+                // z-index: 10;
+            }
+        }
+    }
+}
+
 .tmgPopupBox {
     z-index: 100;
     position: fixed;

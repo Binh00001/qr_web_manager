@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 function Bill() {
   const [listCart, setListCart] = useState([]);
   const [dateCart, setDateCart] = useState([]);
+  const [listCashier, setLishCashier] = useState([]);
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +28,19 @@ function Bill() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/cashier/all`)
+      .then((response) => {
+        setLishCashier(response.data)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  }, [])
+
   const handleDate = (event) => {
     event.preventDefault();
     const date = document.getElementById("billDay").value;
@@ -42,28 +56,31 @@ function Bill() {
     // Create the formatted date string
     const formattedDate = `${day}/${month}/${year}`;
     // console.log(formattedDate);
-    axios
-      .get(
-        `http://117.4.194.207:3003/cart/menu/all/${selectedCashierName}?date=${formattedDate}`,
-        config
-      )
-      .then((response) => {
-        setIsSubmited(true);
-        if (
-          response.data.length === 0 ||
-          response.data === "No carts created"
-        ) {
-          setIsEmpty(true);
-        } else {
-          setDateCart(response.data);
-          setIsEmpty(false);
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (selectedCashierName !== '') {
+      axios
+        .get(
+          `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedDate}`,
+          config
+        )
+        .then((response) => {
+          setIsSubmited(true);
+          if (
+            response.data.length === 0 ||
+            response.data === "No carts created"
+          ) {
+            setIsEmpty(true);
+          } else {
+            setDateCart(response.data);
+            setIsEmpty(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
   };
-  console.log(listCart);
+  // console.log(listCart);
 
   useEffect(() => {
     const fetchData = () => {
@@ -72,9 +89,10 @@ function Bill() {
       const year = currentDate.getFullYear();
       // Create the formatted date string
       const formattedCurrentDate = `${day}/${month}/${year}`;
-      axios
+      if(selectedCashierName === ''){
+        axios
         .get(
-          `http://117.4.194.207:3003/cart/menu/all/${selectedCashierName}?date=${formattedCurrentDate}`
+          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
         )
         .then((response) => {
           if (response.data === "No carts created") {
@@ -91,6 +109,29 @@ function Bill() {
         .catch((error) => {
           console.log(error);
         });
+      }
+      if(selectedCashierName !== ''){
+        axios
+        .get(
+          `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`,
+          config
+        )
+        .then((response) => {
+          setIsSubmited(true);
+          if (
+            response.data.length === 0 ||
+            response.data === "No carts created"
+          ) {
+            setIsEmpty(true);
+          } else {
+            setDateCart(response.data);
+            setIsEmpty(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
     };
     fetchData();
     const interval = setInterval(() => {
@@ -117,7 +158,6 @@ function Bill() {
     setSelectedCashierName(value);
     toggleDropdown();
   };
-  // console.log(listCart.filter(item => item.status === "COMPLETED"));
 
   return (
     <Fragment>
@@ -131,7 +171,7 @@ function Bill() {
               </div>
               <div className={cx("bText")}>
                 <div className={cx("dropdown")} onClick={toggleDropdown}>
-                  <div id="cashier">{selectedValue || "Chọn Nhân Viên"}</div>
+                  <div id="cashier">{selectedValue || "Tất Cả Chi Nhánh"}</div>
                   {isOpen && (
                     <div>
                       <div className={cx("dropdownWrapper")}>
@@ -139,14 +179,21 @@ function Bill() {
                           className={cx("dropdownContent")}
                           onClick={() => handleDropdownItemClick("")}
                         >
-                          Chọn Nhân Viên
+                          Tất Cả
                         </div>
-                        <div
-                          className={cx("dropdownContent")}
-                          onClick={() => handleDropdownItemClick("admin")}
-                        >
-                          admin
-                        </div>
+                        {listCashier
+                          .filter((user) => (user.cashierName !== "admin"))
+                          .map((user, index) => (
+                            <div
+                              key={index}
+                              className={cx("dropdownContent")}
+                              onClick={() => handleDropdownItemClick(user.cashierName)}
+                            >
+                              {user.cashierName}
+                            </div>
+                          ))
+                        }
+
                       </div>
 
                       {/* <div
@@ -168,7 +215,7 @@ function Bill() {
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
-          {(isEmpty && selectedCashierName)  && (
+          {(isEmpty && selectedCashierName) && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
             </div>

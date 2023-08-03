@@ -8,18 +8,45 @@ import axios from "axios";
 
 const NewPingContext = createContext();
 
+const IsAdminContext = createContext();
 export function useNewPingContext() {
   return useContext(NewPingContext);
 }
 
+export function useIsAdminContext() {
+  return useContext(IsAdminContext);
+}
+
 function App() {
   const [newPing, setNewPing] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`
+      )
+      .then((response) => {
+        setIsAdmin(true)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
+  }, [])
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
-      playSound();
-      setNewPing(response);
+      if (!isAdmin) {
+        playSound();
+        setNewPing(response);
+      }
+    });
+    socket.on("newCart", (response) => {
+      if (!isAdmin) {
+        playSound();
+        setNewPing(response);
+      }
     });
     return () => {
       socket.disconnect();
@@ -28,7 +55,6 @@ function App() {
 
   useEffect(() => {
     axios
-      // .get("http://117.4.194.207:3003/call-staff/all?time=60")
       .get(`${process.env.REACT_APP_API_URL}/call-staff/all?time=60`)
       .then((response) => {
         const newRequests = response.data;
@@ -50,9 +76,11 @@ function App() {
       authName={"token"}
       refresh={refreshApi}
     >
-      <NewPingContext.Provider value={newPing}>
-        <MainRoutes />
-      </NewPingContext.Provider>
+      <IsAdminContext.Provider value={isAdmin}>
+        <NewPingContext.Provider value={newPing}>
+          <MainRoutes />
+        </NewPingContext.Provider>
+      </IsAdminContext.Provider>
     </AuthProvider>
   );
 }
