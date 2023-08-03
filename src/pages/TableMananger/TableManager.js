@@ -10,7 +10,7 @@ function TableManager() {
   const [listCashier, setListCashier] = useState([]);
   const [tableId, setTableId] = useState("");
   const [tableName, setTableName] = useState("");
-
+  const [selectedCashierId, setSelectedCashierId] = useState('');
   const [selectedCashierName, setSelectedCashierName] = useState('');
   const [isPopup, setIsPopup] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +25,7 @@ function TableManager() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/cashier/all`)
+      .get(`${process.env.REACT_APP_API_URL}/cashier/all`, config)
       .then((response) => {
         // setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
         setListCashier(response.data)
@@ -35,6 +35,19 @@ function TableManager() {
       });
 
   }, [])
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/table/allByCashier/${selectedCashierId}`, config)
+      .then((response) => {
+        // setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
+        setTables(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  }, [tableChanged])
 
   const cancelHandle = () => {
     setIsPopup(false);
@@ -68,6 +81,7 @@ function TableManager() {
 
   const handleDropdownItemClick = (value, id) => {
     setSelectedCashierName(value)
+    setSelectedCashierId(id)
     axios
       .get(
         `${process.env.REACT_APP_API_URL}/table/allByCashier/${id}`
@@ -79,6 +93,8 @@ function TableManager() {
         console.log(error);
       });
   }
+
+  console.log(selectedCashierId);
 
   const subbmitNewtable = () => {
     const newTableName = document.getElementById("NewTableName").value.trim();
@@ -97,7 +113,10 @@ function TableManager() {
     console.log("Table name is unique. You can proceed with further logic.");
 
     // Create the data object with the table name to be sent in the post request.
-    const data = { name: newTableName };
+    const data = {
+      name: newTableName,
+      cashier_id: selectedCashierId
+    };
 
     // Send the post request to create the new table.
     axios
