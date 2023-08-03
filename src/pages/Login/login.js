@@ -109,11 +109,11 @@ function Login() {
                 </button>
               </div>
             </form>
-            <div className={cx("lgRegisterBox")}>
+            {/* <div className={cx("lgRegisterBox")}>
               <button value="Sign Up" onClick={() => navigate(`/signup`)}>
                 Sign Up
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

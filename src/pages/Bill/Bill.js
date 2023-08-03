@@ -12,6 +12,10 @@ function Bill() {
   const [dateCart, setDateCart] = useState([]);
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState('');
+  const [selectedCashierName, setSelectedCashierName] = useState('');
+
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
   const currentDate = new Date();
 
@@ -40,7 +44,8 @@ function Bill() {
     // console.log(formattedDate);
     axios
       .get(
-        `http://117.4.194.207:3003/cart/menu/all/${cashier.cashierId}?date=${formattedDate}`
+        `http://117.4.194.207:3003/cart/menu/all/${selectedCashierName}?date=${formattedDate}`,
+        config
       )
       .then((response) => {
         setIsSubmited(true);
@@ -58,6 +63,7 @@ function Bill() {
         console.log(error);
       });
   };
+  console.log(listCart);
 
   useEffect(() => {
     const fetchData = () => {
@@ -68,7 +74,7 @@ function Bill() {
       const formattedCurrentDate = `${day}/${month}/${year}`;
       axios
         .get(
-          `http://117.4.194.207:3003/cart/menu/all/${cashier.cashierId}?date=${formattedCurrentDate}`
+          `http://117.4.194.207:3003/cart/menu/all/${selectedCashierName}?date=${formattedCurrentDate}`
         )
         .then((response) => {
           if (response.data === "No carts created") {
@@ -102,6 +108,15 @@ function Bill() {
     displayCart = dateCart;
   }
 
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  const handleDropdownItemClick = (value) => {
+    setSelectedValue(value);
+    setSelectedCashierName(value);
+    toggleDropdown();
+  };
   // console.log(listCart.filter(item => item.status === "COMPLETED"));
 
   return (
@@ -113,6 +128,36 @@ function Bill() {
               <div className={cx("bText")}>
                 <label for="billDay">Chọn Ngày</label>
                 <input type="date" id="billDay" name="billDay" />
+              </div>
+              <div className={cx("bText")}>
+                <div className={cx("dropdown")} onClick={toggleDropdown}>
+                  <div id="cashier">{selectedValue || "Chọn Nhân Viên"}</div>
+                  {isOpen && (
+                    <div>
+                      <div className={cx("dropdownWrapper")}>
+                        <div
+                          className={cx("dropdownContent")}
+                          onClick={() => handleDropdownItemClick("")}
+                        >
+                          Chọn Nhân Viên
+                        </div>
+                        <div
+                          className={cx("dropdownContent")}
+                          onClick={() => handleDropdownItemClick("admin")}
+                        >
+                          admin
+                        </div>
+                      </div>
+
+                      {/* <div
+                        className={cx("dropdownContent")}
+                        onClick={() => handleDropdownItemClick("NV1")}
+                      >
+                        NV1
+                      </div> */}
+                    </div>
+                  )}
+                </div>
                 <input type="submit" onClick={(event) => handleDate(event)} />
               </div>
               <div className={cx("bText")}>
@@ -123,7 +168,7 @@ function Bill() {
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
-          {isEmpty && (
+          {(isEmpty && selectedCashierName)  && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
             </div>
@@ -156,7 +201,7 @@ function Bill() {
                     )}
                   </span>
                 </div>
-                <div className={cx("bId")}>Trạng Thái: 
+                <div className={cx("bId")}>Trạng Thái:
                   {cart.status === "IN_PROGRESS" && "Đang Chờ"}
                   {cart.status === "COMPLETED" && "Đã Xong"}
                   {cart.status === "CANCEL" && "Đã Huỷ"}

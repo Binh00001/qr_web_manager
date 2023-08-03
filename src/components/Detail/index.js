@@ -2,9 +2,9 @@ import React, { Fragment, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Detail.scss";
 import axios from "axios";
-import emptyStar from "~/components/assets/image/emptyStar.png";
-import filledStar from "~/components/assets/image/yellowStar.png";
-import xIcon from "~/components/assets/image/x_icon_150997.png";
+import emptyStar from "~/components/assets/image/Gray_heart.png";
+import filledStar from "~/components/assets/image/Red_heart.png";
+// import xIcon from "~/components/assets/image/x_icon_150997.png";
 const cx = classNames.bind(styles);
 
 function Detail(props) {
