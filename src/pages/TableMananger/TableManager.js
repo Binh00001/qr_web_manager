@@ -1,7 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import styles from "~/pages/TableMananger/TableManager.scss";
 import axios from "axios";
+import { useIsAdminContext } from "~/App";
 
 const cx = classNames.bind(styles);
 
@@ -16,12 +18,20 @@ function TableManager() {
   const [isOpen, setIsOpen] = useState(false);
   const [tableChanged, setTableChanged] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
 
+  const isAdmin = useIsAdminContext();
   // const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
+  useEffect(() => {
+    if (isAdmin === false) {
+      navigate(`/`);
+    }
+  }, [isAdmin, navigate]);
 
   useEffect(() => {
     axios

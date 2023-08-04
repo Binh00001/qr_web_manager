@@ -1,8 +1,10 @@
 import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
 import styles from "~/pages/Bill/Bill.scss";
 import moment from "moment";
+import { useIsAdminContext } from "~/App";
 import "moment/locale/vi";
 
 const cx = classNames.bind(styles);
@@ -16,7 +18,9 @@ function Bill() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [selectedCashierName, setSelectedCashierName] = useState('');
+  const navigate = useNavigate();
 
+  const isAdmin = useIsAdminContext();
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
   const currentDate = new Date();
 
@@ -28,6 +32,12 @@ function Bill() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
+  useEffect(() => {
+    if (isAdmin === false) {
+      navigate(`/`);
+    }
+  }, [isAdmin, navigate]);
 
   useEffect(() => {
     axios
@@ -205,17 +215,17 @@ function Bill() {
                     </div>
                   )}
                 </div>
-                <input type="submit" onClick={(event) => handleDate(event)} />
+                <input id="subbmitButton" type="submit" onClick={(event) => handleDate(event)} />
               </div>
               <div className={cx("bText")}>
-                <div className={cx("bTotalIncome")}>Doanh Thu Hôm Nay: {totalIncome.toLocaleString()} vnđ</div>
+                <div className={cx("bTotalIncome")}>Doanh Thu: {totalIncome.toLocaleString()} vnđ</div>
               </div>
             </div>
           </div>
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
-          {(isEmpty && selectedCashierName) && (
+          {(isEmpty) && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
             </div>

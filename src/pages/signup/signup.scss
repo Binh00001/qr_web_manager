@@ -3,19 +3,32 @@
   background-color: #ecf0f1;
   position: relative;
 }
+.darkOverlay{
+  position: fixed;
+  background-color: #bdc3c7;
+  height: 100vh;
+  width: 100vw;
+  top: -10vw;
+  opacity: 0.8;
+}
+.mTopBar{
+  .spTitle{
+    margin-left: 6%;
+  }
+}
 .lgBody {
-    max-width: 90vw;
+    max-width: 100vw;
     margin: 0 auto;
     min-height: 85vh;
     .lgContent {
       display: flex;
       justify-content: space-between;
       .lgLeftContainer {
-        margin-top: 20vh;
-        width: 60%;
-        margin-left: 10%;
+        // margin-top: 20vh;
+        // width: 50%;
+        // margin-left: 10%;
         .lgResName {
-          font-size: 4rem;
+          font-size: 3rem;
           font-weight: bold;
           color: #3498db;
         }
@@ -34,12 +47,12 @@
       }
       .spRightContainer {
         background-color: #fff;
-        margin-top: 15vh;
-        width: 35%;
+        // margin-top: 15vh;
+        width: 50%;
         min-width: fit-content;
         height: 50vh;
         min-height: 340px;
-        margin-right: 20%;
+        margin: 5vh auto;
         border-radius: 15px;
         .spBox {
           min-height: 50%;
@@ -131,4 +144,97 @@
       }
     }
   }
+.amWrapper{
+  width: 100%;
+  min-height: 80vh;
+  background-color: #fff;
+  .amItem{
+    border: 1px black solid;
+    border-radius: 8px;
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin: 2% auto;
+    .amLeft{
+      div{
+        padding:10px;
+      }
+    }
+    .amRight{
+      margin-right: 2%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      button{
+        padding: 8px;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+      }
+      .amChangePassword{
+        background-color: #2ecc71;
+      }
+      .amDeleteAccount{
+        background-color: #f04d4d;
+      }
+    }
+  }
+}
+.cppWrapper{
+  position: fixed;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  margin: 8% 25% 0 25%;
+  border-radius: 10px;
+  // height: 50%;
+  .ccpChoosedName{
+    margin: 5% auto 0 auto;
+  }
+  .cppName{
+    margin-top: 8%;
+  }
+  input{
+    border: none;
+    height: 40px;
+    margin: 10px 20px;
+    border-radius: 10px;
+    padding-left: 10px;
+    background-color: #ecf0f1;
+  }
+  button{
+    border: none;
+    background-color: #2ecc71;
+    color: #fff;
+    width: 50%;
+    margin: 5% 25%;
+    height: 50px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+  }
+  .cppNote{
+    align-self: center;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 5% 0;
+  }
+  .cppButtonGroup{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    button{
+      margin: 0 0 5% 0;
+      font-size: 1rem;
+      width: 25%;
+      background-color: #f04d4d;
+    }
+    .cppCancelButton{
+      border: #f04d4d 1px solid;
+      background-color: transparent;
+      color: #f04d4d;
+    }
+  }
+
+}
   

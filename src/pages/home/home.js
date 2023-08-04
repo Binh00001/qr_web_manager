@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import classNames from "classnames";
 import styles from "~/pages/home/home.scss";
@@ -6,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import Loading from "~/components/loadingScreen/loadingScreen";
+import { useIsAdminContext } from "~/App";
 import "moment/locale/vi";
 
 const cx = classNames.bind(styles);
@@ -18,6 +20,10 @@ function Home() {
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
   const currentDate = new Date();
+
+  const navigate = useNavigate();
+
+  const isAdmin = useIsAdminContext();
 
   const areRequestsOrListTenMinEmpty = () => {
     return requests.length === 0 && listTenMin.length === 0;
@@ -39,6 +45,13 @@ function Home() {
       setIsNewRequest(response);
     });
   }, []);
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate(`/bill`);
+    }
+  }, [isAdmin, navigate]);
+
 
   useEffect(() => {
     const fetchData = () => {

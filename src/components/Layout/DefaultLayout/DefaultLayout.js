@@ -103,7 +103,7 @@ function DefaultLayout({ children }) {
                 Quản Lý Bàn
               </div>
               <div className={cx("dItem")} onClick={handleClickSignUp}>
-                Đăng Kí 
+                Tài Khoản
               </div>
             </Fragment>
 

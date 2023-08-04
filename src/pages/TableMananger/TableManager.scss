@@ -10,13 +10,13 @@
 .TopBar {
     .tmgTopBarWrapper {
         align-self: center;
-        margin-left: 10%;
+        margin-left: 6%;
         display: flex;
         .tmgText {
             display: flex;
             align-items: center;
             input{
-                width: 100px;
+                width: 120px;
                 height: 32px;
                 border: none;
                 // border-radius: 8px;
@@ -77,7 +77,10 @@
         }
     }
 }
-
+#subbmitButton{
+    width: 90px;
+    height: 30px;
+}
 .tmgSuccessBox {
     z-index: 100;
     position: fixed;
@@ -127,7 +130,7 @@
     background-color: #fff;
 
     .tmgItem {
-        width: 70%;
+        width: 90%;
         margin: 2% auto;
         display: flex;
         justify-content: space-between;

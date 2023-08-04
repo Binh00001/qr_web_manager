@@ -27,7 +27,10 @@ function App() {
         `${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`
       )
       .then((response) => {
-        setIsAdmin(true)
+        if(cashierInfo.cashierName === "admin" && cashierInfo.cashierName === response.data.cashierName){
+          setIsAdmin(true)
+          // console.log(cashierInfo.cashierName === "admin" && cashierInfo.cashierName === response.data.cashierName);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -52,6 +55,7 @@ function App() {
       socket.disconnect();
     };
   }, []);
+
 
   useEffect(() => {
     axios

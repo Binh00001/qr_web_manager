@@ -27,7 +27,14 @@ function MainRoutes() {
             // </DefaultLayout>
           }
           exact />
-        <Route path={"/signup"} element={<Signup />} exact />
+        <Route
+          path={"/signup"}
+          element={
+            <DefaultLayout>
+              <Signup />
+            </DefaultLayout>
+          }
+          exact />
         <Route
           path={"/"}
           element={<RequireAuth loginPath={"/login"}>
