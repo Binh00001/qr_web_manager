@@ -41,7 +41,11 @@ function Login() {
         refreshToken: refreshToken,
         refreshTokenExpireIn: 60,
       });
-      navigate("/");
+      if (cashier.cashierName === "admin") {
+        navigate("/bill");
+      } else {
+        navigate("/");
+      }
       window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {

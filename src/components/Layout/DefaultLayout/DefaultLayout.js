@@ -94,7 +94,7 @@ function DefaultLayout({ children }) {
           <div className={cx("LogoBorder")}>
             <img onClick={handleClickLogo} src={logo} alt="LOGO"></img>
           </div>
-          {isAdmin && (
+          {isAdmin === "admin" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickBill}>
                 Tất Cả Hoá Đơn
@@ -108,7 +108,7 @@ function DefaultLayout({ children }) {
             </Fragment>
 
           )}
-          {!isAdmin && (
+          {isAdmin === "cashier" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ

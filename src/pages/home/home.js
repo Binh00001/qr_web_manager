@@ -47,7 +47,7 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    if (isAdmin) {
+    if (isAdmin === "admin") {
       navigate(`/bill`);
     }
   }, [isAdmin, navigate]);
