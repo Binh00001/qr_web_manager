@@ -16,8 +16,8 @@ function Bill() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValue, setSelectedValue] = useState('');
-  const [selectedCashierName, setSelectedCashierName] = useState('');
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedCashierName, setSelectedCashierName] = useState("");
   const navigate = useNavigate();
 
   const isAdmin = useIsAdminContext();
@@ -25,7 +25,10 @@ function Bill() {
   const currentDate = new Date();
 
   const completedCarts = listCart.filter((cart) => cart.status === "COMPLETED");
-  const totalIncome = completedCarts.reduce((total, cart) => total + cart.total, 0);
+  const totalIncome = completedCarts.reduce(
+    (total, cart) => total + cart.total,
+    0
+  );
 
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const token = localStorage.getItem("token") || [];
@@ -34,7 +37,7 @@ function Bill() {
   };
 
   useEffect(() => {
-    if (isAdmin === false) {
+    if (isAdmin === "cashier") {
       navigate(`/`);
     }
   }, [isAdmin, navigate]);
@@ -43,13 +46,12 @@ function Bill() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/all`)
       .then((response) => {
-        setLishCashier(response.data)
+        setLishCashier(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
-
-  }, [])
+  }, []);
 
   const handleDate = (event) => {
     event.preventDefault();
@@ -65,8 +67,7 @@ function Bill() {
 
     // Create the formatted date string
     const formattedDate = `${day}/${month}/${year}`;
-    // console.log(formattedDate);
-    if (selectedCashierName !== '') {
+    if (selectedCashierName !== "") {
       axios
         .get(
           `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedDate}`,
@@ -74,6 +75,7 @@ function Bill() {
         )
         .then((response) => {
           setIsSubmited(true);
+          console.log(response);
           if (
             response.data.length === 0 ||
             response.data === "No carts created"
@@ -88,7 +90,6 @@ function Bill() {
           console.log(error);
         });
     }
-
   };
   // console.log(listCart);
 
@@ -99,48 +100,51 @@ function Bill() {
       const year = currentDate.getFullYear();
       // Create the formatted date string
       const formattedCurrentDate = `${day}/${month}/${year}`;
-      if(selectedCashierName === ''){
+      console.log(formattedCurrentDate);
+      if (selectedCashierName === "") {
         axios
-        .get(
-          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
-        )
-        .then((response) => {
-          if (response.data === "No carts created") {
-            setListCart([]);
-          } else {
-            setListCart(response.data);
-          }
-          // if (response.data.length === 0) {
-          //   setIsTodayEmpty(true)
-          // } else {
-          //   setIsTodayEmpty(false)
-          // }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .get(
+            `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
+          )
+          .then((response) => {
+            console.log(response);
+
+            if (response.data === "No carts created") {
+              setListCart([]);
+            } else {
+              setListCart(response.data);
+            }
+            // if (response.data.length === 0) {
+            //   setIsTodayEmpty(true)
+            // } else {
+            //   setIsTodayEmpty(false)
+            // }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
-      if(selectedCashierName !== ''){
+      if (selectedCashierName !== "") {
         axios
-        .get(
-          `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`,
-          config
-        )
-        .then((response) => {
-          setIsSubmited(true);
-          if (
-            response.data.length === 0 ||
-            response.data === "No carts created"
-          ) {
-            setIsEmpty(true);
-          } else {
-            setDateCart(response.data);
-            setIsEmpty(false);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .get(
+            `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`,
+            config
+          )
+          .then((response) => {
+            setIsSubmited(true);
+            if (
+              response.data.length === 0 ||
+              response.data === "No carts created"
+            ) {
+              setIsEmpty(true);
+            } else {
+              setDateCart(response.data);
+              setIsEmpty(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     };
     fetchData();
@@ -192,18 +196,18 @@ function Bill() {
                           Tất Cả
                         </div>
                         {listCashier
-                          .filter((user) => (user.cashierName !== "admin"))
+                          .filter((user) => user.cashierName !== "admin")
                           .map((user, index) => (
                             <div
                               key={index}
                               className={cx("dropdownContent")}
-                              onClick={() => handleDropdownItemClick(user.cashierName)}
+                              onClick={() =>
+                                handleDropdownItemClick(user.cashierName)
+                              }
                             >
                               {user.cashierName}
                             </div>
-                          ))
-                        }
-
+                          ))}
                       </div>
 
                       {/* <div
@@ -215,17 +219,24 @@ function Bill() {
                     </div>
                   )}
                 </div>
-                <button id="subbmitButton" onClick={(event) => handleDate(event)}>Subbmit</button>
+                <button
+                  id="subbmitButton"
+                  onClick={(event) => handleDate(event)}
+                >
+                  Subbmit
+                </button>
               </div>
               <div className={cx("bText")}>
-                <div className={cx("bTotalIncome")}>Doanh Thu: {totalIncome.toLocaleString()} vnđ</div>
+                <div className={cx("bTotalIncome")}>
+                  Doanh Thu: {totalIncome.toLocaleString()} vnđ
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
-          {(isEmpty) && (
+          {isEmpty && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
             </div>
@@ -258,7 +269,8 @@ function Bill() {
                     )}
                   </span>
                 </div>
-                <div className={cx("bId")}>Trạng Thái:
+                <div className={cx("bId")}>
+                  Trạng Thái:
                   {cart.status === "IN_PROGRESS" && "Đang Chờ"}
                   {cart.status === "COMPLETED" && "Đã Xong"}
                   {cart.status === "CANCEL" && "Đã Huỷ"}

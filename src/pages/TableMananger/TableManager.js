@@ -30,7 +30,7 @@ function TableManager() {
   };
 
   useEffect(() => {
-    if (isAdmin === false) {
+    if (isAdmin === "cashier") {
       navigate(`/`);
     }
   }, [isAdmin, navigate]);

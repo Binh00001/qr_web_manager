@@ -19,24 +19,26 @@ export function useIsAdminContext() {
 
 function App() {
   const [newPing, setNewPing] = useState(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState("loading");
   const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
   useEffect(() => {
     axios
-      .get(
-        `${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`
-      )
+      .get(`${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`)
       .then((response) => {
-        if(cashierInfo.cashierName === "admin" && cashierInfo.cashierName === response.data.cashierName){
-          setIsAdmin(true)
+        if (
+          cashierInfo.cashierName === "admin" &&
+          cashierInfo.cashierName === response.data.cashierName
+        ) {
+          setIsAdmin("admin");
           // console.log(cashierInfo.cashierName === "admin" && cashierInfo.cashierName === response.data.cashierName);
+        } else {
+          setIsAdmin("cashier");
         }
       })
       .catch((error) => {
         console.log(error);
       });
-
-  }, [])
+  }, []);
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
@@ -55,7 +57,6 @@ function App() {
       socket.disconnect();
     };
   }, []);
-
 
   useEffect(() => {
     axios
