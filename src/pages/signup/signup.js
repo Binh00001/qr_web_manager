@@ -8,21 +8,29 @@ import { useIsAdminContext } from "~/App";
 
 const cx = classNames.bind(styles);
 
-function Login() {
-  const signIn = useSignIn();
+function Signup() {
   const navigate = useNavigate();
   const [listCashier, setListCashier] = useState([]);
   const [isSignUp, setIsSignUp] = useState(true);
   const [isOverlay, setIsOverlay] = useState(false);
-  const [isChangePasswordPopup, setIsChangePasswordPopup] = useState(false)
-  const [isDeleteAccountPopup, setIsDeleteAccountPopup] = useState(false)
+  const [isChangePasswordPopup, setIsChangePasswordPopup] = useState(false);
+  const [isDeleteAccountPopup, setIsDeleteAccountPopup] = useState(false);
   const [isAccountManager, setIsAccountManager] = useState(false);
-  const [chooseAccountName ,setChooseAccountName] = useState('');
-
+  const [chooseAccountName, setChooseAccountName] = useState("");
+  const [reload, setReload] = useState(true);
+  const [deleteAccId, setDeleteAccId] = useState("");
+  const [updateAccId, setUpdateAccId] = useState("");
   const isAdmin = useIsAdminContext();
   const [formData, setFormData] = useState({
     cashierName: "",
+    name: "",
     password: "",
+  });
+  const [updateFormData, setUpdateFormData] = useState({
+    cashierName: "",
+    name: "",
+    oldPassword: "",
+    newPassword: "",
   });
 
   const token = localStorage.getItem("token") || [];
@@ -41,16 +49,18 @@ function Login() {
       .get(`${process.env.REACT_APP_API_URL}/cashier/all`, config)
       .then((response) => {
         // setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
-        setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
+        setListCashier(
+          response.data.filter((name) => name.cashierName !== "admin")
+        );
       })
       .catch((error) => {
         console.log(error);
       });
+  }, [reload]);
 
-  }, [])
-
-  const handleSignUpSubmit = async (e) => {
-    if (!formData.userName) {
+  const handleSignUpSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.name) {
       return console.log("Hãy Nhập tên người dùng");
     }
     if (!formData.cashierName) {
@@ -60,49 +70,93 @@ function Login() {
       return console.log("Hãy Nhập mật khẩu");
     }
     if (formData.password !== formData.reEnterPassword) {
-      console.log("Mật khẩu không khớp");
+      return console.log("Mật khẩu không khớp");
     } else {
       console.log("Gửi form");
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/cashier-auth/register`,
+          formData
+        )
+        .then((response) => {
+          if (response.data === "CashierName Existed!") {
+            // setIsExisted(true);
+            console.log("CashierName Existed!");
+          } else {
+            console.log("Tao thanh cong");
+            setReload(!reload);
+            // setFormData({
+            //   cashierName: "",
+            //   name: "",
+            //   password: "",
+            // });
+            // setIsCreated(true);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        `http://117.4.194.207:3003/cashier-auth/login`,
-        formData
-      );
-      const { accessToken, refreshToken } = response.data;
-      if (!formData.cashierName || !formData.password) {
-        return;
-      }
-      if (!response.data) {
-        return alert("sai pass");
-      }
-      signIn({
-        token: accessToken,
-        tokenType: "Bearer",
-        expiresIn: 10,
-        authState: {
-          cashierName: formData.cashierName,
-        },
-        refreshToken: refreshToken,
-        refreshTokenExpireIn: 10,
-      });
-      navigate("/");
-      window.location.reload();
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        console.log(error.response);
-        return;
-      } else {
+  const handleDeleteSubmit = () => {
+    axios
+      .delete(
+        `${process.env.REACT_APP_API_URL}/cashier/delete/${deleteAccId}`,
+        config
+      )
+      .then((response) => {
+        if (response.data === false) {
+          console.log("Xóa không thành công");
+        } else {
+          console.log("Xóa thành cong");
+          setReload(!reload);
+          setDeleteAccId("");
+        }
+      })
+      .catch((error) => {
         console.log(error);
-        return error;
-      }
-    }
+      });
   };
 
+  const handleUpdateSubmit = () => {
+    console.log(updateFormData);
+    if (!updateFormData.oldPassword) {
+      return console.log("Hãy Nhập mật khẩu");
+    }
+    if (updateFormData.newPassword || updateFormData.reNewPassword) {
+      if (updateFormData.newPassword !== updateFormData.reNewPassword) {
+        return console.log("Mật khẩu không khớp");
+      }
+    }
+    axios
+      .put(
+        `${process.env.REACT_APP_API_URL}/cashier/update/${updateAccId}`,
+        updateFormData,
+        config
+      )
+      .then((response) => {
+        if (response.data === false) {
+          console.log("Cập nhật không thành công");
+        } else if (response.data === "Wrong password") {
+          console.log("Sai mật khẩu");
+        } else if (response.data === true) {
+          console.log("cập nhật thành cong");
+          setReload(!reload);
+          setUpdateAccId("");
+          // setUpdateFormData({
+          //   cashierName: "",
+          //   name: null,
+          //   oldPassword: "",
+          //   newPassword: null,
+          // });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  console.log(updateFormData);
   const handleSignUpClick = () => {
     setIsSignUp(true);
     setIsAccountManager(false);
@@ -113,33 +167,53 @@ function Login() {
     setIsAccountManager(true);
   };
 
-  const handleChangePassword = (value) => {
+  const handleChangePassword = (user) => {
     setIsOverlay(true);
     setIsChangePasswordPopup(true);
-    setChooseAccountName(value);
+    setChooseAccountName(user.cashierName);
+    setUpdateAccId(user.id);
+    setUpdateFormData({
+      ...updateFormData,
+      cashierName: user.cashierName,
+    });
   };
 
-
-  const handleDeleteAccount = () => {
-    setIsOverlay(true)
-    setIsDeleteAccountPopup(true)
+  const handleDeleteAccount = (id) => {
+    setIsOverlay(true);
+    setIsDeleteAccountPopup(true);
+    setDeleteAccId(id);
   };
+  console.log(deleteAccId);
 
   const handleOverlayClick = () => {
-    setIsOverlay(false)
-    setIsChangePasswordPopup(false)
-    setIsDeleteAccountPopup(false)
-  }
+    setIsOverlay(false);
+    setUpdateFormData({
+      cashierName: "",
+      name: "",
+      oldPassword: "",
+      newPassword: "",
+    });
+    setIsChangePasswordPopup(false);
+    setIsDeleteAccountPopup(false);
+  };
 
   return (
     <div className={cx("lgWrapper")}>
-      {isOverlay && <div className="darkOverlay" onClick={() => handleOverlayClick()}></div>}
+      {isOverlay && (
+        <div className="darkOverlay" onClick={() => handleOverlayClick()}></div>
+      )}
       <div className={cx("blackBar")}>
         <div className={cx("TopBar")}>
           <div className={cx("mTopBar")}>
-            <div className="spTitle" onClick={() => handleSignUpClick()}>Đăng Kí</div>
-            <div className="spTitle" onClick={() => handleAccountManagerClick()}>Quản Lý Tài Khoản</div>
-
+            <div className="spTitle" onClick={() => handleSignUpClick()}>
+              Đăng Kí
+            </div>
+            <div
+              className="spTitle"
+              onClick={() => handleAccountManagerClick()}
+            >
+              Quản Lý Tài Khoản
+            </div>
           </div>
         </div>
       </div>
@@ -159,7 +233,7 @@ function Login() {
           {isSignUp && (
             <Fragment>
               <div className={cx("spRightContainer")}>
-                <form className={cx("spBox")} onSubmit={handleSubmit}>
+                <form className={cx("spBox")} onSubmit={handleSignUpSubmit}>
                   <div className={cx("spUserNameBox")}>
                     <input
                       required
@@ -169,8 +243,8 @@ function Login() {
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          userName: e.target.value,
-                          //   cashierName: e.target.value,
+                          // userName: e.target.value,
+                          name: e.target.value,
                         })
                       }
                     ></input>
@@ -238,47 +312,94 @@ function Login() {
           {isAccountManager && (
             <Fragment>
               <div className={cx("amWrapper")}>
-                {listCashier
-                  .map((user, index) => (
-                    <div className={cx("amItem")} key={index}>
-                      <div className={cx("amLeft")}>
-                        <div className={cx("amItemInfo")}>Tên Chi Nhánh: {user.name}</div>
-                        <div className={cx("amItemInfo")}>Tên Đăng Nhập: {user.cashierName}</div>
+                {listCashier.map((user, index) => (
+                  <div className={cx("amItem")} key={index}>
+                    <div className={cx("amLeft")}>
+                      <div className={cx("amItemInfo")}>
+                        Tên Chi Nhánh: {user.name}
                       </div>
-                      <div className={cx("amRight")}>
-                        <button className={cx("amChangePassword")} onClick={() => handleChangePassword(user.cashierName)}>Đổi Mật Khẩu</button>
-                        <button className={cx("amDeleteAccount")} onClick={() => handleDeleteAccount()}>Xoá Tài Khoản</button>
+                      <div className={cx("amItemInfo")}>
+                        Tên Đăng Nhập: {user.cashierName}
                       </div>
                     </div>
-                  ))}
+                    <div className={cx("amRight")}>
+                      <button
+                        className={cx("amChangePassword")}
+                        onClick={() => handleChangePassword(user)}
+                      >
+                        Đổi Mật Khẩu
+                      </button>
+                      <button
+                        className={cx("amDeleteAccount")}
+                        onClick={() => handleDeleteAccount(user.id)}
+                      >
+                        Xoá Tài Khoản
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </Fragment>
           )}
-          {(isAccountManager && isChangePasswordPopup) && (
+          {isAccountManager && isChangePasswordPopup && (
             <Fragment>
               <div className={cx("cppWrapper")}>
-                <div className={cx("ccpChoosedName")}>Tài Khoản: {chooseAccountName}</div>
+                <div className={cx("ccpChoosedName")}>
+                  Tài Khoản: {chooseAccountName}
+                </div>
                 <input
                   className={cx("cppName")}
                   placeholder="Nhập Tên Mới (Không Bắt Buộc)"
+                  onChange={(e) =>
+                    setUpdateFormData({
+                      ...updateFormData,
+                      name: e.target.value,
+                    })
+                  }
                 ></input>
                 <input
                   className={cx("cppOldPass")}
                   placeholder="Nhập Mật Khẩu Cũ"
+                  type="password"
+                  onChange={(e) =>
+                    setUpdateFormData({
+                      ...updateFormData,
+                      oldPassword: e.target.value,
+                    })
+                  }
                 ></input>
                 <input
                   className={cx("cppNewPass")}
                   placeholder="Nhập Mật Khẩu Mới"
+                  type="password"
+                  onChange={(e) =>
+                    setUpdateFormData({
+                      ...updateFormData,
+                      newPassword: e.target.value,
+                    })
+                  }
                 ></input>
                 <input
                   className={cx("cppNewPassCheck")}
                   placeholder="Nhập Lại Mật Khẩu"
+                  type="password"
+                  onChange={(e) =>
+                    setUpdateFormData({
+                      ...updateFormData,
+                      reNewPassword: e.target.value,
+                    })
+                  }
                 ></input>
-                <button className={cx("cppSubbmitButton")}>Xác Nhận</button>
+                <button
+                  className={cx("cppSubbmitButton")}
+                  onClick={handleUpdateSubmit}
+                >
+                  Xác Nhận
+                </button>
               </div>
             </Fragment>
           )}
-          {(isAccountManager && isDeleteAccountPopup) && (
+          {isAccountManager && isDeleteAccountPopup && (
             <Fragment>
               <div className={cx("cppWrapper")}>
                 <div className={cx("cppNote")}>
@@ -288,9 +409,13 @@ function Login() {
                 </div>
                 <div className={cx("cppButtonGroup")}>
                   <button className={cx("cppCancelButton")}>Huỷ</button>
-                  <button className={cx("cppConfirmButton")}>Xác Nhận</button>
+                  <button
+                    className={cx("cppConfirmButton")}
+                    onClick={handleDeleteSubmit}
+                  >
+                    Xác Nhận
+                  </button>
                 </div>
-
               </div>
             </Fragment>
           )}
@@ -300,4 +425,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Signup;
