@@ -215,7 +215,7 @@ function Bill() {
                     </div>
                   )}
                 </div>
-                <input id="subbmitButton" type="submit" onClick={(event) => handleDate(event)} />
+                <button id="subbmitButton" onClick={(event) => handleDate(event)}>Subbmit</button>
               </div>
               <div className={cx("bText")}>
                 <div className={cx("bTotalIncome")}>Doanh Thu: {totalIncome.toLocaleString()} vnđ</div>

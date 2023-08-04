@@ -30,7 +30,9 @@
         align-self: center;
         position: relative;
         font-size: 1.3rem;
-        margin: 0 15px;
+        margin: 0 10px;
+        padding: 20px 10px;
+        border-radius: 10px;
         cursor: pointer;
         &:hover {
           color: #009ef7;
@@ -47,6 +49,10 @@
         .redDotHided{
           display: none;
         }
+      }
+      .dItem:active{
+        background-color: #000;
+        color: #fff;
       }
     }
 
@@ -69,7 +75,7 @@
         font-size: 0.7rem;
         // border-bottom: 1px solid ;
         // text-decoration: underline;
-        margin-top: 1.2vh;
+        // margin-top: 1.2vh;
         border: none;
         background-color: #f04d4d;
         padding: 5px 10px;
