@@ -6,22 +6,14 @@ import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
 import TableManager from "~/pages/TableMananger/TableManager";
-<<<<<<< HEAD
 import Test from "~/components/loadingScreen/loadingScreen"
 import CreateBill from "~/pages/CreateBill";
 import Cart from "~/pages/Cart"
-
-=======
-
-import Test from "~/components/loadingScreen/loadingScreen";
->>>>>>> 6b3dfea8e4f831edec6304ac366f39313acaa9aa
-
 import { RequireAuth, useSignOut } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
 import { useEffect } from "react";
 import io from "socket.io-client";
-
 
 function MainRoutes() {
   const signOut = useSignOut();
@@ -85,7 +77,6 @@ function MainRoutes() {
         />
         <Route
           path={"/menu"}
-<<<<<<< HEAD
           element={<RequireAuth loginPath={"/login"}>
             <DefaultLayout>
               <Menu />
@@ -105,16 +96,6 @@ function MainRoutes() {
               <Cart />
             </DefaultLayout>
           </RequireAuth>} />
-=======
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Menu />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-        />
->>>>>>> 6b3dfea8e4f831edec6304ac366f39313acaa9aa
         <Route
           path={"/hidden-menu"}
           element={
