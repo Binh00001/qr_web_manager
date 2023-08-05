@@ -1,0 +1,37 @@
+.cartTopBar{
+    width: 90%;
+    margin: 0 auto;
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+    div{
+        padding: 10px;
+        background-color: #fff;
+        color: black;
+        border-radius: 10px;
+    }
+}
+.cartWrapper{
+    .cartItem{
+        background-color:#bdc3c7;
+        display: flex;
+        margin:20px 20px;
+        border-radius: 10px;
+        .imageBorder{
+            img{
+                height: 150px;
+                width: 200px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin: 10px;
+            }
+        }
+        .infoBox{
+            margin: 20px 20px;
+            font-size: 1.2rem;
+            div{
+                padding: 3px;
+            }
+        }
+    }
+}

@@ -6,9 +6,9 @@ import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
 import TableManager from "~/pages/TableMananger/TableManager";
-
-import Test from "~/components/loadingScreen/loadingScreen";
-
+import Test from "~/components/loadingScreen/loadingScreen"
+import CreateBill from "~/pages/CreateBill";
+import Cart from "~/pages/Cart"
 import { RequireAuth, useSignOut } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
@@ -77,14 +77,25 @@ function MainRoutes() {
         />
         <Route
           path={"/menu"}
-          element={
-            <RequireAuth loginPath={"/login"}>
-              <DefaultLayout>
-                <Menu />
-              </DefaultLayout>
-            </RequireAuth>
-          }
-        />
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <Menu />
+            </DefaultLayout>
+          </RequireAuth>} />
+          <Route
+          path={"/createbill"}
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <CreateBill />
+            </DefaultLayout>
+          </RequireAuth>} />
+          <Route
+          path={"/cart"}
+          element={<RequireAuth loginPath={"/login"}>
+            <DefaultLayout>
+              <Cart />
+            </DefaultLayout>
+          </RequireAuth>} />
         <Route
           path={"/hidden-menu"}
           element={
