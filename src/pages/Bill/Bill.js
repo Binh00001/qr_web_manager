@@ -19,10 +19,12 @@ function Bill() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
   const navigate = useNavigate();
+  const currentDate = new Date();
+  const [datePush, setDatePush] = useState(currentDate);
+  const [reload, setReload] = useState(true);
 
   const isAdmin = useIsAdminContext();
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
-  const currentDate = new Date();
 
   const completedCarts = listCart.filter((cart) => cart.status === "COMPLETED");
   const totalIncome = completedCarts.reduce(
@@ -53,25 +55,57 @@ function Bill() {
       });
   }, []);
 
+  const handleDateChange = (event) => {
+    setDatePush(event.target.value);
+    // setSelectedDate(event.target.value);
+  };
+
   const handleDate = (event) => {
     event.preventDefault();
-    const date = document.getElementById("billDay").value;
-
+    setDateCart([]);
     // Convert the input value to a Date object
-    const inputDate = new Date(date);
-
+    const inputDate = new Date(datePush);
     // Extract the day, month, and year components
     const day = inputDate.getDate();
     const month = inputDate.getMonth() + 1; // Months are zero-based, so add 1
     const year = inputDate.getFullYear();
-
     // Create the formatted date string
     const formattedDate = `${day}/${month}/${year}`;
     if (selectedCashierName !== "") {
+      console.log(selectedCashierName);
+      const selectedCashier = listCashier.find(
+        (cashier) => cashier.cashierName === selectedCashierName
+      );
+      if (selectedCashier) {
+        const cashierId = selectedCashier.id;
+        axios
+          .get(
+            `http://117.4.194.207:3003/cart/menu/allByCashier/${cashierId}?date=${formattedDate}`
+            // config
+          )
+          .then((response) => {
+            setIsSubmited(true);
+            console.log(response);
+            if (
+              response.data.length === 0 ||
+              response.data === "No carts created"
+            ) {
+              setIsEmpty(true);
+            } else {
+              setDateCart(response.data);
+              setIsEmpty(false);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    } else {
+      console.log(formattedDate);
       axios
         .get(
-          `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedDate}`,
-          config
+          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedDate}`
+          // config
         )
         .then((response) => {
           setIsSubmited(true);
@@ -94,68 +128,57 @@ function Bill() {
   // console.log(listCart);
 
   useEffect(() => {
-    const fetchData = () => {
-      const day = currentDate.getDate();
-      const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-      const year = currentDate.getFullYear();
-      // Create the formatted date string
-      const formattedCurrentDate = `${day}/${month}/${year}`;
-      console.log(formattedCurrentDate);
-      if (selectedCashierName === "") {
-        axios
-          .get(
-            `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
-          )
-          .then((response) => {
-            console.log(response);
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+    const year = currentDate.getFullYear();
+    // Create the formatted date string
+    const formattedCurrentDate = `${day}/${month}/${year}`;
+    if (selectedCashierName === "") {
+      axios
+        .get(
+          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
+        )
+        .then((response) => {
+          console.log(response);
 
-            if (response.data === "No carts created") {
-              setListCart([]);
-            } else {
-              setListCart(response.data);
-            }
-            // if (response.data.length === 0) {
-            //   setIsTodayEmpty(true)
-            // } else {
-            //   setIsTodayEmpty(false)
-            // }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      if (selectedCashierName !== "") {
-        axios
-          .get(
-            `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`,
-            config
-          )
-          .then((response) => {
-            setIsSubmited(true);
-            if (
-              response.data.length === 0 ||
-              response.data === "No carts created"
-            ) {
-              setIsEmpty(true);
-            } else {
-              setDateCart(response.data);
-              setIsEmpty(false);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-    fetchData();
-    const interval = setInterval(() => {
-      fetchData();
-    }, 30000);
-    return () => {
-      clearInterval(interval);
-    };
+          if (response.data === "No carts created") {
+            setListCart([]);
+          } else {
+            setListCart(response.data);
+          }
+          // if (response.data.length === 0) {
+          //   setIsTodayEmpty(true)
+          // } else {
+          //   setIsTodayEmpty(false)
+          // }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    // if (selectedCashierName !== "") {
+    //   axios
+    //     .get(
+    //       `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`
+    //       // config
+    //     )
+    //     .then((response) => {
+    //       setIsSubmited(true);
+    //       if (
+    //         response.data.length === 0 ||
+    //         response.data === "No carts created"
+    //       ) {
+    //         setIsEmpty(true);
+    //       } else {
+    //         setDateCart(response.data);
+    //         setIsEmpty(false);
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // }
   }, []);
-
   let displayCart = [];
   if (!isSubmited) {
     displayCart = listCart;
@@ -181,7 +204,12 @@ function Bill() {
             <div className={cx("mTopBar")}>
               <div className={cx("bText")}>
                 <label for="billDay">Chọn Ngày</label>
-                <input type="date" id="billDay" name="billDay" />
+                <input
+                  type="date"
+                  id="billDay"
+                  name="billDay"
+                  onChange={handleDateChange}
+                />
               </div>
               <div className={cx("bText")}>
                 <div className={cx("dropdown")} onClick={toggleDropdown}>

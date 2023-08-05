@@ -42,13 +42,13 @@ function App() {
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
-      if (!isAdmin) {
+      if (isAdmin === "cashier") {
         playSound();
         setNewPing(response);
       }
     });
     socket.on("newCart", (response) => {
-      if (!isAdmin) {
+      if (isAdmin === "cashier") {
         playSound();
         setNewPing(response);
       }
