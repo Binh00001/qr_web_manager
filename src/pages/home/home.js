@@ -15,14 +15,12 @@ const cx = classNames.bind(styles);
 function Home() {
   const [requests, setRequests] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
-  const [isNewRequest, setIsNewRequest] = useState([]);
+  const [reload, setReload] = useState(false);
   const [listCart, setListCart] = useState([]);
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
-  const currentDate = new Date();
-
   const navigate = useNavigate();
-
+  const currentDate = new Date();
   const isAdmin = useIsAdminContext();
 
   const areRequestsOrListTenMinEmpty = () => {
@@ -38,11 +36,17 @@ function Home() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
 
     socket.on("newCallStaff", (response) => {
-      setIsNewRequest(response);
+      console.log(response);
+      setReload(!reload);
+    });
+    socket.on("newCart", (response) => {
+      console.log(response);
+      setReload(!reload);
     });
   }, []);
 
@@ -52,7 +56,6 @@ function Home() {
     }
   }, [isAdmin, navigate]);
 
-
   useEffect(() => {
     const fetchData = () => {
       const day = currentDate.getDate();
@@ -61,8 +64,11 @@ function Home() {
 
       const formattedCurrentDate = `${day}/${month}/${year}`;
       axios
-        .get(`${process.env.REACT_APP_API_URL}/cart/menu/all?date=${formattedCurrentDate}`)
+        .get(
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?date=${formattedCurrentDate}`
+        )
         .then((response) => {
+          console.log(response.data);
           setListCart(response.data);
           // console.log(response.data);
           // if (response.data.length === 0) {
@@ -82,7 +88,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, [cartStatusChange]);
+  }, [cartStatusChange, reload]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -113,7 +119,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, [isNewRequest]);
+  }, [reload]);
 
   useEffect(() => {
     if (areRequestsOrListTenMinEmpty()) {
@@ -156,13 +162,15 @@ function Home() {
     setShowContent(true);
   }, [requests]);
 
-
   const removeRedDot = (request) => {
     if (requests.length > 0 && request) {
-      const createdAt = request.createdAt || moment().format("DD/MM/YYYY, HH:mm:ss");
+      const createdAt =
+        request.createdAt || moment().format("DD/MM/YYYY, HH:mm:ss");
       const requestTime = moment(createdAt, "DD/MM/YYYY, HH:mm:ss");
       const currentTime = moment();
-      const timeDifference = moment.duration(currentTime.diff(requestTime)).asMinutes();
+      const timeDifference = moment
+        .duration(currentTime.diff(requestTime))
+        .asMinutes();
 
       // Check if the request is in the list of read requests
       return timeDifference <= 1 && !readRequestIds.includes(request._id);
@@ -173,7 +181,7 @@ function Home() {
   const handleNotificationClick = (request) => {
     // Add the request ID to the list of read requests
     setReadRequestIds((prevIds) => [...prevIds, request._id]);
-  }
+  };
 
   const isWithin10Minutes = (createdAt) => {
     const requestTime = moment(createdAt, "DD/MM/YYYY, HH:mm:ss");
@@ -187,10 +195,14 @@ function Home() {
 
   const handleSetDoneBill = (cartId) => {
     axios
-      .put(`${process.env.REACT_APP_API_URL}/cart/status/${cartId}`, { status: "COMPLETED" }, config)
+      .put(
+        `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
+        { status: "COMPLETED" },
+        config
+      )
       .then((response) => {
         console.log("Cart marked as complete:", response.data);
-        setCartStatusChange(!cartStatusChange)
+        setCartStatusChange(!cartStatusChange);
       })
       .catch((error) => {
         console.error(error);
@@ -199,24 +211,26 @@ function Home() {
 
   const handleSetCancelBill = (cartId) => {
     axios
-      .put(`${process.env.REACT_APP_API_URL}/cart/status/${cartId}`, { status: "CANCEL" }, config)
+      .put(
+        `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
+        { status: "CANCEL" },
+        config
+      )
       .then((response) => {
         console.log("Cart marked as complete:", response.data);
-        setCartStatusChange(!cartStatusChange)
+        setCartStatusChange(!cartStatusChange);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-
   return (
     <Fragment>
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
-            <div className={cx("hLeftContainer")}>
-            </div>
+            <div className={cx("hLeftContainer")}></div>
             <div className={cx("hRightContainer")}>
               <div className={cx("hText")}>
                 Quản Lý Yêu Cầu(ẩn sau 10 phút):
@@ -247,40 +261,47 @@ function Home() {
                         </div>
                         <div className={cx("hItemQuantity")}>B</div>
                       </div>
-
                     </div>
                     <div className={cx("hItemDetailWrapper")}>
                       <div className={cx("hItemDetail")}>
-                        <div className={cx("hItemBuyerName")}>Khách Hàng: BBBBB</div>
+                        <div className={cx("hItemBuyerName")}>
+                          Khách Hàng: BBBBB
+                        </div>
                         <div className={cx("hItemTable")}>Bàn: B</div>
                         <div className={cx("hItemTime")}>
-                          Thời Gian Tạo: <span style={{ color: "#f04d4d" }}>B:BB BB</span>
+                          Thời Gian Tạo:{" "}
+                          <span style={{ color: "#f04d4d" }}>B:BB BB</span>
                         </div>
-                        <div className={cx("hItemStatus")}>Trạng Thái:
+                        <div className={cx("hItemStatus")}>
+                          Trạng Thái:
                           {/* {cart.status === "IN_PROGRESS" && (<span style={{ color: "#3498db" }}>Đang Chờ</span>)} */}
                           {/* {cart.status === "COMPLETED" && (<span style={{ color: "#2ecc71" }}>Đã Xong</span>)} */}
                           {/* {cart.status === "CANCEL" && (<span style={{ color: "#f04d4d", textDecoration: "line-through" }}>Đã Huỷ</span>)} */}
                         </div>
                       </div>
                       <div className={cx("hItemTotalPrice")}>
-                        Tổng Tiền: <span style={{ color: "#f04d4d" }}>BBBBBBBB vnđ</span>
+                        Tổng Tiền:{" "}
+                        <span style={{ color: "#f04d4d" }}>BBBBBBBB vnđ</span>
                       </div>
                     </div>
 
                     <div className={cx("hItemButtonGroup")}>
                       <div className={cx("")}>
-                        <button className={cx("cancelBillButton")}>Huỷ Đơn</button>
+                        <button className={cx("cancelBillButton")}>
+                          Huỷ Đơn
+                        </button>
                       </div>
                       <div className={cx("")}>
-                        <button className={cx("readyBillButton")}>Hoàn Thành</button>
+                        <button className={cx("readyBillButton")}>
+                          Hoàn Thành
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </Fragment>
-
             )}
-            {(listCart.length !== 0 && listCart !== "No carts created") &&
+            {listCart.length !== 0 && listCart !== "No carts created" && (
               <div className={cx("hListBill")}>
                 {listCart.map((cart, index) => (
                   <Fragment key={index}>
@@ -289,33 +310,66 @@ function Home() {
                         <div className={cx("hItemInfo")}>
                           <div className={cx("hItemTitleName")}>Tên Món</div>
                           <div className={cx("hItemTitleOption")}>Tuỳ Chọn</div>
-                          <div className={cx("hItemTitleQuantity")}>Số Lượng</div>
+                          <div className={cx("hItemTitleQuantity")}>
+                            Số Lượng
+                          </div>
                         </div>
                         {cart.order.map((order, orderIndex) => (
                           <div className={cx("hItemInfo")} key={orderIndex}>
-                            <div className={cx("hItemName")}>{order.dish_name}</div>
+                            <div className={cx("hItemName")}>
+                              {order.dish_name}
+                            </div>
                             <div className={cx("hItemOption")}>
                               <span>{order.options}</span>
                             </div>
-                            <div className={cx("hItemQuantity")}>{order.number}</div>
+                            <div className={cx("hItemQuantity")}>
+                              {order.number}
+                            </div>
                           </div>
                         ))}
                       </div>
                       <div className={cx("hItemDetailWrapper")}>
                         <div className={cx("hItemDetail")}>
-                          <div className={cx("hItemBuyerName")}>Khách Hàng: {cart.customer_name}</div>
-                          <div className={cx("hItemTable")}>Bàn: {cart.table}</div>
-                          <div className={cx("hItemTime")}>
-                            Thời Gian Tạo: <span style={{ color: "#f04d4d" }}>{moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format("HH:mm A")}</span>
+                          <div className={cx("hItemBuyerName")}>
+                            Khách Hàng: {cart.customer_name}
                           </div>
-                          <div className={cx("hItemStatus")}>Trạng Thái:
-                            {cart.status === "IN_PROGRESS" && (<span style={{ color: "#3498db" }}>Đang Chờ</span>)}
-                            {cart.status === "COMPLETED" && (<span style={{ color: "#2ecc71" }}>Đã Xong</span>)}
-                            {cart.status === "CANCEL" && (<span style={{ color: "#f04d4d", textDecoration: "line-through" }}>Đã Huỷ</span>)}
+                          <div className={cx("hItemTable")}>
+                            Bàn: {cart.table}
+                          </div>
+                          <div className={cx("hItemTime")}>
+                            Thời Gian Tạo:{" "}
+                            <span style={{ color: "#f04d4d" }}>
+                              {moment(
+                                cart.createAt,
+                                "DD/MM/YYYY, HH:mm:ss"
+                              ).format("HH:mm A")}
+                            </span>
+                          </div>
+                          <div className={cx("hItemStatus")}>
+                            Trạng Thái:
+                            {cart.status === "IN_PROGRESS" && (
+                              <span style={{ color: "#3498db" }}>Đang Chờ</span>
+                            )}
+                            {cart.status === "COMPLETED" && (
+                              <span style={{ color: "#2ecc71" }}>Đã Xong</span>
+                            )}
+                            {cart.status === "CANCEL" && (
+                              <span
+                                style={{
+                                  color: "#f04d4d",
+                                  textDecoration: "line-through",
+                                }}
+                              >
+                                Đã Huỷ
+                              </span>
+                            )}
                           </div>
                         </div>
                         <div className={cx("hItemTotalPrice")}>
-                          Tổng Tiền: <span style={{ color: "#f04d4d" }}>{cart.total.toLocaleString()} vnđ</span>
+                          Tổng Tiền:{" "}
+                          <span style={{ color: "#f04d4d" }}>
+                            {cart.total.toLocaleString()} vnđ
+                          </span>
                         </div>
                       </div>
                       {cart.status === "IN_PROGRESS" && (
@@ -324,23 +378,25 @@ function Home() {
                             <button
                               className={cx("cancelBillButton")}
                               onClick={() => handleSetCancelBill(cart._id)}
-                            >Huỷ Đơn</button>
+                            >
+                              Huỷ Đơn
+                            </button>
                           </div>
                           <div className={cx("")}>
                             <button
                               className={cx("readyBillButton")}
                               onClick={() => handleSetDoneBill(cart._id)}
-                            >Hoàn Thành</button>
+                            >
+                              Hoàn Thành
+                            </button>
                           </div>
                         </div>
-
                       )}
                     </div>
                   </Fragment>
                 ))}
               </div>
-            }
-
+            )}
           </div>
           <div className={cx("hRightContainer")}>
             <div className={cx("hAllNotification")}>
@@ -355,7 +411,8 @@ function Home() {
                   <div
                     key={index}
                     className={cx("hNotification")}
-                    onClick={() => handleNotificationClick(request)}>
+                    onClick={() => handleNotificationClick(request)}
+                  >
                     <div className={cx("hInfo")}>
                       <div>Bàn {request.table}</div>
                       <div>{request.customer_name}</div>
@@ -381,4 +438,3 @@ function Home() {
 }
 
 export default Home;
-

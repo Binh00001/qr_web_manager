@@ -1,20 +1,35 @@
 import classNames from "classnames";
 import styles from "~/pages/Login/Login.scss";
 import { useNavigate } from "react-router-dom";
-import { useSignIn } from "react-auth-kit";
+import { useSignIn, useSignOut } from "react-auth-kit";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useIsAuthenticated } from "react-auth-kit";
 
 const cx = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate();
   const signIn = useSignIn();
-
+  const signOut = useSignOut();
   const [formData, setFormData] = useState({
     cashierName: "",
     password: "",
   });
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const cashierInfo = JSON.parse(localStorage.getItem("token_state"));
+      if (cashierInfo) {
+        if (cashierInfo.cashierName === "admin") {
+          navigate("/bill");
+        } else {
+          navigate("/");
+        }
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,13 +48,13 @@ function Login() {
       signIn({
         token: accessToken,
         tokenType: "Bearer",
-        expiresIn: 20,
+        expiresIn: 70,
         authState: {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
         },
         refreshToken: refreshToken,
-        refreshTokenExpireIn: 60,
+        refreshTokenExpireIn: 600,
       });
       if (cashier.cashierName === "admin") {
         navigate("/bill");
