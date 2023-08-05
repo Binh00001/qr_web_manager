@@ -1,0 +1,121 @@
+.cbTopBar{
+    width: 100%;
+    display: flex;
+    align-self: center;
+    justify-content: space-around;
+}
+.inputContainer{
+    border-radius: 10px;
+    position: fixed;
+    z-index: 50;
+    background-color: #fff;
+    height: 200px;
+    width: 300px;
+    top: 40%;
+    left: calc(50% - 150px);
+    .inputGroup{
+        margin-top: 5px;
+        padding: 10px;
+        // margin-bottom: 2px;
+        input{
+            width: 95%;
+            padding: 5px;
+            font-size: 1.3rem;
+            border: 1px solid;
+            border-radius: 10px;
+        }
+    }
+    .buttonGroup{
+        display: flex;
+        width: 100%;
+        justify-content: space-around;
+        button{
+            border: none;
+            height: 50px;
+            width: 120px;
+            background-color: #f04d4d;
+            color:#fff;
+            border-radius: 10px;
+            font-size: 1.3rem;
+            // margin-left: calc(50% - 60px);
+            margin-top: 10px;
+        }
+    }
+   
+}
+.addFoodWrapper{
+    background-color: #fff;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    bottom: 0;
+    width: 100%;
+    z-index: 50;
+    height: min-content;
+    // min-height: 600px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top: 1px solid black;
+    .addFoodFlexBox{
+        display: flex;
+        margin: 10px 15px;
+        justify-content: space-between;
+        .addFoodImageBorder{
+            width: 270px;
+            height: 220px;
+            
+            img{
+                border-radius: 10px;
+                width: 270px;
+                height: 220px;
+                object-fit: cover;
+            }
+        }
+        .addFoodInfo{
+            width: 60%;
+            .addFoodName{
+                font-size: 2rem;
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+            .addFoodQuantity{
+                display: flex;
+                button{
+                    border: none;
+                    padding: 5px 10px;
+                    background-color: #f04d4d;
+                    border-radius: 5px;
+                    margin: 0 10px;
+                }
+            }
+        }
+    }
+    .addFoodOption{
+        // width: 90%;
+        margin: 20px 5%;
+        .optionCheck{
+            // margin: 1%;
+            padding: 5px;
+            border-bottom: 1px solid;
+            input{
+                margin-right: 8px;
+            }
+            label{
+                display:inline-block;
+                width: 90%;
+            }
+        }
+    }
+    .addFoodConfirmButton{
+        width: 200px;
+        height: 50px;
+        margin-left: calc(50% - 100px);
+        border: none;
+        background-color: #f04d4d;
+        color: #fff;
+        font-size: 1.8rem;
+        text-transform: capitalize;
+        border-radius: 10px;
+        margin: 2% auto;
+    }
+}
