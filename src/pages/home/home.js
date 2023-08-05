@@ -233,7 +233,8 @@ function Home() {
             <div className={cx("hLeftContainer")}></div>
             <div className={cx("hRightContainer")}>
               <div className={cx("hText")}>
-                Quản Lý Yêu Cầu(ẩn sau 10 phút):
+                 Yêu Cầu
+                (ẩn sau 10 phút):
               </div>
             </div>
           </div>
@@ -244,60 +245,6 @@ function Home() {
               <Fragment>
                 <div className={cx("NoCartsNotification")}>
                   Hiện Chưa Có Đơn
-                </div>
-                <div className={cx("hListBill")}>
-                  <div className={cx("hItem")}>
-                    <div className={cx("hItemContent")}>
-                      <div className={cx("hItemInfo")}>
-                        <div className={cx("hItemTitleName")}>Tên Món</div>
-                        <div className={cx("hItemTitleOption")}>Tuỳ Chọn</div>
-                        <div className={cx("hItemTitleQuantity")}>Số Lượng</div>
-                      </div>
-
-                      <div className={cx("hItemInfo")}>
-                        <div className={cx("hItemName")}>BBB BBBBB BBB BBB</div>
-                        <div className={cx("hItemOption")}>
-                          <span>BB BB</span>
-                        </div>
-                        <div className={cx("hItemQuantity")}>B</div>
-                      </div>
-                    </div>
-                    <div className={cx("hItemDetailWrapper")}>
-                      <div className={cx("hItemDetail")}>
-                        <div className={cx("hItemBuyerName")}>
-                          Khách Hàng: BBBBB
-                        </div>
-                        <div className={cx("hItemTable")}>Bàn: B</div>
-                        <div className={cx("hItemTime")}>
-                          Thời Gian Tạo:{" "}
-                          <span style={{ color: "#f04d4d" }}>B:BB BB</span>
-                        </div>
-                        <div className={cx("hItemStatus")}>
-                          Trạng Thái:
-                          {/* {cart.status === "IN_PROGRESS" && (<span style={{ color: "#3498db" }}>Đang Chờ</span>)} */}
-                          {/* {cart.status === "COMPLETED" && (<span style={{ color: "#2ecc71" }}>Đã Xong</span>)} */}
-                          {/* {cart.status === "CANCEL" && (<span style={{ color: "#f04d4d", textDecoration: "line-through" }}>Đã Huỷ</span>)} */}
-                        </div>
-                      </div>
-                      <div className={cx("hItemTotalPrice")}>
-                        Tổng Tiền:{" "}
-                        <span style={{ color: "#f04d4d" }}>BBBBBBBB vnđ</span>
-                      </div>
-                    </div>
-
-                    <div className={cx("hItemButtonGroup")}>
-                      <div className={cx("")}>
-                        <button className={cx("cancelBillButton")}>
-                          Huỷ Đơn
-                        </button>
-                      </div>
-                      <div className={cx("")}>
-                        <button className={cx("readyBillButton")}>
-                          Hoàn Thành
-                        </button>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </Fragment>
             )}

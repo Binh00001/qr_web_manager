@@ -118,7 +118,7 @@ function DefaultLayout({ children }) {
                 Thực Đơn
               </div>
               <div className={cx("dItem")} onClick={handleClickCreateBill}>
-                Tạo Hoá Đơn
+                Tạo Đơn
               </div>
             </Fragment>
 

@@ -44,9 +44,9 @@
   }
 
   .hRightContainer {
-    width: 33%;
+    width: 35%;
     display: flex;
-    margin-left: 1%;
+    // margin-left: 1%;
   }
 
   .nonActive {
@@ -231,7 +231,7 @@
 
   .hRightContainer {
     min-height: 730px;
-    width: 30%;
+    width: 35%;
     // overflow-y: scroll;
     padding-bottom: 50px;
 
@@ -242,6 +242,8 @@
       .hEmptyNotification {
         font-size: 1.2rem;
         margin-top: 15px;
+        margin-left: 10px;
+        margin-right: 10px;
       }
 
       .hNotification {
