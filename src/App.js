@@ -39,24 +39,31 @@ function App() {
         console.log(error);
       });
   }, []);
+
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
       if (isAdmin === "cashier") {
-        playSound();
-        setNewPing(response);
+        console.log(response);
+        if (response.cashier_id === cashierInfo.cashierId) {
+          playSound();
+          setNewPing(response);
+        }
       }
     });
     socket.on("newCart", (response) => {
       if (isAdmin === "cashier") {
-        playSound();
-        setNewPing(response);
+        if (response.cashier_id === cashierInfo.cashierId) {
+          playSound();
+          setNewPing(response);
+        }
       }
     });
+   
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
     axios

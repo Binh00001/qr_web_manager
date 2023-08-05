@@ -6,18 +6,50 @@ import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
 import TableManager from "~/pages/TableMananger/TableManager";
+<<<<<<< HEAD
 import Test from "~/components/loadingScreen/loadingScreen"
 import CreateBill from "~/pages/CreateBill";
 import Cart from "~/pages/Cart"
 
+=======
 
-import { RequireAuth } from "react-auth-kit";
+import Test from "~/components/loadingScreen/loadingScreen";
+>>>>>>> 6b3dfea8e4f831edec6304ac366f39313acaa9aa
+
+import { RequireAuth, useSignOut } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
-
+import { useEffect } from "react";
+import io from "socket.io-client";
 
 
 function MainRoutes() {
+  const signOut = useSignOut();
+  const token = localStorage.getItem("token");
+  const cashierInfo = JSON.parse(localStorage.getItem("token_state"));
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_API_URL);
+    if (token && cashierInfo) {
+      const handleTokenChange = (response) => {
+        if (response.cashier.id === cashierInfo.cashierId) {
+          if (response.token.accessToken !== token) {
+            alert("Tài khoản của bạn đã bị đăng nhập từ nơi khác");
+            signOut();
+          }
+        }
+      };
+      socket.on("anotherLogin", (response) => {
+        setTimeout(() => {
+          handleTokenChange(response);
+        }, 5000);
+      });
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [token, cashierInfo]);
+
   return (
     <BrowserRouter>
       {/* <div className="App"> */}
@@ -29,7 +61,8 @@ function MainRoutes() {
             <Login />
             // </DefaultLayout>
           }
-          exact />
+          exact
+        />
         <Route
           path={"/signup"}
           element={
@@ -37,17 +70,22 @@ function MainRoutes() {
               <Signup />
             </DefaultLayout>
           }
-          exact />
+          exact
+        />
         <Route
           path={"/"}
-          element={<RequireAuth loginPath={"/login"}>
-            <DefaultLayout>
-              <Home />
-            </DefaultLayout>
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <Home />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
         <Route
           path={"/menu"}
+<<<<<<< HEAD
           element={<RequireAuth loginPath={"/login"}>
             <DefaultLayout>
               <Menu />
@@ -67,46 +105,71 @@ function MainRoutes() {
               <Cart />
             </DefaultLayout>
           </RequireAuth>} />
+=======
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <Menu />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+        />
+>>>>>>> 6b3dfea8e4f831edec6304ac366f39313acaa9aa
         <Route
           path={"/hidden-menu"}
-          element={<RequireAuth loginPath={"/login"}>
-            <DefaultLayout>
-              <HiddenMenu />
-            </DefaultLayout>
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <HiddenMenu />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
         <Route
           path={"/addDish"}
-          element={<RequireAuth loginPath={"/login"}>
-            <DefaultLayout>
-              <AddDish />
-            </DefaultLayout>
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <AddDish />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
         <Route
           path={"/bill"}
-          element={<RequireAuth loginPath={"/login"}>
-            <DefaultLayout>
-              <Bill />
-            </DefaultLayout>
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <Bill />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
         <Route
           path={"/tableManager"}
-          element={<RequireAuth loginPath={"/login"}>
-            <DefaultLayout>
-              <TableManager />
-            </DefaultLayout>
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <TableManager />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
         <Route
           path={"/test"}
-          element={<RequireAuth loginPath={"/login"}>
-            {/* <DefaultLayout> */}
-            <Test />
-            {/* </DefaultLayout> */}
-          </RequireAuth>}
-          exact />
+          element={
+            <RequireAuth loginPath={"/login"}>
+              {/* <DefaultLayout> */}
+              <Test />
+              {/* </DefaultLayout> */}
+            </RequireAuth>
+          }
+          exact
+        />
       </Routes>
       {/* </div> */}
     </BrowserRouter>
