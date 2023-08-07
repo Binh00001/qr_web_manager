@@ -117,7 +117,7 @@
           display: grid;
           align-items: center;
 
-          &:hover {
+          &:active {
             background-color: #f04d4d;
             color: #fff;
             // font-size: 16px;
@@ -148,7 +148,7 @@
             border: none;
             text-align: center;
             display: grid;
-            &:hover {
+            &:active {
               background-color: #d80d0d;
             }
           }

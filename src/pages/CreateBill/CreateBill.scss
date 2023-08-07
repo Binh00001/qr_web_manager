@@ -3,6 +3,18 @@
     display: flex;
     align-self: center;
     justify-content: space-around;
+    align-items: center;
+    .cbCart{
+        // text-decoration:underline;
+        background-color: #fff;
+        padding: 10px;
+        color: #000;
+        border-radius: 10px;
+    }
+    .cbCart:active{
+        background-color: #1BAC4B;
+        color: #fff;
+    }
 }
 .inputContainer{
     border-radius: 10px;
@@ -29,6 +41,10 @@
         display: flex;
         width: 100%;
         justify-content: space-around;
+        :active{
+            background-color: #fff;
+            color: #f04d4d;
+        }
         button{
             border: none;
             height: 50px;

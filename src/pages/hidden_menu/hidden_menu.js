@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import axios from "axios";
 import classNames from "classnames";
 import styles from "~/pages/menu/menu.scss";
@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 
 function HiddenMenu() {
   const [listDish, setListDish] = useState([]);
-  const [type, setType] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [reload, setReload] = useState(false);
   const [obj, setObj] = useState({});
   const [detail, setDetail] = useState(false);
@@ -71,14 +71,33 @@ function HiddenMenu() {
       <div className={cx("mBody")}>
         <div className={cx("mNavBar")}></div>
         <div className={cx("mContent")}>
-          {(type === null
-            ? listDish
-            : type === "bestseller"
-            ? listDish.filter((dish) => dish.isBestSeller)
-            : listDish.filter((dish) => dish.category === type.name)
-          ).map((food, index) => (
+          {listDish.map((food, index) => (
             <div key={index} className={cx("mItem")}>
-              <div className={cx("mItemBox")}>
+              {selectedItem === index && (
+                <div className={cx("mHoverBox")}>
+                  <div
+                    className={cx("optionsHoverBox")}
+                    onClick={() => (setObj(food), setDetail(true))}
+                  >
+                    Chi tiết
+                  </div>
+
+                  <div
+                    className={cx("optionsHoverBox")}
+                    onClick={() => submitActiveDishHandler(food._id)}
+                  >
+                    Hiện món
+                  </div>
+                </div>
+              )}
+              <div
+                className={cx("mItemBox")}
+                onClick={() =>
+                  setSelectedItem(
+                    selectedItem === index ? null : index
+                  )
+                }
+              >
                 <div className={cx("mImageBorder")}>
                   <img src={food.image_detail.path} alt="FoodImage"></img>
                 </div>
@@ -93,22 +112,6 @@ function HiddenMenu() {
                   <div className={cx("mQuantity")}>Số lượng: {food.amount}</div>
                 </div>
               </div>
-              <div className={cx("mHoverBox")}>
-                <div
-                  className={cx("optionsHoverBox")}
-                  onClick={() => (setObj(food), setDetail(true))}
-                >
-                  Chi tiết
-                </div>
-
-                <div
-                  className={cx("optionsHoverBox")}
-                  onClick={() => submitActiveDishHandler(food._id)}
-                >
-                  {" "}
-                  Hiện món
-                </div>
-              </div>
             </div>
           ))}
         </div>
@@ -116,7 +119,6 @@ function HiddenMenu() {
       {detail && (
         <Fragment>
           <div onClick={cancelHandler} className="overlay"></div>
-          {/* <img className={cx("cancelIcon")} onClick={cancelHandler} src={xIcon} alt="X"></img> */}
           <Detail obj={obj} />
         </Fragment>
       )}

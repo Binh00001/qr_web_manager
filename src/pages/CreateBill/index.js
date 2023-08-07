@@ -218,7 +218,7 @@ function CreateBill() {
                         <div className={cx("cbTopBar")}>
                             <div className={cx("cbCustomerName")}>Tên Khách Hàng: {userName}</div>
                             <div className={cx("cbCustomerTable")}>Số Bàn: {tableName}</div>
-                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán</div>
+                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán: X Món</div>
                         </div>
                     </div>
                 </div>

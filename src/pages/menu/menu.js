@@ -102,6 +102,7 @@ function Menu() {
     setDetail(false);
   };
   const submitHideDishHandler = (id) => {
+    setSelectedItem()
     axios
       .put(
         `http://117.4.194.207:3003/dish/active/${id}`,
@@ -239,7 +240,7 @@ function Menu() {
                     className={cx("optionsHoverBox")}
                     onClick={() => submitHideDishHandler(food._id)}
                   >
-                    {" "}
+                    {/* {" "} */}
                     Ẩn món
                   </div>
                 </div>

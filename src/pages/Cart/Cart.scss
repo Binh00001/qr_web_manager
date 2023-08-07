@@ -10,6 +10,10 @@
         color: black;
         border-radius: 10px;
     }
+    div:active{
+        background-color: #1BAC4B;
+        color: #fff;
+    }
 }
 .cartWrapper{
     .cartItem{

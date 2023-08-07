@@ -17,6 +17,10 @@
   .hText {
     font-size: 1.2rem;
     align-self: center;
+    :active{
+      background-color: #1BAC4B;
+      color: #fff;
+    }
     // background-color: #FFF200;
     button{
       font-size: 1.2rem;
@@ -24,6 +28,7 @@
       padding: 8px 15px;
       border-radius: 10px;
     }
+
   }
 
   .hLeftContainer {
