@@ -21,6 +21,8 @@ function Home() {
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
   const [tableActive, setTableActive] = useState(false);
+  const [choosedTime, setChoosedTime] = useState("time=60");
+
   const navigate = useNavigate();
   const currentDate = new Date();
   const isAdmin = useIsAdminContext();
@@ -60,14 +62,9 @@ function Home() {
 
   useEffect(() => {
     const fetchData = () => {
-      const day = currentDate.getDate();
-      const month = currentDate.getMonth() + 1;
-      const year = currentDate.getFullYear();
-
-      const formattedCurrentDate = `${day}/${month}/${year}`;
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?date=${formattedCurrentDate}`
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?${choosedTime}`
         )
         .then((response) => {
           console.log(response.data);
@@ -90,7 +87,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, [cartStatusChange, reload]);
+  }, [cartStatusChange, reload, choosedTime]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -227,6 +224,22 @@ function Home() {
       });
   };
 
+  const handleGetTimeFilter = (value) => {
+    if (value) {
+      setChoosedTime(value)
+    } else {
+      const day = currentDate.getDate();
+      const month = currentDate.getMonth() + 1;
+      const year = currentDate.getFullYear();
+
+      const formattedCurrentDate = `${day}/${month}/${year}`;
+      setChoosedTime(`date=${formattedCurrentDate}`)
+    }
+  }
+
+  console.log(choosedTime);
+  console.log(listCart);
+
   return (
     <Fragment>
       <div className={cx("Wrapper")}>
@@ -261,6 +274,29 @@ function Home() {
           {!tableActive && (
             <Fragment>
               <div className={cx("hLeftContainer")}>
+                <nav className={cx("timeFilterBar")}>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: choosedTime === "time=60",
+                    })}
+                    onClick={() => { handleGetTimeFilter("time=60") }}>
+                    1 Giờ
+                  </button>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: choosedTime === "time=360",
+                    })}
+                    onClick={() => { handleGetTimeFilter("time=360") }}>
+                    6 Giờ
+                  </button>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: !choosedTime.startsWith("time="),
+                    })}
+                    onClick={() => { handleGetTimeFilter() }}>
+                    Hôm Nay
+                  </button>
+                </nav>
                 {(listCart === "No carts created" || listCart.length === 0) && (
                   <Fragment>
                     <div className={cx("NoCartsNotification")}>
