@@ -7,6 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
 import Loading from "~/components/loadingScreen/loadingScreen";
+import TableActive from "~/components/TableActive";
 import { useIsAdminContext } from "~/App";
 import "moment/locale/vi";
 
@@ -19,6 +20,7 @@ function Home() {
   const [listCart, setListCart] = useState([]);
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
+  const [tableActive, setTableActive] = useState(false);
   const navigate = useNavigate();
   const currentDate = new Date();
   const isAdmin = useIsAdminContext();
@@ -230,154 +232,180 @@ function Home() {
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
-            <div className={cx("hLeftContainer")}></div>
-            <div className={cx("hRightContainer")}>
+            <div className={cx("hLeftContainer")}>
               <div className={cx("hText")}>
-                 Yêu Cầu
-                (ẩn sau 10 phút):
+                {!tableActive &&
+                  <button onClick={() => { setTableActive(true) }}>
+                    Mở Quản Lý Bàn
+                  </button>
+                }
+                {tableActive &&
+                  <button onClick={() => { setTableActive(false) }}>
+                    Mở Quản Lý Hoá Đơn
+                  </button>
+                }
               </div>
+            </div>
+            <div className={cx("hRightContainer")}>
+              {!tableActive &&
+                <div className={cx("hText")}>
+                  Yêu Cầu
+                  (ẩn sau 10 phút):
+                </div>
+              }
+
             </div>
           </div>
         </div>
         <div className={cx("hBody")}>
-          <div className={cx("hLeftContainer")}>
-            {listCart === "No carts created" && (
-              <Fragment>
-                <div className={cx("NoCartsNotification")}>
-                  Hiện Chưa Có Đơn
-                </div>
-              </Fragment>
-            )}
-            {listCart.length !== 0 && listCart !== "No carts created" && (
-              <div className={cx("hListBill")}>
-                {listCart.map((cart, index) => (
-                  <Fragment key={index}>
-                    <div className={cx("hItem", cart.status)} key={index}>
-                      <div className={cx("hItemContent")}>
-                        <div className={cx("hItemInfo")}>
-                          <div className={cx("hItemTitleName")}>Tên Món</div>
-                          <div className={cx("hItemTitleOption")}>Tuỳ Chọn</div>
-                          <div className={cx("hItemTitleQuantity")}>
-                            Số Lượng
-                          </div>
-                        </div>
-                        {cart.order.map((order, orderIndex) => (
-                          <div className={cx("hItemInfo")} key={orderIndex}>
-                            <div className={cx("hItemName")}>
-                              {order.dish_name}
-                            </div>
-                            <div className={cx("hItemOption")}>
-                              <span>{order.options}</span>
-                            </div>
-                            <div className={cx("hItemQuantity")}>
-                              {order.number}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                      <div className={cx("hItemDetailWrapper")}>
-                        <div className={cx("hItemDetail")}>
-                          <div className={cx("hItemBuyerName")}>
-                            Khách Hàng: {cart.customer_name}
-                          </div>
-                          <div className={cx("hItemTable")}>
-                            Bàn: {cart.table}
-                          </div>
-                          <div className={cx("hItemTime")}>
-                            Thời Gian Tạo:{" "}
-                            <span style={{ color: "#f04d4d" }}>
-                              {moment(
-                                cart.createAt,
-                                "DD/MM/YYYY, HH:mm:ss"
-                              ).format("HH:mm A")}
-                            </span>
-                          </div>
-                          <div className={cx("hItemStatus")}>
-                            Trạng Thái:
-                            {cart.status === "IN_PROGRESS" && (
-                              <span style={{ color: "#3498db" }}>Đang Chờ</span>
-                            )}
-                            {cart.status === "COMPLETED" && (
-                              <span style={{ color: "#2ecc71" }}>Đã Xong</span>
-                            )}
-                            {cart.status === "CANCEL" && (
-                              <span
-                                style={{
-                                  color: "#f04d4d",
-                                  textDecoration: "line-through",
-                                }}
-                              >
-                                Đã Huỷ
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                        <div className={cx("hItemTotalPrice")}>
-                          Tổng Tiền:{" "}
-                          <span style={{ color: "#f04d4d" }}>
-                            {cart.total.toLocaleString()} vnđ
-                          </span>
-                        </div>
-                      </div>
-                      {cart.status === "IN_PROGRESS" && (
-                        <div className={cx("hItemButtonGroup")}>
-                          <div className={cx("")}>
-                            <button
-                              className={cx("cancelBillButton")}
-                              onClick={() => handleSetCancelBill(cart._id)}
-                            >
-                              Huỷ Đơn
-                            </button>
-                          </div>
-                          <div className={cx("")}>
-                            <button
-                              className={cx("readyBillButton")}
-                              onClick={() => handleSetDoneBill(cart._id)}
-                            >
-                              Hoàn Thành
-                            </button>
-                          </div>
-                        </div>
-                      )}
+          {!tableActive && (
+            <Fragment>
+              <div className={cx("hLeftContainer")}>
+                {(listCart === "No carts created" || listCart.length === 0) && (
+                  <Fragment>
+                    <div className={cx("NoCartsNotification")}>
+                      Hiện Chưa Có Đơn
                     </div>
                   </Fragment>
-                ))}
-              </div>
-            )}
-          </div>
-          <div className={cx("hRightContainer")}>
-            <div className={cx("hAllNotification")}>
-              {listTenMin.length === 0 && (
-                <div className={cx("hEmptyNotification")}>
-                  Không có yêu cầu nào trong 10 phút
-                </div>
-              )}
-              {requests
-                .filter((request) => isWithin10Minutes(request.createdAt))
-                .map((request, index) => (
-                  <div
-                    key={index}
-                    className={cx("hNotification")}
-                    onClick={() => handleNotificationClick(request)}
-                  >
-                    <div className={cx("hInfo")}>
-                      <div>Bàn {request.table}</div>
-                      <div>{request.customer_name}</div>
-                    </div>
-                    <div>
-                      {moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format(
-                        "hh:mm A"
-                      )}
-                    </div>
-                    <div
-                      className={cx("redDot", {
-                        redDotHided: !removeRedDot(request),
-                      })}
-                    ></div>
+                )}
+                {listCart.length !== 0 && listCart !== "No carts created" && (
+                  <div className={cx("hListBill")}>
+                    {listCart.map((cart, index) => (
+                      <Fragment key={index}>
+                        <div className={cx("hItem", cart.status)} key={index}>
+                          <div className={cx("hItemContent")}>
+                            <div className={cx("hItemInfo")}>
+                              <div className={cx("hItemTitleName")}>Tên Món</div>
+                              <div className={cx("hItemTitleOption")}>Tuỳ Chọn</div>
+                              <div className={cx("hItemTitleQuantity")}>
+                                Số Lượng
+                              </div>
+                            </div>
+                            {cart.order.map((order, orderIndex) => (
+                              <div className={cx("hItemInfo")} key={orderIndex}>
+                                <div className={cx("hItemName")}>
+                                  {order.dish_name}
+                                </div>
+                                <div className={cx("hItemOption")}>
+                                  <span>{order.options}</span>
+                                </div>
+                                <div className={cx("hItemQuantity")}>
+                                  {order.number}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <div className={cx("hItemDetailWrapper")}>
+                            <div className={cx("hItemDetail")}>
+                              <div className={cx("hItemBuyerName")}>
+                                Khách Hàng: {cart.customer_name}
+                              </div>
+                              <div className={cx("hItemTable")}>
+                                Bàn: {cart.table}
+                              </div>
+                              <div className={cx("hItemTime")}>
+                                Thời Gian Tạo:{" "}
+                                <span style={{ color: "#f04d4d" }}>
+                                  {moment(
+                                    cart.createAt,
+                                    "DD/MM/YYYY, HH:mm:ss"
+                                  ).format("HH:mm A")}
+                                </span>
+                              </div>
+                              <div className={cx("hItemStatus")}>
+                                Trạng Thái:
+                                {cart.status === "IN_PROGRESS" && (
+                                  <span style={{ color: "#3498db" }}>Đang Chờ</span>
+                                )}
+                                {cart.status === "COMPLETED" && (
+                                  <span style={{ color: "#2ecc71" }}>Đã Xong</span>
+                                )}
+                                {cart.status === "CANCEL" && (
+                                  <span
+                                    style={{
+                                      color: "#f04d4d",
+                                      textDecoration: "line-through",
+                                    }}
+                                  >
+                                    Đã Huỷ
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className={cx("hItemTotalPrice")}>
+                              Tổng Tiền:{" "}
+                              <span style={{ color: "#f04d4d" }}>
+                                {cart.total.toLocaleString()} vnđ
+                              </span>
+                            </div>
+                          </div>
+                          {cart.status === "IN_PROGRESS" && (
+                            <div className={cx("hItemButtonGroup")}>
+                              <div className={cx("")}>
+                                <button
+                                  className={cx("cancelBillButton")}
+                                  onClick={() => handleSetCancelBill(cart._id)}
+                                >
+                                  Huỷ Đơn
+                                </button>
+                              </div>
+                              <div className={cx("")}>
+                                <button
+                                  className={cx("readyBillButton")}
+                                  onClick={() => handleSetDoneBill(cart._id)}
+                                >
+                                  Hoàn Thành
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </Fragment>
+                    ))}
                   </div>
-                ))}
-            </div>
-          </div>
+                )}
+              </div>
+              <div className={cx("hRightContainer")}>
+                <div className={cx("hAllNotification")}>
+                  {listTenMin.length === 0 && (
+                    <div className={cx("hEmptyNotification")}>
+                      Không có yêu cầu nào trong 10 phút
+                    </div>
+                  )}
+                  {requests
+                    .filter((request) => isWithin10Minutes(request.createdAt))
+                    .map((request, index) => (
+                      <div
+                        key={index}
+                        className={cx("hNotification")}
+                        onClick={() => handleNotificationClick(request)}
+                      >
+                        <div className={cx("hInfo")}>
+                          <div>Bàn {request.table}</div>
+                          <div>{request.customer_name}</div>
+                        </div>
+                        <div>
+                          {moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format(
+                            "hh:mm A"
+                          )}
+                        </div>
+                        <div
+                          className={cx("redDot", {
+                            redDotHided: !removeRedDot(request),
+                          })}
+                        ></div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </Fragment>
+          )}
+          {tableActive && (
+            <Fragment>
+              <TableActive></TableActive>
+            </Fragment>
+          )}
+
         </div>
       </div>
     </Fragment>

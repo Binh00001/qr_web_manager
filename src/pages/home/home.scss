@@ -18,6 +18,12 @@
     font-size: 1.2rem;
     align-self: center;
     // background-color: #FFF200;
+    button{
+      font-size: 1.2rem;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 10px;
+    }
   }
 
   .hLeftContainer {
@@ -79,6 +85,7 @@
   // overflow-y: hidden;
   // max-height: calc(100vh - 139px);
   // max-height: 100vh;
+  min-height: 100vh;
   max-width: 1200px;
   min-width: 500px;
   margin: 0 auto;
