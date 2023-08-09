@@ -59,7 +59,7 @@ function HiddenMenu() {
         <div className={cx("TopBar")}>
           <div className={cx("mTopBar")}>
             <div className={cx("mText")} onClick={() => navigate("/menu")}>
-              Quản Lý Thực Đơn
+              Thực Đơn
             </div>
             <div className={cx("mText active")}>Các Món Đã Ẩn</div>
             <div className={cx("mText")} onClick={() => navigate("/addDish")}>

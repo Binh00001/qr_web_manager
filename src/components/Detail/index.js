@@ -192,10 +192,11 @@ function Detail(props) {
   const removeOptionHandler = (opt) => {
     console.log({ option: opt });
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
-        data: { option: opt }, // Đặt dữ liệu xóa trong trường 'data'
-        config,
-      })
+      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, 
+      {
+        option: opt  // Đặt dữ liệu xóa trong trường 'data'
+      },
+       config)
       .then((response) => {
         // Xử lý thành công khi xóa
         if (response.status === 200) {
@@ -367,7 +368,7 @@ function Detail(props) {
               ></input>
 
               <div className={cx("dtOption")}>
-                Các Lựa Chọn:
+                Lựa Chọn:
                 {dish.options.map((opt, index) => (
                   <span key={index} className={cx("dtOptionItem")}>
                     {opt}
@@ -376,7 +377,7 @@ function Detail(props) {
                         className={cx("removeOption")}
                         onClick={() => removeOptionHandler(opt)}
                       >
-                        X
+                        Xoá
                       </span>
                     )}
                     <br />

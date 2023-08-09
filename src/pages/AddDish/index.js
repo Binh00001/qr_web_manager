@@ -106,7 +106,7 @@ function AddDish() {
             <div className={cx("mTopBar")}>
               <div className={cx("mText")} onClick={() => navigate("/menu")}>
                 {" "}
-                Quản Lý Thực Đơn
+                Thực Đơn
               </div>
               <div
                 className={cx("mText")}
@@ -123,7 +123,7 @@ function AddDish() {
           <div className="margintopbody"></div>
           <div className={cx("aItem")}>
             <div className="aName">
-              <label htmlFor="name">Tên Món Ăn:</label>
+              <label htmlFor="name">Tên Món:</label>
               <input
                 onChange={changeHandler}
                 required

@@ -1,22 +1,25 @@
-.cbTopBar{
+.cbTopBar {
     width: 100%;
     display: flex;
     align-self: center;
     justify-content: space-around;
     align-items: center;
-    .cbCart{
+
+    .cbCart {
         // text-decoration:underline;
         background-color: #fff;
         padding: 10px;
         color: #000;
         border-radius: 10px;
     }
-    .cbCart:active{
+
+    .cbCart:active {
         background-color: #1BAC4B;
         color: #fff;
     }
 }
-.inputContainer{
+
+.inputContainer {
     border-radius: 10px;
     position: fixed;
     z-index: 50;
@@ -25,11 +28,13 @@
     width: 300px;
     top: 40%;
     left: calc(50% - 150px);
-    .inputGroup{
+
+    .inputGroup {
         margin-top: 5px;
         padding: 10px;
+
         // margin-bottom: 2px;
-        input{
+        input {
             width: 95%;
             padding: 5px;
             font-size: 1.3rem;
@@ -37,29 +42,33 @@
             border-radius: 10px;
         }
     }
-    .buttonGroup{
+
+    .buttonGroup {
         display: flex;
         width: 100%;
         justify-content: space-around;
-        :active{
+
+        :active {
             background-color: #fff;
             color: #f04d4d;
         }
-        button{
+
+        button {
             border: none;
             height: 50px;
             width: 120px;
             background-color: #f04d4d;
-            color:#fff;
+            color: #fff;
             border-radius: 10px;
             font-size: 1.3rem;
             // margin-left: calc(50% - 60px);
             margin-top: 10px;
         }
     }
-   
+
 }
-.addFoodWrapper{
+
+.addFoodWrapper {
     background-color: #fff;
     position: fixed;
     display: flex;
@@ -72,31 +81,37 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     border-top: 1px solid black;
-    .addFoodFlexBox{
+
+    .addFoodFlexBox {
         display: flex;
         margin: 10px 15px;
         justify-content: space-between;
-        .addFoodImageBorder{
+
+        .addFoodImageBorder {
             width: 270px;
             height: 220px;
-            
-            img{
+
+            img {
                 border-radius: 10px;
                 width: 270px;
                 height: 220px;
                 object-fit: cover;
             }
         }
-        .addFoodInfo{
+
+        .addFoodInfo {
             width: 60%;
-            .addFoodName{
+
+            .addFoodName {
                 font-size: 2rem;
                 margin-bottom: 20px;
                 font-weight: 600;
             }
-            .addFoodQuantity{
+
+            .addFoodQuantity {
                 display: flex;
-                button{
+
+                button {
                     border: none;
                     padding: 5px 10px;
                     background-color: #f04d4d;
@@ -106,23 +121,28 @@
             }
         }
     }
-    .addFoodOption{
+
+    .addFoodOption {
         // width: 90%;
         margin: 20px 5%;
-        .optionCheck{
+
+        .optionCheck {
             // margin: 1%;
             padding: 5px;
             border-bottom: 1px solid;
-            input{
+
+            input {
                 margin-right: 8px;
             }
-            label{
-                display:inline-block;
+
+            label {
+                display: inline-block;
                 width: 90%;
             }
         }
     }
-    .addFoodConfirmButton{
+
+    .addFoodConfirmButton {
         width: 200px;
         height: 50px;
         margin-left: calc(50% - 100px);
@@ -133,5 +153,67 @@
         text-transform: capitalize;
         border-radius: 10px;
         margin: 2% auto;
+    }
+}
+
+//for mobile
+// In your component's CSS file
+@media (max-width: 768px) {
+    .cbWrapper {
+        .blackBar {
+            .TopBar {
+                .cbTopBar {
+                    .cbCustomerTable {
+                        min-width: 18%;
+                    }
+
+                    .cbCart {
+                        min-width: 35%;
+                    }
+                }
+            }
+        }
+
+        .inputContainer {
+            top: 30%;
+            height: 185px;
+
+            .inputGroup {
+                input {
+                    font-size: 1.1rem;
+                }
+            }
+
+            .buttonGroup {
+                button {
+                    height: 40px;
+                    font-size: 1.1rem;
+                }
+            }
+        }
+
+        .Wrapper {
+            .mBody {
+                .addFoodWrapper {
+                    .addFoodFlexBox {
+                        .addFoodImageBorder {
+                            width: 170px;
+                            height: 170px;
+
+                            img {
+                                width: 170px;
+                                height: 170px;
+                            }
+                        }
+                        .addFoodInfo{
+                            width: max-content;
+                            .addFoodName{
+                                font-size: 1.5rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

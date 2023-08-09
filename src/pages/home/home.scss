@@ -13,10 +13,15 @@
   display: flex;
   justify-content: space-between;
   height: 100%;
-
+  .hContainer{
+    width: 100%;
+    display: flex;
+    // justify-content: space-around;
+  }
   .hText {
     font-size: 1.2rem;
     align-self: center;
+    margin: 0 1%;
     :active{
       background-color: #1BAC4B;
       color: #fff;
@@ -30,35 +35,11 @@
     }
 
   }
-
-  .hLeftContainer {
-    width: 55%;
-    display: flex;
-    justify-content: space-between;
-    border-right: 1px solid #202124;
-    margin-left: 3%;
-
-    // .hAllActiveGroup {
-    //   display: flex;
-    //   margin-right: 5%;
-    //   overflow-y: auto;
-
-    //   button {
-    //     background-color: #f04d4d;
-    //     height: 40px;
-    //     align-self: center;
-    //     border: none;
-    //     margin-left: 10px;
-    //     border-radius: 10px;
-    //   }
-    // }
-  }
-
-
-  .hRightContainer {
-    width: 35%;
-    display: flex;
-    // margin-left: 1%;
+  .onActive{
+    button{
+      background-color: #1BAC4B;
+      color: #fff;
+    }
   }
 
   .nonActive {
@@ -119,12 +100,12 @@
     text-align: center;
     margin-top: 30px;
   }
-  .hLeftContainer {
+  .hBillContainer {
     position: relative;
     min-height: 730px;
     // height: 100vh;
-    width: 65%;
-    border-right: #202124 2px solid;
+    width: 100%;
+    // border-right: #202124 2px solid;
 
     .hListBill {
       width: 100%;
@@ -258,9 +239,9 @@
 
   }
 
-  .hRightContainer {
+  .hCallStaffContainer {
     min-height: 730px;
-    width: 35%;
+    // width: 35%;
     // overflow-y: scroll;
     padding-bottom: 50px;
 
@@ -345,6 +326,65 @@
       font-size: 1.1rem;
       // background-color: #f04d4d;
       // border-radius: 5px;
+    }
+  }
+}
+
+
+
+//for mobile 
+// In your component's CSS file
+@media (max-width: 768px) {
+  .blackBar{
+    .TopBar{
+      min-width: 0;
+      .hContainer{
+        display: flex;
+        justify-content: space-around;
+        .hText{
+          margin: 0;
+          button{
+            
+            font-size: 0.9rem;
+            display: inline;
+            padding: 10px 5px;
+          }
+        }
+      }
+    }
+  }
+  .hBody{
+    min-width: 0;
+    margin: 0;
+    .hAllTable{
+      button{
+        margin: 5% 7% 5% 7%;
+      }
+      .hAddTable{
+        margin: 5% 5% 5% 9%;
+      }
+    }
+    .hBillContainer{
+      .timeFilterBar{
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        .timeFilterItem{
+          font-size: 0.8rem;
+          margin: 10px 0 0 0 ;
+        }
+      }
+      .hListBill{
+        .hItem{
+          .hItemDetailWrapper{
+            .hItemDetail{
+              div{
+                margin-bottom: 5px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

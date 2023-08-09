@@ -1,4 +1,4 @@
-.DoneMessage{
+.DoneMessage {
     background-color: #fff;
     position: fixed;
     z-index: 50;
@@ -12,6 +12,7 @@
     left: 25vw;
     border-radius: 10px;
 }
+
 .aBody {
     background-color: #fff;
     max-width: 1200px;
@@ -90,7 +91,7 @@
             //     border-radius: 10px;
             // }
             .custom-file-input {
-                display: none;  
+                display: none;
                 /* Hide the default file input button */
             }
 
@@ -106,6 +107,7 @@
                 color: #fff;
                 margin-left: 35px;
             }
+
             .custom-file-label::before {
                 // content: 'Choose File ';
                 // font-weight: bold;
@@ -115,6 +117,7 @@
                 outline: 2px solid #4a90e2;
                 /* Add focus style */
             }
+
             // .custom-file .custom-file-label::after {
             //     content: 'Choose File';
             //     display: block;
@@ -134,4 +137,38 @@
         border-radius: 10px;
         cursor: pointer;
     }
+}
+
+
+// formobile
+
+// In your component's CSS file
+@media (max-width: 768px) {
+    .aBody{
+        .margintopbody{
+            height: 5vh;
+        }
+        .aItem{
+            width: 95%;
+            margin-bottom: 20px;
+            label{
+                font-size: 1rem;
+            }
+            input{
+                width: 70%;
+            }
+            .aDescription{
+                textarea{
+                    width: 68%;
+                    border-radius: 5px;
+                }
+            }
+        }
+        .submitButton{
+            margin-left: calc(50% - 90px);
+            height: 45px;
+            margin-top: 10px;
+        }
+    }
+
 }

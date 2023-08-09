@@ -14,26 +14,6 @@ function DefaultLayout({ children }) {
   const newPing = useNewPingContext();
   const isAdmin = useIsAdminContext();
   const [isNewPing, setIsNewPing] = useState(false);
-  // const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
-
-  // // console.log(cashierInfo);
-  // useEffect(() => {
-  //   axios
-  //     // .get("http://117.4.194.207:3003/call-staff/all?time=60")
-  //     .get(
-  //       `${process.env.REACT_APP_API_URL}/cashier/all`
-  //     )
-  //     .then((response) => {
-  //       if (cashierInfo.cashierId === response.data[0].id) {
-  //         setIsAdmin(true)
-  //       }
-  //       // console.log(response.data[0].id);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-
-  // }, [])
 
   useEffect(() => {
     const removeRedDot = () => {
@@ -51,10 +31,7 @@ function DefaultLayout({ children }) {
 
     removeRedDot();
 
-    // Set up the interval to check for new ping every 1 minute
-    const interval = setInterval(removeRedDot, 5000); // 60000 milliseconds = 1 minute
-
-    // Clean up the interval when the component is unmounted
+    const interval = setInterval(removeRedDot, 5000); 
     return () => clearInterval(interval);
   }, [newPing]);
 

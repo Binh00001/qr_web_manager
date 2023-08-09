@@ -125,7 +125,7 @@ function Menu() {
       <div className={cx("blackBar")}>
         <div className={cx("TopBar")}>
           <div className={cx("mTopBar")}>
-            <div className={cx("mText active")}>Quản Lý Thực Đơn</div>
+            <div className={cx("mText active")}>Thực Đơn</div>
             <div
               className={cx("mText")}
               onClick={() => navigate("/hidden-menu")}
