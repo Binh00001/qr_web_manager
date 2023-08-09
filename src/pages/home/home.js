@@ -21,6 +21,7 @@ function Home() {
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
   const [tableActive, setTableActive] = useState(false);
+  const [callStaff, setCallStaff] = useState(false);
   const [choosedTime, setChoosedTime] = useState("time=60");
 
   const navigate = useNavigate();
@@ -67,7 +68,6 @@ function Home() {
           `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?${choosedTime}`
         )
         .then((response) => {
-          console.log(response.data);
           setListCart(response.data);
           // console.log(response.data);
           // if (response.data.length === 0) {
@@ -237,43 +237,47 @@ function Home() {
     }
   }
 
-  console.log(choosedTime);
-  console.log(listCart);
+  const handleOpenFunction = (value) => {
+    if (value === "CheckBill") {
+      setTableActive(false)
+      setCallStaff(false)
+    } else if (value === "CallStaff") {
+      setCallStaff(true)
+      setTableActive(false)
+    } else if ((value) === "TableManager") {
+      setTableActive(true)
+      setCallStaff(false)
+    }
+  }
 
   return (
     <Fragment>
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
-            <div className={cx("hLeftContainer")}>
-              <div className={cx("hText")}>
-                {!tableActive &&
-                  <button onClick={() => { setTableActive(true) }}>
-                    Mở Quản Lý Bàn
-                  </button>
-                }
-                {tableActive &&
-                  <button onClick={() => { setTableActive(false) }}>
-                    Mở Quản Lý Hoá Đơn
-                  </button>
-                }
+            <div className={cx("hContainer")}>
+              <div className={cx("hText", {onActive:(!tableActive && !callStaff)})}>
+                <button onClick={() => { handleOpenFunction("CheckBill") }}>
+                  Quản Lý Hoá Đơn
+                </button>
               </div>
-            </div>
-            <div className={cx("hRightContainer")}>
-              {!tableActive &&
-                <div className={cx("hText")}>
-                  Yêu Cầu
-                  (ẩn sau 10 phút):
-                </div>
-              }
-
+              <div className={cx("hText", {onActive:(callStaff)})}>
+                <button onClick={() => { handleOpenFunction("CallStaff") }}>
+                  Quản Lý Yêu Cầu
+                </button>
+              </div>
+              <div className={cx("hText", {onActive:(tableActive)})}>
+                <button onClick={() => { handleOpenFunction("TableManager") }}>
+                  Quản Lý Bàn
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <div className={cx("hBody")}>
-          {!tableActive && (
+          {(!tableActive && !callStaff) && (
             <Fragment>
-              <div className={cx("hLeftContainer")}>
+              <div className={cx("hBillContainer")}>
                 <nav className={cx("timeFilterBar")}>
                   <button
                     className={cx("timeFilterItem", {
@@ -401,7 +405,11 @@ function Home() {
                   </div>
                 )}
               </div>
-              <div className={cx("hRightContainer")}>
+            </Fragment>
+          )}
+          {callStaff && (
+            <Fragment>
+              <div className={cx("hCallStaffContainer")}>
                 <div className={cx("hAllNotification")}>
                   {listTenMin.length === 0 && (
                     <div className={cx("hEmptyNotification")}>

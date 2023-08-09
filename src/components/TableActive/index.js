@@ -18,7 +18,6 @@ function TableActive() {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
-
     useEffect(() => {
         axios
             // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
@@ -90,8 +89,6 @@ function TableActive() {
                 console.log(error);
             });
     };
-
-    console.log(tables);
 
     return (
         <Fragment>

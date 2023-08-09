@@ -18,7 +18,7 @@ function Cart() {
             {
                 dish_id: "",
                 number: "",
-                options: [],
+                options: [], 
             },
         ],
     });
@@ -28,6 +28,7 @@ function Cart() {
 
     const cashier = JSON.parse(localStorage.getItem("token_state"))
 
+    console.log(storedSession);
     useEffect(() => {
         setCartStored(storedSession);
     }, []);
@@ -122,6 +123,14 @@ function Cart() {
         navigate("/")
     }
 
+    const removeFromObj = (itemId) => {
+        const updatedCart = cartStored.filter(item => item.id !== itemId);
+        setCartStored(updatedCart);
+    
+        // Update the session storage
+        sessionStorage.setItem("obj", JSON.stringify(updatedCart));
+    }
+
     return (
         <Fragment>
             <div className={cx("cartWrapper")}>
@@ -145,8 +154,13 @@ function Cart() {
                                 <div className={cx("name")}>Tên Món: {food.name}</div>
                                 <div className={cx("options")}>Tuỳ Chọn: {food.options}</div>
                                 <div className={cx("number")}>Số Lượng: {food.number}</div>
-                                <div className={cx("price")}>Đơn Giá: {food.price}</div>
+                                <div className={cx("price")}>Đơn Giá:
+                                    {" " + food.price.toLocaleString("vi-VN", {
+                                        style: "currency",
+                                        currency: "VND",
+                                    })}</div>
                             </div>
+                            <div className={cx("deleteItem")} onClick={() => removeFromObj(food.id)}>Xóa</div>
                         </div>
                     ))}
                 </div>

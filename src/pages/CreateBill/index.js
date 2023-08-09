@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 
 function CreateBill() {
+    const [cartNumber, setCartNumber] = useState(0);
     const [userName, setUserName] = useState(sessionStorage.getItem("name") || "");
     const [tableName, setTableName] = useState(sessionStorage.getItem("table") || "");
     const [category, setCategory] = useState([]);
@@ -27,15 +28,28 @@ function CreateBill() {
 
     const navigate = useNavigate();
 
+    const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+    const token = localStorage.getItem("token") || [];
+    const config = {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+
+    useEffect(() => {
+        const storageCart = JSON.parse(sessionStorage.getItem("obj"))
+        console.log(storageCart);
+        if(storageCart !== null){
+            setCartNumber(storageCart.reduce((total, item) => total + item.number, 0) )
+        }
+    }, [])
+
     useEffect(() => {
         if (userName !== null && tableName !== null) {
             setNeedInfo(userName.trim().length > 0 && tableName.trim().length > 0);
         } else {
             setNeedInfo(false)
         }
-
     }, [addInfo]);
-    console.log(needInfo);
+
     useEffect(() => {
         let timer;
         if (add) {
@@ -47,13 +61,6 @@ function CreateBill() {
             clearTimeout(timer);
         };
     }, [add]);
-
-    const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
-    const token = localStorage.getItem("token") || [];
-    const config = {
-        headers: { Authorization: `Bearer ${token}` },
-    };
-
 
     function decrease() {
         if (quantity === 1) {
@@ -149,6 +156,7 @@ function CreateBill() {
             sessionStorage.setItem("obj", JSON.stringify(data));
         }
         setAdd(true);
+        setCartNumber(JSON.parse(sessionStorage.getItem("obj")).reduce((total, item) => total + item.number, 0))
     }
 
     const cancelHandler = () => {
@@ -216,9 +224,9 @@ function CreateBill() {
                 <div className={cx("blackBar")}>
                     <div className={cx("TopBar")}>
                         <div className={cx("cbTopBar")}>
-                            <div className={cx("cbCustomerName")}>Tên Khách Hàng: {userName}</div>
-                            <div className={cx("cbCustomerTable")}>Số Bàn: {tableName}</div>
-                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán: X Món</div>
+                            <div className={cx("cbCustomerName")}>Khách Hàng: {userName}</div>
+                            <div className={cx("cbCustomerTable")}>Bàn: {tableName}</div>
+                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán: {cartNumber } Món</div>
                         </div>
                     </div>
                 </div>
