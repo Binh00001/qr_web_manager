@@ -175,3 +175,39 @@
         }
     }
 }
+
+
+@media (max-width: 768px) {
+    .TopBar{
+        .tmgTopBarWrapper{
+            margin-left: 0;
+            .tmgText{
+                .dropdown{
+                    min-width: 95px;
+                    padding: 5px 15px;
+                }
+            }
+        }
+    }
+    .tmgBody{
+        .tmgItem{
+            padding: 5px;
+            flex-direction: column;
+            .tmgLeftContainer{
+                div{
+                    word-wrap: break-word;
+                }
+            }
+            .tmgRightContainer{
+                padding: 10px 0;
+                width: 100%;
+                display: flex;
+                justify-content: space-around;
+            }
+        }
+    }
+    .tmgPopupBox{
+        width: 92%;
+        left: 4%;
+    }
+  }

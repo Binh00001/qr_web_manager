@@ -243,4 +243,22 @@
   }
 
 }
+
+@media (max-width: 768px) {
+  .lgBody{
+    .lgContent{
+      .spRightContainer{
+        width: 95%;
+        .spRegisterBox{
+          margin: 20px auto;
+          display: flex;
+          justify-content: space-around;
+          button{
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
   

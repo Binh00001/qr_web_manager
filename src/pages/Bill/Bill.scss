@@ -1,44 +1,52 @@
-.bWrapper{
+.bWrapper {
     background-color: #ecf0f1;
     position: relative;
     min-height: calc(100vh - 80px);
     // overflow-y: scroll;
 }
-.TopBar{
-    .mTopBar{
+
+.TopBar {
+    .mTopBar {
         // margin-left: 4%;
         width: 100%;
-        .bText{
+
+        .bText {
             display: flex;
             align-items: center;
-            input{
+            margin-left: 1.5%;
+            input {
                 width: 120px;
-                margin-left:15px;
+                margin-left: 15px;
                 padding: 5px 10px;
                 font-size: 1rem;
                 border-radius: 10px;
                 border: none;
             }
-            .bTotalIncome{
+
+            .bTotalIncome {
                 padding: 5px;
                 margin-left: 10px;
             }
         }
     }
 }
+
 .bBody {
     background-color: #fff;
     max-width: 1200px;
     margin: 0 auto;
     padding-bottom: 50px;
     min-height: calc(100vh - 120px);
-    .emptyCart{
+
+    .emptyCart {
         font-size: 2rem;
-        p{
+
+        p {
             margin: 0 auto;
             width: fit-content;
         }
     }
+
     .bMarginTop {
         height: 40px;
     }
@@ -52,6 +60,7 @@
         display: flex;
         border: 1px solid black;
         border-radius: 20px;
+
         .bItemLeftContainer {
             width: 50%;
             border-right: 1px dotted black;
@@ -82,18 +91,21 @@
                 margin: 0 auto;
                 display: flex;
                 margin-bottom: 10px;
+
                 // justify-content: space-between;
-                .bFoodName{
+                .bFoodName {
                     width: 33%;
                     word-wrap: break-word;
                 }
-                .bFoodOption{
-                        width: 33%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
+
+                .bFoodOption {
+                    width: 33%;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
                 }
-                .bFoodQuantity{
+
+                .bFoodQuantity {
                     width: 30%;
                     display: flex;
                     flex-direction: column;
@@ -104,7 +116,8 @@
             .bPrintButton {
                 display: flex;
                 align-self: end;
-                button{
+
+                button {
                     border: 1px #f04d4d solid;
                     background-color: #fff;
                     padding: 10px;
@@ -117,7 +130,7 @@
     }
 }
 
-.dropdown{
+.dropdown {
     min-width: 120px;
     margin-left: 12px;
     padding: 5px 20px;
@@ -128,21 +141,24 @@
     display: inline-block;
     border-radius: 8px;
 }
-.dropdownWrapper{
+
+.dropdownWrapper {
     position: absolute;
 
 }
-.dropdownContent{
+
+.dropdownContent {
     display: block;
     padding: 5px;
     // position: absolute;
     background-color: #f9f9f9;
     color: #000;
     min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
-#subbmitButton{
+
+#submitButton {
     width: 90px;
     height: 30px;
     border: none;
@@ -150,6 +166,75 @@
     border-radius: 10px;
     margin-left: 10px;
 }
-#subbmitButton:active{
+
+#submitButton:active {
     background-color: #f04d4d;
+}
+
+
+@media (max-width: 768px) {
+    .bWrapper {
+        .blackBar {
+            .TopBar {
+                .mTopBar {
+                    .bText {
+                        label {
+                            display: none;
+                        }
+                        input{
+                            margin-left: 0;
+                            font-size: 0.9rem;
+                            width: 105px;
+                        }
+                        .bTotalIncome {
+                            display: none;
+                        }
+
+                        .dropdown {
+                            min-width: 0;
+                            margin-left: 5px;
+                            #cashier{
+                                width: 125px;
+                            }
+                        }
+                        #submitButton{
+                            width: 85px;
+                        }
+                    }
+                }
+            }
+        }
+        .bBody{
+            .bMarginTop{
+                height: 20px;
+            }
+            .emptyCart{
+                font-size: 1.5rem;
+            }
+            .bItem{
+                width: 96%;
+                flex-direction: column;
+                .bItemLeftContainer{
+                    width: 95%;
+                    padding: 10px;
+                    margin: 0;
+                    border-bottom: 1px solid black;
+                    border-right: 0;
+                }
+                .bItemRightContainer{
+                    margin: 10px 0;
+                    width: 100%;
+                    .bFoodItem{
+                        width: 95%;
+                    }
+                    .bTopTitle{
+                        width: 95%;
+                    }
+                    .bPrintButton{
+                        margin-top: 12px;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -118,3 +118,30 @@
     }
   }
 }
+
+
+@media (max-width: 768px) {
+  .lgBody{
+    .lgContent{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      .lgLeftContainer{
+        width:90%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: 12vh;
+        .lg4flex{
+          bottom: 10vh;
+          left: 30vw;
+        }
+      }
+      .lgRightContainer{
+        width: 90%;
+        margin-top: 5vh;
+        margin: 5vh auto 0 auto;
+      }
+    }
+  }
+}
