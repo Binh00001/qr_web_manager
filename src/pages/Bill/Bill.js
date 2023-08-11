@@ -225,10 +225,10 @@ function Bill() {
                   )}
                 </div>
                 <button
-                  id="subbmitButton"
+                  id="submitButton"
                   onClick={(event) => handleDate(event)}
                 >
-                  Subbmit
+                  Submit
                 </button>
               </div>
               <div className={cx("bText")}>
