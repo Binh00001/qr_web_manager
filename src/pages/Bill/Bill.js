@@ -25,8 +25,16 @@ function Bill() {
 
   const isAdmin = useIsAdminContext();
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
-
-  const completedCarts = listCart.filter((cart) => cart.status === "COMPLETED");
+  let displayCart = [];
+  if (!isSubmited) {
+    displayCart = listCart;
+  } else {
+    displayCart = dateCart;
+  }
+  console.log(displayCart);
+  const completedCarts = displayCart.filter(
+    (cart) => cart.status === "COMPLETED"
+  );
   const totalIncome = completedCarts.reduce(
     (total, cart) => total + cart.total,
     0
@@ -152,12 +160,6 @@ function Bill() {
         });
     }
   }, []);
-  let displayCart = [];
-  if (!isSubmited) {
-    displayCart = listCart;
-  } else {
-    displayCart = dateCart;
-  }
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);

@@ -17,6 +17,8 @@ function Home() {
   const [requests, setRequests] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
   const [reload, setReload] = useState(false);
+  const [newCallStaff, setNewCallStaff] = useState([]);
+  const [newCart, setNewCart] = useState([]);
   const [listCart, setListCart] = useState([]);
   const [readRequestIds, setReadRequestIds] = useState([]);
   const [cartStatusChange, setCartStatusChange] = useState(true);
@@ -46,12 +48,10 @@ function Home() {
     const socket = io(process.env.REACT_APP_API_URL);
 
     socket.on("newCallStaff", (response) => {
-      console.log(response);
-      setReload(!reload);
+      setNewCallStaff(response);
     });
     socket.on("newCart", (response) => {
-      console.log(response);
-      setReload(!reload);
+      setNewCart(response);
     });
   }, []);
 
@@ -87,7 +87,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, [cartStatusChange, reload, choosedTime]);
+  }, [cartStatusChange, newCart, choosedTime]);
 
   useEffect(() => {
     const fetchData = () => {
@@ -118,7 +118,7 @@ function Home() {
     return () => {
       clearInterval(interval);
     };
-  }, [reload]);
+  }, [newCallStaff]);
 
   useEffect(() => {
     if (areRequestsOrListTenMinEmpty()) {
@@ -226,29 +226,29 @@ function Home() {
 
   const handleGetTimeFilter = (value) => {
     if (value) {
-      setChoosedTime(value)
+      setChoosedTime(value);
     } else {
       const day = currentDate.getDate();
       const month = currentDate.getMonth() + 1;
       const year = currentDate.getFullYear();
 
       const formattedCurrentDate = `${day}/${month}/${year}`;
-      setChoosedTime(`date=${formattedCurrentDate}`)
+      setChoosedTime(`date=${formattedCurrentDate}`);
     }
-  }
+  };
 
   const handleOpenFunction = (value) => {
     if (value === "CheckBill") {
-      setTableActive(false)
-      setCallStaff(false)
+      setTableActive(false);
+      setCallStaff(false);
     } else if (value === "CallStaff") {
-      setCallStaff(true)
-      setTableActive(false)
-    } else if ((value) === "TableManager") {
-      setTableActive(true)
-      setCallStaff(false)
+      setCallStaff(true);
+      setTableActive(false);
+    } else if (value === "TableManager") {
+      setTableActive(true);
+      setCallStaff(false);
     }
-  }
+  };
 
   return (
     <Fragment>
@@ -256,18 +256,34 @@ function Home() {
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
             <div className={cx("hContainer")}>
-              <div className={cx("hText", {onActive:(!tableActive && !callStaff)})}>
-                <button onClick={() => { handleOpenFunction("CheckBill") }}>
+              <div
+                className={cx("hText", {
+                  onActive: !tableActive && !callStaff,
+                })}
+              >
+                <button
+                  onClick={() => {
+                    handleOpenFunction("CheckBill");
+                  }}
+                >
                   Quản Lý Hoá Đơn
                 </button>
               </div>
-              <div className={cx("hText", {onActive:(callStaff)})}>
-                <button onClick={() => { handleOpenFunction("CallStaff") }}>
+              <div className={cx("hText", { onActive: callStaff })}>
+                <button
+                  onClick={() => {
+                    handleOpenFunction("CallStaff");
+                  }}
+                >
                   Quản Lý Yêu Cầu
                 </button>
               </div>
-              <div className={cx("hText", {onActive:(tableActive)})}>
-                <button onClick={() => { handleOpenFunction("TableManager") }}>
+              <div className={cx("hText", { onActive: tableActive })}>
+                <button
+                  onClick={() => {
+                    handleOpenFunction("TableManager");
+                  }}
+                >
                   Quản Lý Bàn
                 </button>
               </div>
@@ -275,7 +291,7 @@ function Home() {
           </div>
         </div>
         <div className={cx("hBody")}>
-          {(!tableActive && !callStaff) && (
+          {!tableActive && !callStaff && (
             <Fragment>
               <div className={cx("hBillContainer")}>
                 <nav className={cx("timeFilterBar")}>
@@ -283,21 +299,30 @@ function Home() {
                     className={cx("timeFilterItem", {
                       active: choosedTime === "time=60",
                     })}
-                    onClick={() => { handleGetTimeFilter("time=60") }}>
+                    onClick={() => {
+                      handleGetTimeFilter("time=60");
+                    }}
+                  >
                     1 Giờ
                   </button>
                   <button
                     className={cx("timeFilterItem", {
                       active: choosedTime === "time=360",
                     })}
-                    onClick={() => { handleGetTimeFilter("time=360") }}>
+                    onClick={() => {
+                      handleGetTimeFilter("time=360");
+                    }}
+                  >
                     6 Giờ
                   </button>
                   <button
                     className={cx("timeFilterItem", {
                       active: !choosedTime.startsWith("time="),
                     })}
-                    onClick={() => { handleGetTimeFilter() }}>
+                    onClick={() => {
+                      handleGetTimeFilter();
+                    }}
+                  >
                     Hôm Nay
                   </button>
                 </nav>
@@ -315,8 +340,12 @@ function Home() {
                         <div className={cx("hItem", cart.status)} key={index}>
                           <div className={cx("hItemContent")}>
                             <div className={cx("hItemInfo")}>
-                              <div className={cx("hItemTitleName")}>Tên Món</div>
-                              <div className={cx("hItemTitleOption")}>Tuỳ Chọn</div>
+                              <div className={cx("hItemTitleName")}>
+                                Tên Món
+                              </div>
+                              <div className={cx("hItemTitleOption")}>
+                                Tuỳ Chọn
+                              </div>
                               <div className={cx("hItemTitleQuantity")}>
                                 Số Lượng
                               </div>
@@ -355,10 +384,14 @@ function Home() {
                               <div className={cx("hItemStatus")}>
                                 Trạng Thái:
                                 {cart.status === "IN_PROGRESS" && (
-                                  <span style={{ color: "#3498db" }}>Đang Chờ</span>
+                                  <span style={{ color: "#3498db" }}>
+                                    Đang Chờ
+                                  </span>
                                 )}
                                 {cart.status === "COMPLETED" && (
-                                  <span style={{ color: "#2ecc71" }}>Đã Xong</span>
+                                  <span style={{ color: "#2ecc71" }}>
+                                    Đã Xong
+                                  </span>
                                 )}
                                 {cart.status === "CANCEL" && (
                                   <span
@@ -429,9 +462,10 @@ function Home() {
                           <div>{request.customer_name}</div>
                         </div>
                         <div>
-                          {moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss").format(
-                            "hh:mm A"
-                          )}
+                          {moment(
+                            request.createdAt,
+                            "DD/MM/YYYY, HH:mm:ss"
+                          ).format("hh:mm A")}
                         </div>
                         <div
                           className={cx("redDot", {
@@ -449,7 +483,6 @@ function Home() {
               <TableActive></TableActive>
             </Fragment>
           )}
-
         </div>
       </div>
     </Fragment>
