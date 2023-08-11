@@ -8,12 +8,16 @@ import axios from "axios";
 import moment from "moment";
 import Loading from "~/components/loadingScreen/loadingScreen";
 import TableActive from "~/components/TableActive";
-import { useIsAdminContext } from "~/App";
+import { useIsAdminContext, useReddotShowContext, useBillInProgress } from "~/App";
+
 import "moment/locale/vi";
 
 const cx = classNames.bind(styles);
 
 function Home() {
+  const showReddot = useReddotShowContext();
+  const billInProgress = useBillInProgress();
+  console.log(billInProgress);
   const [requests, setRequests] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
   const [reload, setReload] = useState(false);
@@ -43,7 +47,6 @@ function Home() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
 
@@ -69,12 +72,6 @@ function Home() {
         )
         .then((response) => {
           setListCart(response.data);
-          // console.log(response.data);
-          // if (response.data.length === 0) {
-          //   setIsTodayEmpty(true)
-          // } else {
-          //   setIsTodayEmpty(false)
-          // }
         })
         .catch((error) => {
           console.log(error);
@@ -92,9 +89,8 @@ function Home() {
   useEffect(() => {
     const fetchData = () => {
       axios
-        // .get("http://117.4.194.207:3003/call-staff/all?time=60")
         .get(
-          `${process.env.REACT_APP_API_URL}/call-staff/all/${cashier.cashierId}?time=60`
+          `${process.env.REACT_APP_API_URL}/call-staff/all/${cashier.cashierId}?time=3360`
         )
         .then((response) => {
           if (response.data === "No call staff created") {
@@ -119,7 +115,6 @@ function Home() {
       clearInterval(interval);
     };
   }, [newCallStaff]);
-
   useEffect(() => {
     if (areRequestsOrListTenMinEmpty()) {
       setShowContent(false);
@@ -141,7 +136,7 @@ function Home() {
       const timeDifference = moment
         .duration(currentTime.diff(requestTime))
         .asMinutes();
-      // console.log(timeDifference);
+
       if (
         timeDifference <= 10 &&
         !listTenMin.some((listRequest) => listRequest._id === request._id)
@@ -161,24 +156,7 @@ function Home() {
     setShowContent(true);
   }, [requests]);
 
-  const removeRedDot = (request) => {
-    if (requests.length > 0 && request) {
-      const createdAt =
-        request.createdAt || moment().format("DD/MM/YYYY, HH:mm:ss");
-      const requestTime = moment(createdAt, "DD/MM/YYYY, HH:mm:ss");
-      const currentTime = moment();
-      const timeDifference = moment
-        .duration(currentTime.diff(requestTime))
-        .asMinutes();
-
-      // Check if the request is in the list of read requests
-      return timeDifference <= 1 && !readRequestIds.includes(request._id);
-    }
-    return false;
-  };
-
   const handleNotificationClick = (request) => {
-    // Add the request ID to the list of read requests
     setReadRequestIds((prevIds) => [...prevIds, request._id]);
   };
 
@@ -261,6 +239,11 @@ function Home() {
                   onActive: !tableActive && !callStaff,
                 })}
               >
+                 <div
+                  className={cx("redDot", {
+                    redDotHided: !billInProgress,
+                  })}
+                ></div>
                 <button
                   onClick={() => {
                     handleOpenFunction("CheckBill");
@@ -270,6 +253,11 @@ function Home() {
                 </button>
               </div>
               <div className={cx("hText", { onActive: callStaff })}>
+                <div
+                  className={cx("redDot", {
+                    redDotHided: !showReddot,
+                  })}
+                ></div>
                 <button
                   onClick={() => {
                     handleOpenFunction("CallStaff");
@@ -469,7 +457,7 @@ function Home() {
                         </div>
                         <div
                           className={cx("redDot", {
-                            redDotHided: !removeRedDot(request),
+                            redDotHided: !showReddot,
                           })}
                         ></div>
                       </div>

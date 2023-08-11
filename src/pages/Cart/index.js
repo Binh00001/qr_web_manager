@@ -28,7 +28,6 @@ function Cart() {
 
     const cashier = JSON.parse(localStorage.getItem("token_state"))
 
-    console.log(storedSession);
     useEffect(() => {
         setCartStored(storedSession);
     }, []);

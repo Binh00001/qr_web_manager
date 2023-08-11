@@ -3,7 +3,7 @@ import classNames from "classnames";
 import logo from "~/components/assets/image/food-logo-design-template-restaurant-free-png.webp";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
-import { useNewPingContext, useIsAdminContext } from "~/App";
+import { useReddotShowContext, useIsAdminContext } from "~/App";
 import { Fragment, useEffect, useState } from "react";
 import moment from "moment";
 import axios from "axios";
@@ -11,30 +11,9 @@ import "moment/locale/vi";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
-  const newPing = useNewPingContext();
+  const showReddot = useReddotShowContext();
   const isAdmin = useIsAdminContext();
   const [isNewPing, setIsNewPing] = useState(false);
-
-  useEffect(() => {
-    const removeRedDot = () => {
-      if (newPing === null || !newPing) {
-        setIsNewPing(false);
-      } else {
-        const requestTime = moment(newPing.createdAt, "DD/MM/YYYY, HH:mm:ss");
-        const currentTime = moment();
-        const timeDifference = moment
-          .duration(currentTime.diff(requestTime))
-          .asMinutes();
-        setIsNewPing(timeDifference <= 0.9);
-      }
-    };
-
-    removeRedDot();
-
-    const interval = setInterval(removeRedDot, 5000); 
-    return () => clearInterval(interval);
-  }, [newPing]);
-
   const singOut = useSignOut();
   let cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const navigate = useNavigate();
@@ -89,7 +68,7 @@ function DefaultLayout({ children }) {
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ
-                <div className={cx("reddot", { redDotHided: !isNewPing })}></div>
+                <div className={cx("reddot", { redDotHided: !showReddot })}></div>
               </div>
               <div className={cx("dItem")} onClick={handleClickMenu}>
                 Thực Đơn
