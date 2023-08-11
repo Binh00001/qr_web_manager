@@ -408,7 +408,7 @@ function Signup() {
                   (Không thể hoàn tác)
                 </div>
                 <div className={cx("cppButtonGroup")}>
-                  <button className={cx("cppCancelButton")}>Huỷ</button>
+                  <button className={cx("cppCancelButton")} onClick={handleOverlayClick}>Huỷ</button>
                   <button
                     className={cx("cppConfirmButton")}
                     onClick={handleDeleteSubmit}

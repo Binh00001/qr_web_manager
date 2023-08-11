@@ -16,7 +16,7 @@ function Bill() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [totalIncome, setTotalIncome] = useState();
+  const [totalIncome, setTotalIncome] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
   const navigate = useNavigate();
@@ -51,23 +51,22 @@ function Bill() {
 
   useEffect(() => {
     if (!isSubmited) {
-        setDisplayCart(listCart)
-      } else {
-        setDisplayCart(dateCart)
-      }
-      const completedCarts = displayCart.filter(
-        (cart) => cart.status === "COMPLETED"
-      );
-    
-      const money = completedCarts.reduce(
-        (total, cart) => total + cart.total,
-        0
-      );
-      setTotalIncome(money)
-  }, []);
+      setDisplayCart(listCart)
+    } else {
+      setDisplayCart(dateCart)
+    }
+  }, [isSubmited, listCart, dateCart]);
 
-
-
+  useEffect(() => {
+    let cartsToUse = isSubmited ? dateCart : listCart; // Choose which cart data to use
+  
+    const completedCarts = cartsToUse.filter((cart) => cart.status === "COMPLETED");
+  
+    const money = completedCarts.reduce((total, cart) => total + cart.total, 0);
+  
+    setTotalIncome(money);
+  }, [isSubmited, dateCart, listCart]);
+  
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
     // setSelectedDate(event.target.value);
@@ -98,7 +97,6 @@ function Bill() {
           )
           .then((response) => {
             setIsSubmited(true);
-            console.log(response);
             if (
               response.data.length === 0 ||
               response.data === "No carts created"
@@ -152,8 +150,6 @@ function Bill() {
           `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
         )
         .then((response) => {
-          console.log(response);
-
           if (response.data === "No carts created") {
             setListCart([]);
           } else {
@@ -236,7 +232,7 @@ function Bill() {
               </div>
               <div className={cx("bText")}>
                 <div className={cx("bTotalIncome")}>
-                  Doanh Thu: {totalIncome.toLocaleString()} vnđ
+                  Doanh Thu: {totalIncome.toLocaleString("vi-VN")} vnđ
                 </div>
               </div>
             </div>

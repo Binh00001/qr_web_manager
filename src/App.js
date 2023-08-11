@@ -12,14 +12,14 @@ const ReddotShowContext = createContext();
 
 const IsAdminContext = createContext();
 
-const BillInProgress = createContext();
+const BillInProgressContext = createContext();
 
 export function useReddotShowContext() {
   return useContext(ReddotShowContext);
 }
 
 export function useBillInProgress() {
-  return useBillInProgress(BillInProgress)
+  return useContext(BillInProgressContext);
 }
 
 export function useIsAdminContext() {
@@ -96,7 +96,7 @@ function App() {
     const fetchData = () => {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?time=1060`
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?time= 60`
         )
         .then((response) => {
           if(response.data !== "No carts created"){
@@ -184,9 +184,9 @@ function App() {
     >
       <IsAdminContext.Provider value={isAdmin}>
         <ReddotShowContext.Provider value={reddotShow}>
-          <BillInProgress.Provider value={billInProgress}>
+          <BillInProgressContext.Provider value={billInProgress}>
             <MainRoutes />
-          </BillInProgress.Provider>
+          </BillInProgressContext.Provider>
         </ReddotShowContext.Provider>
       </IsAdminContext.Provider>
     </AuthProvider>
