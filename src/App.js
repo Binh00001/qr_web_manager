@@ -7,7 +7,6 @@ import ting from "~/components/assets/sound/ting.mp3";
 import axios from "axios";
 import moment from "moment";
 import "moment/locale/vi";
-import Cart from "./pages/Cart";
 
 const ReddotShowContext = createContext();
 
@@ -29,7 +28,6 @@ export function useIsAdminContext() {
 
 function App() {
   const [requests, setRequests] = useState([]);
-  const [readRequestIds, setReadRequestIds] = useState([]);
   const [listCart, setListCart] = useState([]);
   const [newPing, setNewPing] = useState(null);
   const [reddotShow, setReddotShow] = useState(false);

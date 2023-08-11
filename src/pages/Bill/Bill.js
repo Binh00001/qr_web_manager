@@ -16,30 +16,16 @@ function Bill() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [totalIncome, setTotalIncome] = useState();
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
   const navigate = useNavigate();
   const currentDate = new Date();
   const [datePush, setDatePush] = useState(currentDate);
   const [reload, setReload] = useState(true);
-
+  const [displayCart, setDisplayCart] = useState([]);
   const isAdmin = useIsAdminContext();
   // const [isTodayEmpty, setIsTodayEmpty] = useState(false);
-  let displayCart = [];
-  if (!isSubmited) {
-    displayCart = listCart;
-  } else {
-    displayCart = dateCart;
-  }
-  console.log(displayCart);
-  const completedCarts = displayCart.filter(
-    (cart) => cart.status === "COMPLETED"
-  );
-  const totalIncome = completedCarts.reduce(
-    (total, cart) => total + cart.total,
-    0
-  );
-
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const token = localStorage.getItem("token") || [];
   const config = {
@@ -62,6 +48,25 @@ function Bill() {
         console.log(error);
       });
   }, []);
+
+  useEffect(() => {
+    if (!isSubmited) {
+        setDisplayCart(listCart)
+      } else {
+        setDisplayCart(dateCart)
+      }
+      const completedCarts = displayCart.filter(
+        (cart) => cart.status === "COMPLETED"
+      );
+    
+      const money = completedCarts.reduce(
+        (total, cart) => total + cart.total,
+        0
+      );
+      setTotalIncome(money)
+  }, []);
+
+
 
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
@@ -170,8 +175,6 @@ function Bill() {
     setSelectedCashierName(value);
     toggleDropdown();
   };
-
-  console.log(listCashier);
 
   return (
     <Fragment>
