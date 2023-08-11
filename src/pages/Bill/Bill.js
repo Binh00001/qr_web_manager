@@ -146,38 +146,11 @@ function Bill() {
           } else {
             setListCart(response.data);
           }
-          // if (response.data.length === 0) {
-          //   setIsTodayEmpty(true)
-          // } else {
-          //   setIsTodayEmpty(false)
-          // }
         })
         .catch((error) => {
           console.log(error);
         });
     }
-    // if (selectedCashierName !== "") {
-    //   axios
-    //     .get(
-    //       `http://117.4.194.207:3003/cart/menu/allByCashier/${selectedCashierName}?date=${formattedCurrentDate}`
-    //       // config
-    //     )
-    //     .then((response) => {
-    //       setIsSubmited(true);
-    //       if (
-    //         response.data.length === 0 ||
-    //         response.data === "No carts created"
-    //       ) {
-    //         setIsEmpty(true);
-    //       } else {
-    //         setDateCart(response.data);
-    //         setIsEmpty(false);
-    //       }
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // }
   }, []);
   let displayCart = [];
   if (!isSubmited) {
@@ -195,6 +168,8 @@ function Bill() {
     setSelectedCashierName(value);
     toggleDropdown();
   };
+
+  console.log(listCashier);
 
   return (
     <Fragment>

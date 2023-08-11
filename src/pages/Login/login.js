@@ -84,12 +84,12 @@ function Login() {
         <div className={cx("lgContent")}>
           <div className={cx("lgLeftContainer")}>
             <div className={cx("lgResName")}>Tên Nhà Hàng</div>
-            <div className={cx("lgResDes")}>
+            {/* <div className={cx("lgResDes")}>
               My attempt at recreating one of my favorite paintings, The Fallen
               Angel by Alexandre Cabanel, in LEGO. I really wanted to capture
               the angry and sad stare of Lucifer. How do you think it compares
               to the painting?
-            </div>
+            </div> */}
             <div className={cx("lg4flex")}>Powered by 4flex</div>
           </div>
           <div className={cx("lgRightContainer")}>

@@ -108,8 +108,6 @@ function TableManager() {
       });
   }
 
-  console.log(warningNote);
-
   const subbmitNewtable = () => {
     const newTableName = document.getElementById("NewTableName").value.trim();
     if (!newTableName) {
@@ -225,7 +223,7 @@ function TableManager() {
                           Huỷ Chọn
                         </div>
                         {listCashier
-                          // .filter((user) => (user.cashierName !== "admin"))
+                          .filter((user) => (user.cashierName !== "admin"))
                           .map((user, index) => (
                             <div
                               key={index}
