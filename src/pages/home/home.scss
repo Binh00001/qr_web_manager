@@ -22,6 +22,7 @@
     font-size: 1.2rem;
     align-self: center;
     margin: 0 1%;
+    
     :active{
       background-color: #1BAC4B;
       color: #fff;
@@ -32,8 +33,21 @@
       border: none;
       padding: 8px 15px;
       border-radius: 10px;
+      min-width: 185px;
     }
-
+    .redDot {
+      width: 20px;
+      height: 20px;
+      background-color: #f04d4d;
+      border-radius: 50%;
+      position: absolute;
+      margin-left: 10.9rem;
+      margin-top: -7px;
+      // left: 3%;
+    }
+    .redDotHided{
+      display: none;
+    }
   }
   .onActive{
     button{
@@ -241,6 +255,7 @@
 
   .hCallStaffContainer {
     min-height: 730px;
+    width: 40%;
     // width: 35%;
     // overflow-y: scroll;
     padding-bottom: 50px;
@@ -248,7 +263,7 @@
     .hAllNotification {
       // overflow-x: hidden;
       // overflow-y: auto;
-
+      
       .hEmptyNotification {
         font-size: 1.2rem;
         margin-top: 15px;
@@ -343,8 +358,21 @@
         justify-content: space-around;
         .hText{
           margin: 0;
+          .redDot {
+            width: 14px;
+            height: 14px;
+            background-color: #f04d4d;
+            border-radius: 50%;
+            position: absolute;
+            margin-left: 117px;
+            margin-top: -5px;
+            // left: 3%;
+          }
+          .redDotHided{
+            display: none;
+          }
           button{
-            
+            min-width: 0;
             font-size: 0.9rem;
             display: inline;
             padding: 10px 5px;
@@ -356,6 +384,9 @@
   .hBody{
     min-width: 0;
     margin: 0;
+    .hCallStaffContainer{
+      width: 90%;
+    }
     .hAllTable{
       button{
         margin: 5% 7% 5% 7%;
