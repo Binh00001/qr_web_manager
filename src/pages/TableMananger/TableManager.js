@@ -156,10 +156,12 @@ function TableManager() {
     <Fragment>
       {isOverlay && (
         <Fragment>
-          <div className={cx("overlay")} onClick={() => cancelHandle()}></div>
-          <div className={cx("warningNoteBox")}>
-            <div className={cx("warningContent")}>{warningNote}</div>
+          <div className={cx("overlay")} onClick={() => cancelHandle()}>
+            <div className={cx("warningNoteBox")}>
+              <div className={cx("warningContent")}>{warningNote}</div>
             </div>
+          </div>
+
 
         </Fragment>
       )}

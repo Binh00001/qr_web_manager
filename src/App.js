@@ -30,11 +30,46 @@ function App() {
   const [requests, setRequests] = useState([]);
   const [listCart, setListCart] = useState([]);
   const [newPing, setNewPing] = useState(null);
+  const [checkBill, setCheckBill] = useState(false);
   const [reddotShow, setReddotShow] = useState(false);
   const [billInProgress, setBillInProgress] = useState(false);
   const [isAdmin, setIsAdmin] = useState("loading");
   const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+
+  useEffect(() => {
+    const socket = io(process.env.REACT_APP_API_URL);
+    socket.on("newCallStaff", (response) => {
+      if (isAdmin === "cashier") {
+        console.log(response);
+        if (response.cashier_id === cashierInfo.cashierId) {
+          playSound();
+          setNewPing(response);
+        }
+      }
+    });
+    socket.on("newCart", (response) => {
+      if (isAdmin === "cashier") {
+        if (response.cashier_id === cashierInfo.cashierId) {
+          playSound();
+          setNewPing(response);
+        }
+      }
+    });
+    socket.on("statusChanged", (response) => {
+      if (isAdmin === "cashier") {
+        if (response.cashier_id === cashierInfo.cashierId) {
+          // playSound();
+          setCheckBill(!checkBill);
+        }
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [isAdmin]);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`)
@@ -99,7 +134,7 @@ function App() {
           `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?time= 60`
         )
         .then((response) => {
-          if(response.data !== "No carts created"){
+          if (response.data !== "No carts created") {
             setListCart(response.data);
           }
         })
@@ -122,36 +157,9 @@ function App() {
         return cartItem.status === "IN_PROGRESS";
       });
     }
-
     const anyBillInProgress = !allBillDone();
     setBillInProgress(anyBillInProgress);
-    //true when have in progress
-  }, [listCart]);
-
-  useEffect(() => {
-    const socket = io(process.env.REACT_APP_API_URL);
-    socket.on("newCallStaff", (response) => {
-      if (isAdmin === "cashier") {
-        console.log(response);
-        if (response.cashier_id === cashierInfo.cashierId) {
-          playSound();
-          setNewPing(response);
-        }
-      }
-    });
-    socket.on("newCart", (response) => {
-      if (isAdmin === "cashier") {
-        if (response.cashier_id === cashierInfo.cashierId) {
-          playSound();
-          setNewPing(response);
-        }
-      }
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, [isAdmin]);
+  }, [listCart, checkBill]);
 
   const playSound = () => {
     const audio = new Audio(ting);

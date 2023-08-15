@@ -16,6 +16,7 @@ function Bill() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [needsClick, setNeedsClick] = useState(false);
   const [totalIncome, setTotalIncome] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
@@ -59,14 +60,14 @@ function Bill() {
 
   useEffect(() => {
     let cartsToUse = isSubmited ? dateCart : listCart; // Choose which cart data to use
-  
+
     const completedCarts = cartsToUse.filter((cart) => cart.status === "COMPLETED");
-  
+
     const money = completedCarts.reduce((total, cart) => total + cart.total, 0);
-  
+
     setTotalIncome(money);
   }, [isSubmited, dateCart, listCart]);
-  
+
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
     // setSelectedDate(event.target.value);
@@ -74,6 +75,7 @@ function Bill() {
 
   const handleDate = (event) => {
     event.preventDefault();
+    setNeedsClick(false)
     setDateCart([]);
     // Convert the input value to a Date object
     const inputDate = new Date(datePush);
@@ -136,7 +138,6 @@ function Bill() {
         });
     }
   };
-  // console.log(listCart);
 
   useEffect(() => {
     const day = currentDate.getDate();
@@ -170,6 +171,24 @@ function Bill() {
     setSelectedValue(value);
     setSelectedCashierName(value);
     toggleDropdown();
+    setNeedsClick(true);
+  };
+
+  const handleConvertCashierId = (ID) => {
+    let cashierName = ""; // Use 'let' instead of 'const'
+
+    listCashier.forEach(item => {
+      if (item.id === ID) {
+        cashierName = item.cashierName;
+      }
+    });
+
+    return cashierName;
+  }
+
+  const handleButtonClick = () => {
+    setNeedsClick(false);
+    // ... any other logic you might have
   };
 
   return (
@@ -225,6 +244,7 @@ function Bill() {
                 </div>
                 <button
                   id="submitButton"
+                  className={needsClick ? 'needClick' : 'Hiden'}
                   onClick={(event) => handleDate(event)}
                 >
                   Submit
@@ -253,7 +273,7 @@ function Bill() {
           {displayCart.map((cart, index) => (
             <div key={index} className={cx("bItem")}>
               <div className={cx("bItemLeftContainer")}>
-                <div className={cx("bId")}>ID: {cart._id}</div>
+                <div className={cx("bId")}>Chi Nhánh: {handleConvertCashierId(cart.cashier_id)}</div>
 
                 <div className={cx("bTable")}>Bàn: {cart.table}</div>
 
@@ -274,7 +294,7 @@ function Bill() {
                   </span>
                 </div>
                 <div className={cx("bId")}>
-                  Trạng Thái:
+                  Trạng Thái:{" "}
                   {cart.status === "IN_PROGRESS" && "Đang Chờ"}
                   {cart.status === "COMPLETED" && "Đã Xong"}
                   {cart.status === "CANCEL" && "Đã Huỷ"}

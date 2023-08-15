@@ -121,10 +121,11 @@
     z-index: 20;
     background-color: #fff;
     height: 8%;
-    width: 30%;
+    // width: 30%;
+    min-width: 250px;
     font-size: 1.3rem;
     top: 40%;
-    left: 35%;
+    left: calc(50% - 125px);
     display: flex;
     align-items: center;
     border-radius: 10px;

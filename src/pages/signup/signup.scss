@@ -1,9 +1,47 @@
-.lgWrapper{
-  height: 100vh;
+.lgWrapper {
+  height: 100%;
   background-color: #ecf0f1;
   position: relative;
 }
-.darkOverlay{
+
+.registerNoteBox {
+  position: fixed;
+  z-index: 20;
+  background-color: #fff;
+  height: 8%;
+  // width: 30%;
+  min-width: 300px;
+  font-size: 1.3rem;
+  top: 40%;
+  left: calc(50% - 150px);
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+
+  .registerContent {
+    width: 100%;
+    // height: 100%;
+    text-align: center;
+    font-weight: 600;
+    // align-items: center;
+  }
+}
+
+.lightOverlay {
+  position: fixed;
+  // background-color: #bdc3c7;
+  height: 200vh;
+  width: 100vw;
+  top: -10vw;
+  // opacity: 0.8;
+  z-index: 100;
+  .registerNoteBox{
+    opacity: 1;
+    border: 1px solid black;
+  }
+}
+
+.darkOverlay {
   position: fixed;
   background-color: #bdc3c7;
   height: 200vh;
@@ -11,119 +49,140 @@
   top: -10vw;
   opacity: 0.8;
 }
-.mTopBar{
-  .spTitle{
+
+.mTopBar {
+  .spTitle {
     margin-left: 6%;
     padding: 10px;
     border-radius: 10px;
   }
-  .spTitle:active{
+
+  .spTitle:active {
     background-color: #fff;
     color: #000;
   }
 }
+
 .lgBody {
-    max-width: 100vw;
+  max-width: 100vw;
+  margin: 0 auto;
+
+  .lgContent {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
     margin: 0 auto;
-    min-height: 85vh;
-    .lgContent {
-      display: flex;
-      justify-content: space-between;
-      .lgLeftContainer {
-        // margin-top: 20vh;
-        // width: 50%;
-        // margin-left: 10%;
-        .lgResName {
-          font-size: 3rem;
-          font-weight: bold;
-          color: #3498db;
-        }
-  
-        .lgResDes {
-          margin-top: 3vh;
-          max-width: 75%;
-          font-size: 1.2rem;
-        }
-  
-        .lg4flex {
-          position: absolute;
-          bottom: 20vh;
-          font-size: 1.2rem;
-        }
+    height: 100%;
+
+    .lgLeftContainer {
+
+      // margin-top: 20vh;
+      // width: 50%;
+      // margin-left: 10%;
+      .lgResName {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #3498db;
       }
-      .spRightContainer {
-        background-color: #fff;
-        // margin-top: 15vh;
-        width: 50%;
-        min-width: fit-content;
-        height: 50vh;
-        min-height: 340px;
-        margin: 5vh auto;
-        border-radius: 15px;
-        .spBox {
-          min-height: 50%;
-          width: 100%;
-          margin-bottom: 5vh;
-          // border-bottom: 1px solid black;
+
+      .lgResDes {
+        margin-top: 3vh;
+        max-width: 75%;
+        font-size: 1.2rem;
+      }
+
+      .lg4flex {
+        position: absolute;
+        bottom: 20vh;
+        font-size: 1.2rem;
+      }
+    }
+
+    .spRightContainer {
+      background-color: #fff;
+      // margin-top: 15vh;
+      width: 50%;
+      min-width: fit-content;
+      // height: 50vh;
+      min-height: 380px;
+      margin: 5vh auto;
+      border-radius: 15px;
+
+      .spBox {
+        min-height: 50%;
+        width: 100%;
+        margin-bottom: 50px;
+
+        // border-bottom: 1px solid black;
+        input {
+          width: 90%;
+          height: 45px;
+          border: 1px #bdc3c7 solid;
+          padding-left: 25px;
+          border-radius: 10px;
+          background-color: #fff;
+        }
+
+        .spUserNameBox {
+          width: 80%;
+          margin: 20px auto;
+          margin-top: 50px;
+        }
+
+        .spAccountBox {
+          width: 80%;
+          margin: 20px auto;
+        }
+
+        .spPasswordBox {
+          width: 80%;
+          margin: 20px auto;
+        }
+
+        .spReInputPasswordBox {
+          width: 80%;
+          margin: 20px auto;
+        }
+
+        .spLoginButtonBox {
+          width: 80%;
+          margin: 2vh auto;
+
           input {
             width: 90%;
-            height: 45px;
-            border: 1px #bdc3c7 solid;
-            padding-left: 25px;
+            margin-top: 4vh;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
             border-radius: 10px;
-            background-color: #fff;
+            padding: 0;
           }
-          .spUserNameBox{
-            width: 80%;
-            margin: 2vh auto;
-            margin-top: 5vh;
-          }
-          .spAccountBox {
-            width: 80%;
-            margin: 2vh auto;
-          }
-          .spPasswordBox {
-            width: 80%;
-            margin: 2vh auto;
-          }
-          .spReInputPasswordBox{
-            width: 80%;
-            margin: 2vh auto;
-          }
-          .spLoginButtonBox {
-            width: 80%;
-            margin: 2vh auto;
-            input {
-              width: 90%;
-              margin-top: 4vh;
-              background-color: #3498db;
-              color: #fff;
-              font-size: 1.3rem;
-              border: none;
-              border-radius: 10px;
-              padding: 0;
-            }
-            button {
-              width: 102%;
-              margin-top: 4vh;
-              background-color: #3498db;
-              color: #fff;
-              font-size: 1.3rem;
-              border: none;
-              border-radius: 10px;
-              padding: 0;
-              height: 45px;
-              cursor: pointer;
-              &:hover {
-                background-color: #006bb3;
-              }
+
+          button {
+            width: 102%;
+            margin-top: 4vh;
+            background-color: #3498db;
+            color: #fff;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 10px;
+            padding: 0;
+            height: 45px;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #006bb3;
             }
           }
         }
-        .spRegisterBox {
-          border-top: #3498db 1px solid;
-          width: 85%;
-          margin: 0 auto;
+      }
+
+      .spRegisterBox {
+        border-top: #3498db 1px solid;
+        width: 85%;
+        margin: 20px auto;
+
         //   input {
         //     height: 45px;
         //     width: 81.5%;
@@ -135,73 +194,87 @@
         //     color: #fff;
         //     font-size: 1.3rem;
         //   }
-          button {
-            height: 45px;
-            width: 81.5%;
-            margin-left: 2.3vw;
-            margin-top: 3vh;
-            border-radius: 10px;
-            border: none;
-            background-color: #2ecc71;
-            color: #fff;
-            font-size: 1.3rem;
-          }
+        button {
+          height: 45px;
+          width: 80%;
+          margin-left: 9%;
+          margin-top: 3vh;
+          border-radius: 10px;
+          border: none;
+          background-color: #2ecc71;
+          color: #fff;
+          font-size: 1.3rem;
         }
       }
     }
   }
-.amWrapper{
+}
+
+.amWrapper {
   width: 100%;
-  min-height: 80vh;
+  min-height: calc(100vh - 100px);
   background-color: #fff;
-  .amItem{
+
+  .amItem {
     border: 1px black solid;
     border-radius: 8px;
     width: 90%;
+    max-width: 800px;
     display: flex;
     justify-content: space-between;
     margin: 2% auto;
-    .amLeft{
-      div{
-        padding:10px;
+
+    .amLeft {
+      div {
+        padding: 10px;
       }
     }
-    .amRight{
+
+    .amRight {
       margin-right: 2%;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
-      button{
+
+      button {
         padding: 8px;
         color: #fff;
         border: none;
         border-radius: 5px;
       }
-      .amChangePassword{
+
+      .amChangePassword {
         background-color: #2ecc71;
       }
-      .amDeleteAccount{
+
+      .amDeleteAccount {
         background-color: #f04d4d;
       }
     }
   }
 }
-.cppWrapper{
+
+.cppWrapper {
   position: fixed;
   background-color: #fff;
   display: flex;
   flex-direction: column;
-  width: 50%;
-  margin: 5% 25% 0 25%;
+  width: 40%;
+  // max-width: 600px;
+  margin-top: 5%;
+  margin-left: 30%;
   border-radius: 10px;
+
   // height: 50%;
-  .ccpChoosedName{
+  .ccpChoosedName {
     margin: 5% auto 0 auto;
   }
-  .cppName{
-    margin-top: 8%;
+
+  .cppName {
+    margin-top: 5%;
   }
-  input{
+
+  input {
     border: none;
     height: 40px;
     margin: 10px 20px;
@@ -209,7 +282,8 @@
     padding-left: 10px;
     background-color: #ecf0f1;
   }
-  button{
+
+  button {
     border: none;
     background-color: #2ecc71;
     color: #fff;
@@ -219,23 +293,27 @@
     font-size: 1.3rem;
     border-radius: 10px;
   }
-  .cppNote{
+
+  .cppNote {
     align-self: center;
     text-align: center;
     font-size: 1.2rem;
     margin: 5% 0;
   }
-  .cppButtonGroup{
+
+  .cppButtonGroup {
     width: 100%;
     display: flex;
     justify-content: space-around;
-    button{
+
+    button {
       margin: 0 0 5% 0;
       font-size: 1rem;
       width: 25%;
       background-color: #f04d4d;
     }
-    .cppCancelButton{
+
+    .cppCancelButton {
       border: #f04d4d 1px solid;
       background-color: transparent;
       color: #f04d4d;
@@ -245,24 +323,26 @@
 }
 
 @media (max-width: 768px) {
-  .lgBody{
-    .lgContent{
-      .spRightContainer{
+  .lgBody {
+    .lgContent {
+      .spRightContainer {
         width: 95%;
-        .spRegisterBox{
+
+        .spRegisterBox {
           margin: 20px auto;
           display: flex;
           justify-content: space-around;
-          button{
+
+          button {
             margin-left: 0;
           }
         }
       }
     }
   }
-  .cppWrapper{
+
+  .cppWrapper {
     width: 90%;
     margin: 5% 5% 0 5%;
   }
 }
-  

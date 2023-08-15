@@ -13,7 +13,7 @@
         .bText {
             display: flex;
             align-items: center;
-            margin-left: 1.5%;
+            // margin-left: 1.5%;
             input {
                 width: 120px;
                 margin-left: 15px;
@@ -237,4 +237,12 @@
             }
         }
     }
+}
+.needClick{
+    background-color: #f04d4d;
+    color: #fff;
+    display: inline;
+}
+.Hiden{
+    display: none;
 }
