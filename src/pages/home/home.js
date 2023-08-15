@@ -17,7 +17,6 @@ const cx = classNames.bind(styles);
 function Home() {
   const showReddot = useReddotShowContext();
   const billInProgress = useBillInProgress();
-  console.log(billInProgress);
   const [requests, setRequests] = useState([]);
   const [listTenMin, setListTenMin] = useState([]);
   const [reload, setReload] = useState(false);
@@ -115,6 +114,7 @@ function Home() {
       clearInterval(interval);
     };
   }, [newCallStaff]);
+
   useEffect(() => {
     if (areRequestsOrListTenMinEmpty()) {
       setShowContent(false);
@@ -228,6 +228,16 @@ function Home() {
     }
   };
 
+  const handleRequestCheck = (request) => {
+    const requestTime = moment(request.createdAt, "DD/MM/YYYY, HH:mm:ss");
+    const currentTime = moment();
+    const timeDifference = moment
+      .duration(currentTime.diff(requestTime))
+      .asMinutes();
+    console.log(timeDifference <= 1);
+    return (timeDifference <= 1);
+  }
+
   return (
     <Fragment>
       <div className={cx("Wrapper")}>
@@ -239,7 +249,7 @@ function Home() {
                   onActive: !tableActive && !callStaff,
                 })}
               >
-                 <div
+                <div
                   className={cx("redDot", {
                     redDotHided: !billInProgress,
                   })}
@@ -457,7 +467,7 @@ function Home() {
                         </div>
                         <div
                           className={cx("redDot", {
-                            redDotHided: !showReddot,
+                            redDotHided: (!handleRequestCheck(request)),
                           })}
                         ></div>
                       </div>

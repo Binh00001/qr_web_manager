@@ -19,6 +19,8 @@ function Signup() {
   const [chooseAccountName, setChooseAccountName] = useState("");
   const [reload, setReload] = useState(true);
   const [deleteAccId, setDeleteAccId] = useState("");
+  const [changePasswordMessage, setChangePasswordMessage] = useState("");
+  const [registerMessage, setRegisterMessage] = useState("");
   const [updateAccId, setUpdateAccId] = useState("");
   const isAdmin = useIsAdminContext();
   const [formData, setFormData] = useState({
@@ -61,15 +63,23 @@ function Signup() {
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
     if (!formData.name) {
+      setIsOverlay(true)
+      setRegisterMessage("Hãy Nhập tên người dùng")
       return console.log("Hãy Nhập tên người dùng");
     }
     if (!formData.cashierName) {
+      setIsOverlay(true)
+      setRegisterMessage("Hãy Nhập tên đăng nhập")
       return console.log("Hãy Nhập tên đăng nhập");
     }
     if (!formData.password) {
+      setIsOverlay(true)
+      setRegisterMessage("Hãy Nhập mật khẩu")
       return console.log("Hãy Nhập mật khẩu");
     }
     if (formData.password !== formData.reEnterPassword) {
+      setIsOverlay(true)
+      setRegisterMessage("Mật khẩu không khớp")
       return console.log("Mật khẩu không khớp");
     } else {
       console.log("Gửi form");
@@ -81,16 +91,14 @@ function Signup() {
         .then((response) => {
           if (response.data === "CashierName Existed!") {
             // setIsExisted(true);
+            setIsOverlay(true)
+            setRegisterMessage("Tên Người Dùng Đã Tồn Tại")
             console.log("CashierName Existed!");
           } else {
+            setIsOverlay(true)
+            setRegisterMessage("Tạo Tài Khoản Thành Công")
             console.log("Tao thanh cong");
             setReload(!reload);
-            // setFormData({
-            //   cashierName: "",
-            //   name: "",
-            //   password: "",
-            // });
-            // setIsCreated(true);
           }
         })
         .catch((error) => {
@@ -100,6 +108,8 @@ function Signup() {
   };
 
   const handleDeleteSubmit = () => {
+    setIsOverlay(false);
+    setIsDeleteAccountPopup(false);
     axios
       .delete(
         `${process.env.REACT_APP_API_URL}/cashier/delete/${deleteAccId}`,
@@ -122,10 +132,12 @@ function Signup() {
   const handleUpdateSubmit = () => {
     console.log(updateFormData);
     if (!updateFormData.oldPassword) {
+      setChangePasswordMessage("Hãy Nhập mật khẩu")
       return console.log("Hãy Nhập mật khẩu");
     }
     if (updateFormData.newPassword || updateFormData.reNewPassword) {
       if (updateFormData.newPassword !== updateFormData.reNewPassword) {
+        setChangePasswordMessage("Mật khẩu không khớp")
         return console.log("Mật khẩu không khớp");
       }
     }
@@ -137,10 +149,13 @@ function Signup() {
       )
       .then((response) => {
         if (response.data === false) {
+          setChangePasswordMessage("Cập nhật không thành công")
           console.log("Cập nhật không thành công");
         } else if (response.data === "Wrong password") {
+          setChangePasswordMessage("Sai mật khẩu")
           console.log("Sai mật khẩu");
         } else if (response.data === true) {
+          setChangePasswordMessage("Cập Nhật Thành Công")
           console.log("cập nhật thành cong");
           setReload(!reload);
           setUpdateAccId("");
@@ -195,12 +210,48 @@ function Signup() {
     });
     setIsChangePasswordPopup(false);
     setIsDeleteAccountPopup(false);
+    setRegisterMessage("")
+    setChangePasswordMessage("")
   };
+
+  const handleChangePasswordMessage = () => {
+    if(changePasswordMessage !== "Cập Nhật Thành Công"){
+      setChangePasswordMessage("")
+    }else{
+      setChangePasswordMessage("")
+      setIsOverlay(false)
+      setUpdateFormData({
+        cashierName: "",
+        name: "",
+        oldPassword: "",
+        newPassword: "",
+      });
+      setIsChangePasswordPopup(false);
+      setIsDeleteAccountPopup(false);
+      setRegisterMessage("")
+    }
+  }
 
   return (
     <div className={cx("lgWrapper")}>
       {isOverlay && (
         <div className="darkOverlay" onClick={() => handleOverlayClick()}></div>
+      )}
+      {!(!registerMessage) && (
+        <Fragment>
+          <div className={cx("registerNoteBox")}>
+            <div className={cx("registerContent")}>{registerMessage}</div>
+          </div>
+        </Fragment>
+      )}
+      {!(!changePasswordMessage) && (
+        <Fragment>
+          <div className="lightOverlay" onClick={() => handleChangePasswordMessage()}>
+            <div className={cx("registerNoteBox")}>
+              <div className={cx("registerContent")}>{changePasswordMessage}</div>
+            </div>
+          </div>
+        </Fragment>
       )}
       <div className={cx("blackBar")}>
         <div className={cx("TopBar")}>
@@ -218,7 +269,84 @@ function Signup() {
         </div>
       </div>
       <div className={cx("lgBody")}>
-        <div className={cx("bMarginTop")}></div>
+        {isAccountManager && isChangePasswordPopup && (
+          <Fragment>
+            <div className={cx("cppWrapper")}>
+              <div className={cx("ccpChoosedName")}>
+                Tài Khoản: {chooseAccountName}
+              </div>
+              <input
+                className={cx("cppName")}
+                placeholder="Nhập Tên Mới (Không Bắt Buộc)"
+                onChange={(e) =>
+                  setUpdateFormData({
+                    ...updateFormData,
+                    name: e.target.value,
+                  })
+                }
+              ></input>
+              <input
+                className={cx("cppOldPass")}
+                placeholder="Nhập Mật Khẩu Cũ"
+                type="password"
+                onChange={(e) =>
+                  setUpdateFormData({
+                    ...updateFormData,
+                    oldPassword: e.target.value,
+                  })
+                }
+              ></input>
+              <input
+                className={cx("cppNewPass")}
+                placeholder="Nhập Mật Khẩu Mới"
+                type="password"
+                onChange={(e) =>
+                  setUpdateFormData({
+                    ...updateFormData,
+                    newPassword: e.target.value,
+                  })
+                }
+              ></input>
+              <input
+                className={cx("cppNewPassCheck")}
+                placeholder="Nhập Lại Mật Khẩu"
+                type="password"
+                onChange={(e) =>
+                  setUpdateFormData({
+                    ...updateFormData,
+                    reNewPassword: e.target.value,
+                  })
+                }
+              ></input>
+              <button
+                className={cx("cppSubbmitButton")}
+                onClick={handleUpdateSubmit}
+              >
+                Xác Nhận
+              </button>
+            </div>
+          </Fragment>
+        )}
+        {isAccountManager && isDeleteAccountPopup && (
+          <Fragment>
+            <div className={cx("cppWrapper")}>
+              <div className={cx("cppNote")}>
+                Bạn Có Chắc Muốn Xoá Tài Khoản Này?
+                <br />
+                (Không thể hoàn tác)
+              </div>
+              <div className={cx("cppButtonGroup")}>
+                <button className={cx("cppCancelButton")} onClick={handleOverlayClick}>Huỷ</button>
+                <button
+                  className={cx("cppConfirmButton")}
+                  onClick={handleDeleteSubmit}
+                >
+                  Xác Nhận
+                </button>
+              </div>
+            </div>
+          </Fragment>
+        )}
         <div className={cx("lgContent")}>
           {/* <div className={cx("lgLeftContainer")}> */}
           {/* <div className={cx("lgResName")}>Tên Nhà Hàng</div> */}
@@ -338,84 +466,6 @@ function Signup() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </Fragment>
-          )}
-          {isAccountManager && isChangePasswordPopup && (
-            <Fragment>
-              <div className={cx("cppWrapper")}>
-                <div className={cx("ccpChoosedName")}>
-                  Tài Khoản: {chooseAccountName}
-                </div>
-                <input
-                  className={cx("cppName")}
-                  placeholder="Nhập Tên Mới (Không Bắt Buộc)"
-                  onChange={(e) =>
-                    setUpdateFormData({
-                      ...updateFormData,
-                      name: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className={cx("cppOldPass")}
-                  placeholder="Nhập Mật Khẩu Cũ"
-                  type="password"
-                  onChange={(e) =>
-                    setUpdateFormData({
-                      ...updateFormData,
-                      oldPassword: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className={cx("cppNewPass")}
-                  placeholder="Nhập Mật Khẩu Mới"
-                  type="password"
-                  onChange={(e) =>
-                    setUpdateFormData({
-                      ...updateFormData,
-                      newPassword: e.target.value,
-                    })
-                  }
-                ></input>
-                <input
-                  className={cx("cppNewPassCheck")}
-                  placeholder="Nhập Lại Mật Khẩu"
-                  type="password"
-                  onChange={(e) =>
-                    setUpdateFormData({
-                      ...updateFormData,
-                      reNewPassword: e.target.value,
-                    })
-                  }
-                ></input>
-                <button
-                  className={cx("cppSubbmitButton")}
-                  onClick={handleUpdateSubmit}
-                >
-                  Xác Nhận
-                </button>
-              </div>
-            </Fragment>
-          )}
-          {isAccountManager && isDeleteAccountPopup && (
-            <Fragment>
-              <div className={cx("cppWrapper")}>
-                <div className={cx("cppNote")}>
-                  Bạn Có Chắc Muốn Xoá Tài Khoản Này?
-                  <br />
-                  (Không thể hoàn tác)
-                </div>
-                <div className={cx("cppButtonGroup")}>
-                  <button className={cx("cppCancelButton")} onClick={handleOverlayClick}>Huỷ</button>
-                  <button
-                    className={cx("cppConfirmButton")}
-                    onClick={handleDeleteSubmit}
-                  >
-                    Xác Nhận
-                  </button>
-                </div>
               </div>
             </Fragment>
           )}
