@@ -30,13 +30,23 @@ function App() {
   const [requests, setRequests] = useState([]);
   const [listCart, setListCart] = useState([]);
   const [newPing, setNewPing] = useState(null);
-  const [checkBill, setCheckBill] = useState(false);
+  const [checkBill, setCheckBill] = useState();
   const [reddotShow, setReddotShow] = useState(false);
   const [billInProgress, setBillInProgress] = useState(false);
   const [isAdmin, setIsAdmin] = useState("loading");
   const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
-  
+
+  useEffect(() => {
+    const allBillDone = () => {
+      return !listCart.some((cartItem) => {
+        return cartItem.status === "IN_PROGRESS";
+      });
+    }
+    const anyBillInProgress = !allBillDone();
+    setBillInProgress(anyBillInProgress);
+  }, [listCart]);
+
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
@@ -54,16 +64,14 @@ function App() {
         if (response.cashier_id === cashierInfo.cashierId) {
           playSound();
           setNewPing(response);
-          console.log("ting");
+          // console.log("ting");
         }
       }
     });
-    socket.on("statusChanged", (response) => {
+    socket.on("status", (response) => {
       if (isAdmin === "cashier") {
-        if (response.cashier_id === cashierInfo.cashierId) {
-          // playSound();
-          setCheckBill(!checkBill);
-        }
+          setCheckBill(response._id);
+          console.log(response._id);
       }
     });
 
@@ -147,21 +155,11 @@ function App() {
     fetchData();
     const interval = setInterval(() => {
       fetchData();
-    }, 30000);
+    }, 300000);
     return () => {
       clearInterval(interval);
     };
-  }, [newPing]);
-
-  useEffect(() => {
-    const allBillDone = () => {
-      return !listCart.some((cartItem) => {
-        return cartItem.status === "IN_PROGRESS";
-      });
-    }
-    const anyBillInProgress = !allBillDone();
-    setBillInProgress(anyBillInProgress);
-  }, [listCart, checkBill, newPing]);
+  }, [newPing, checkBill]);
 
   const playSound = () => {
     const audio = new Audio(ting);
@@ -183,8 +181,6 @@ function App() {
     }
     return false;
   };
-
-
 
   return (
     <AuthProvider

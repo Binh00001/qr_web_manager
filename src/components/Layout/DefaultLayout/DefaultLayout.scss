@@ -144,6 +144,14 @@
 // for mobile
 
 @media (max-width: 768px){
+  .navBoxWhite{
+    top: 10px;
+    right: calc(5% - 15px);
+  }
+  .dWrapper .dContent .dLeftContainer .dItem .reddot {
+    top: 5px;
+  }
+
   .dWrapper{
     height: 60px;
     .dContent{

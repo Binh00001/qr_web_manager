@@ -56,7 +56,7 @@ function Home() {
       setNewCart(response);
     });
   }, []);
-
+  
   useEffect(() => {
     if (isAdmin === "admin") {
       navigate(`/bill`);
@@ -178,7 +178,7 @@ function Home() {
         config
       )
       .then((response) => {
-        console.log("Cart marked as complete:", response.data);
+        // console.log("Cart marked as complete:", response.data);
         setCartStatusChange(!cartStatusChange);
       })
       .catch((error) => {

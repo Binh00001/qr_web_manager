@@ -110,7 +110,7 @@ function DefaultLayout({ children }) {
               <div className={cx("grayOverlay")} onClick={() => openNavMenu()}></div>
               <div className={cx("navBoxWhite")}>
                 <div className={cx("accountName")}>{cashier.cashierName}</div>
-                <div className={cx("soundNotification")} onClick={() => { setAllowSound(!allowSound) }}>Âm Thanh Thông Báo : {allowSound ? "Bật" : "Tắt"}</div>
+                {/* <div className={cx("soundNotification")} onClick={() => { setAllowSound(!allowSound) }}>Âm Thanh Thông Báo : {allowSound ? "Bật" : "Tắt"}</div> */}
                 <div className={cx("logout")} onClick={logout}>Đăng Xuất</div>
               </div>
             </Fragment>

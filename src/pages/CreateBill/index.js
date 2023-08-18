@@ -36,7 +36,6 @@ function CreateBill() {
 
     useEffect(() => {
         const storageCart = JSON.parse(sessionStorage.getItem("obj"))
-        console.log(storageCart);
         if(storageCart !== null){
             setCartNumber(storageCart.reduce((total, item) => total + item.number, 0) )
         }
