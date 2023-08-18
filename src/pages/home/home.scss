@@ -311,41 +311,6 @@
   }
 }
 
-.hAddTableBox {
-  display: flex;
-  margin: 4% 5% 5% 5%;
-
-  input {
-    height: 70px;
-    width: 100px;
-    margin: 5% 0 5% 5%;
-    border: 1px black solid;
-    // border-right: none;
-    padding-left: 10px;
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-  }
-
-  .hAcpBtn {
-    display: flex;
-    height: 72px;
-    margin: 5% 5% 5% 0;
-    align-items: center;
-    border: 1px black solid;
-    border-left: none;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    cursor: pointer;
-
-    p {
-      padding: 10px 10px;
-      font-size: 1.1rem;
-      // background-color: #f04d4d;
-      // border-radius: 5px;
-    }
-  }
-}
-
 
 
 //for mobile 

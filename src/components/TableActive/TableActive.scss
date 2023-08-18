@@ -26,7 +26,7 @@
             transform: translate(-50%, -50%);
             margin: 0;
             color: #000;
-            font-size: 1.2rem;
+            font-size: 1rem;
             padding-top: 3px;
             width: 60px;
             margin-left: 5px;
@@ -36,10 +36,52 @@
     .hAddTable {
         border: 2px black dashed;
         border-radius: 10px;
-
+        
         p {
             margin: 0;
             font-size: 2.5rem;
         }
     }
 }
+.hAddTableBox {
+    margin: 4% 5% 5% 5%;
+    .blackBorderBox{
+        display: flex;
+        margin: 5% 0 5% 5%;
+        border: 1px black solid;
+        border-radius: 10px;
+    }
+    input {
+      height: 68px;
+      width: 100px;
+    //   margin: 5% 0 5% 5%;
+    margin: 2px;
+    //   border: 1px black solid;
+      // border-right: none;
+      border: none;
+      border-radius: 10px;
+      padding-left: 10px;
+    //   border-top-left-radius: 10px;
+    //   border-bottom-left-radius: 10px;
+    }
+  
+    .hAcpBtn {
+      display: flex;
+      height: 74px;
+      margin-right: 10px;
+    //   margin: 5% 5% 5% 0;
+      align-items: center;
+    //   border: 1px black solid;
+      border-left: 1px black solid;
+    //   border-top-right-radius: 10px;
+    //   border-bottom-right-radius: 10px;
+      cursor: pointer;
+  
+      p {
+        padding: 10px 10px;
+        font-size: 1.1rem;
+        // background-color: #f04d4d;
+        // border-radius: 5px;
+      }
+    }
+  }

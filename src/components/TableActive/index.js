@@ -22,7 +22,7 @@ function TableActive() {
         axios
             // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
-                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`  
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
             )
             .then((response) => {
                 setTables(response.data);
@@ -39,7 +39,7 @@ function TableActive() {
         }
         axios
             .post(
-                `${process.env.REACT_APP_API_URL}/table/create`, 
+                `${process.env.REACT_APP_API_URL}/table/create`,
                 {
                     name: tableNewNumber.table,
                     cashier_id: cashier.cashierId
@@ -107,46 +107,48 @@ function TableActive() {
                     </button>
                 ))}
                 {clickAddTable && (
-                <button
-                  onClick={() => setClickAddTable(!clickAddTable)}
-                  className={cx("hAddTable")}
-                >
-                  <p>+</p>
-                </button>
-              )}
-                            {!clickAddTable && (
-                <Fragment>
-                  <div className={cx("hAddTableBox")}>
-                    <input
-                      id="table"
-                      type="text"
-                      name="table"
-                      // value={amount}
-                      onChange={changeHandler}
-                      placeholder="Số Bàn:..."
-                      required
-                    ></input>
-                    {table && (
-                      <div
-                        className={cx("hAcpBtn")}
-                        // onClick={() => submitAddAmountHandler(food._id)}
-                        onClick={handleAddTable}
-                      >
-                        <p>OK</p>
-                      </div>
-                    )}
-                    {!table && (
-                      <div
-                        className={cx("hAcpBtn")}
+                    <button
                         onClick={() => setClickAddTable(!clickAddTable)}
-                        // onClick={handleAddTable}
-                      >
-                        <p>Huỷ</p>
-                      </div>
-                    )}
-                  </div>
-                </Fragment>
-              )}
+                        className={cx("hAddTable")}
+                    >
+                        <p>+</p>
+                    </button>
+                )}
+                {!clickAddTable && (
+                    <Fragment>
+                        <div className={cx("hAddTableBox")}>
+                            <div className={cx("blackBorderBox")}>
+                                <input
+                                    id="table"
+                                    type="text"
+                                    name="table"
+                                    // value={amount}
+                                    onChange={changeHandler}
+                                    placeholder="Số Bàn:..."
+                                    required
+                                ></input>
+                                {table && (
+                                    <div
+                                        className={cx("hAcpBtn")}
+                                        // onClick={() => submitAddAmountHandler(food._id)}
+                                        onClick={handleAddTable}
+                                    >
+                                        <p>OK</p>
+                                    </div>
+                                )}
+                                {!table && (
+                                    <div
+                                        className={cx("hAcpBtn")}
+                                        onClick={() => setClickAddTable(!clickAddTable)}
+                                    // onClick={handleAddTable}
+                                    >
+                                        <p>Huỷ</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </Fragment>
+                )}
             </div>
         </Fragment>
     )
