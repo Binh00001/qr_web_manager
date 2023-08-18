@@ -36,7 +36,7 @@ function App() {
   const [isAdmin, setIsAdmin] = useState("loading");
   const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
   const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
-
+  
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
@@ -45,6 +45,7 @@ function App() {
         if (response.cashier_id === cashierInfo.cashierId) {
           playSound();
           setNewPing(response);
+          console.log("staffTing");
         }
       }
     });
@@ -53,6 +54,7 @@ function App() {
         if (response.cashier_id === cashierInfo.cashierId) {
           playSound();
           setNewPing(response);
+          console.log("ting");
         }
       }
     });
@@ -159,7 +161,7 @@ function App() {
     }
     const anyBillInProgress = !allBillDone();
     setBillInProgress(anyBillInProgress);
-  }, [listCart, checkBill]);
+  }, [listCart, checkBill, newPing]);
 
   const playSound = () => {
     const audio = new Audio(ting);

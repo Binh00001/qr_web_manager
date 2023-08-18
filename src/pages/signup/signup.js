@@ -64,18 +64,18 @@ function Signup() {
     e.preventDefault();
     if (!formData.name) {
       setIsOverlay(true)
-      setRegisterMessage("Hãy Nhập tên người dùng")
-      return console.log("Hãy Nhập tên người dùng");
+      setRegisterMessage("Hãy nhập tên người dùng")
+      return console.log("Hãy nhập tên người dùng");
     }
     if (!formData.cashierName) {
       setIsOverlay(true)
-      setRegisterMessage("Hãy Nhập tên đăng nhập")
-      return console.log("Hãy Nhập tên đăng nhập");
+      setRegisterMessage("Hãy nhập tên đăng nhập")
+      return console.log("Hãy nhập tên đăng nhập");
     }
     if (!formData.password) {
       setIsOverlay(true)
-      setRegisterMessage("Hãy Nhập mật khẩu")
-      return console.log("Hãy Nhập mật khẩu");
+      setRegisterMessage("Hãy nhập mật khẩu")
+      return console.log("Hãy nhập mật khẩu");
     }
     if (formData.password !== formData.reEnterPassword) {
       setIsOverlay(true)
@@ -90,17 +90,25 @@ function Signup() {
         )
         .then((response) => {
           if (response.data === "CashierName Existed!") {
-            // setIsExisted(true);
-            setIsOverlay(true)
-            setRegisterMessage("Tên Người Dùng Đã Tồn Tại")
-            console.log("CashierName Existed!");
+            // Handle existing cashier name case
           } else {
-            setIsOverlay(true)
-            setRegisterMessage("Tạo Tài Khoản Thành Công")
+            setIsOverlay(true);
+            setRegisterMessage("Tạo Tài Khoản Thành Công");
             console.log("Tao thanh cong");
+            setFormData({
+              cashierName: "",
+              name: "",
+              password: "",
+              reEnterPassword: "",
+            });
             setReload(!reload);
+
+            // Reload the page
+            window.location.reload();
+
           }
         })
+
         .catch((error) => {
           console.log(error);
         });
@@ -131,9 +139,13 @@ function Signup() {
 
   const handleUpdateSubmit = () => {
     console.log(updateFormData);
+    if (updateFormData.name === "admin") {
+      setChangePasswordMessage("Hãy Chọn Tên Khác")
+      return console.log("không thể đặt tên này");
+    }
     if (!updateFormData.oldPassword) {
-      setChangePasswordMessage("Hãy Nhập mật khẩu")
-      return console.log("Hãy Nhập mật khẩu");
+      setChangePasswordMessage("Hãy Nhập Mật Khẩu Cũ")
+      return console.log("Hãy Nhập mật khẩu cũ");
     }
     if (updateFormData.newPassword || updateFormData.reNewPassword) {
       if (updateFormData.newPassword !== updateFormData.reNewPassword) {
@@ -157,7 +169,6 @@ function Signup() {
         } else if (response.data === true) {
           setChangePasswordMessage("Cập Nhật Thành Công")
           console.log("cập nhật thành cong");
-          setReload(!reload);
           setUpdateAccId("");
           // setUpdateFormData({
           //   cashierName: "",
@@ -165,13 +176,21 @@ function Signup() {
           //   oldPassword: "",
           //   newPassword: null,
           // });
+          setUpdateFormData({
+            cashierName: "",
+            name: "",
+            oldPassword: "",
+            newPassword: "",
+            reNewPassword: "",
+          });
+
+          setReload(!reload);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  console.log(updateFormData);
   const handleSignUpClick = () => {
     setIsSignUp(true);
     setIsAccountManager(false);
@@ -198,7 +217,6 @@ function Signup() {
     setIsDeleteAccountPopup(true);
     setDeleteAccId(id);
   };
-  console.log(deleteAccId);
 
   const handleOverlayClick = () => {
     setIsOverlay(false);
@@ -215,9 +233,9 @@ function Signup() {
   };
 
   const handleChangePasswordMessage = () => {
-    if(changePasswordMessage !== "Cập Nhật Thành Công"){
+    if (changePasswordMessage !== "Cập Nhật Thành Công") {
       setChangePasswordMessage("")
-    }else{
+    } else {
       setChangePasswordMessage("")
       setIsOverlay(false)
       setUpdateFormData({
@@ -382,14 +400,17 @@ function Signup() {
                       required
                       className={cx("account-input")}
                       type="text"
-                      placeholder="Tên Đăng Nhập"
-                      onChange={(e) =>
+                      placeholder="Tên Đăng Nhập(tối đa 10 kí tự) "
+                      value={formData.cashierName}
+                      onChange={(e) => {
+                        const inputValue = e.target.value.slice(0, 10); // Limit to 10 characters
                         setFormData({
                           ...formData,
-                          cashierName: e.target.value,
-                        })
-                      }
+                          cashierName: inputValue,
+                        });
+                      }}
                     ></input>
+
                   </div>
                   <div className={cx("spPasswordBox")}>
                     <input
