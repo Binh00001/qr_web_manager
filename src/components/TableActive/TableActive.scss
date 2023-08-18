@@ -16,20 +16,20 @@
     background-color: transparent;
 
     img {
-      width: 120%;
+      width: 70px;
       height: auto;
     }
 
     p {
       position: absolute;
       top: 49%;
-      left: 50%;
-      transform: translate(-50%, -50%); 
+      left: 60%;
+      transform: translate(-50%, -55%); 
       margin: 0;
       color: #000;
       font-size: 1rem;
-      width: 60px;
-      margin-left: 5px;
+      // width: 60px;
+      // margin-left: 5px;
     }
   }
 
