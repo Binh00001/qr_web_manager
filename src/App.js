@@ -53,7 +53,7 @@ function App() {
       if (isAdmin === "cashier") {
         console.log(response);
         if (response.cashier_id === cashierInfo.cashierId) {
-          playSound();
+          // playSound();
           setNewPing(response);
           console.log("staffTing");
         }
@@ -62,7 +62,7 @@ function App() {
     socket.on("newCart", (response) => {
       if (isAdmin === "cashier") {
         if (response.cashier_id === cashierInfo.cashierId) {
-          playSound();
+          // playSound();
           setNewPing(response);
           // console.log("ting");
         }
