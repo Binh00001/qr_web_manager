@@ -159,6 +159,31 @@
     }
 }
 
+.checkTableOverlay{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    background-color: #000;
+    top: 0;
+    opacity: 0.1;
+    z-index: 200;
+}
+.checkTableBox{
+    position: fixed;
+    z-index: 201;
+    background-color: #fff;
+    border: 1px solid black;
+    height: 100px;
+    width: 70%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: calc(50% - 50px);
+    left: 15%;
+    // left: calc(50% - 125px);
+    border-radius: 15px;
+}
+
 //for mobile
 // In your component's CSS file
 @media (max-width: 768px) {

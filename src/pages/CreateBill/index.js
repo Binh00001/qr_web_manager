@@ -24,6 +24,8 @@ function CreateBill() {
     const [check, setCheck] = useState("");
     const [foodFailName, setFoodFailName] = useState("");
     const [amoutRemain, setAmountRemain] = useState(0);
+    const [tables, setTables] = useState([]);
+    const [tableMessage, setTableMessage] = useState("");
     const arrayFood = [];
 
     const navigate = useNavigate();
@@ -35,9 +37,24 @@ function CreateBill() {
     };
 
     useEffect(() => {
+        axios
+            // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
+            .get(
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
+            )
+            .then((response) => {
+                setTables(response.data);
+
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+    useEffect(() => {
         const storageCart = JSON.parse(sessionStorage.getItem("obj"))
-        if(storageCart !== null){
-            setCartNumber(storageCart.reduce((total, item) => total + item.number, 0) )
+        if (storageCart !== null) {
+            setCartNumber(storageCart.reduce((total, item) => total + item.number, 0))
         }
     }, [])
 
@@ -169,15 +186,40 @@ function CreateBill() {
 
     const handleSetInfo = () => {
         if (userName.trim().length > 0 && tableName.trim().length > 0) {
-            setAddInfo(true)
-            sessionStorage.setItem("name", userName);
-            sessionStorage.setItem("table", tableName);
-            setOverlay(false)
+            let foundTable = false;
+            tables.forEach(table => {
+                if (table.name === tableName && table.isActive) {
+                    setAddInfo(true)
+                    sessionStorage.setItem("name", userName);
+                    sessionStorage.setItem("table", tableName);
+                    setOverlay(false);
+                    foundTable = true;
+                } else if (table.name === tableName && !table.isActive) {
+                    setTableMessage("Bàn của bạn chưa được kích hoạt")
+                    foundTable = true;
+                }
+            })
+            if (!foundTable) {
+                // No matching table was found
+                // Handle this scenario here, e.g., show an error message
+                console.log(`Bàn ${tableName} không tồn tại`);
+                setTableMessage(`Bàn ${tableName} không tồn tại`)
+            }
         }
     }
 
+
+
     return (
         <div className={cx("cbWrapper")}>
+            {!(!tableMessage) && (
+                <Fragment>
+                    <div className={cx("checkTableOverlay")} onClick={() => {setTableMessage("")}}></div>
+                    <div className={cx("checkTableBox")}>
+                        <div className={cx("checkTableMsg")}>{tableMessage}</div>
+                    </div>
+                </Fragment>
+            )}
             {!needInfo && (
                 <Fragment>
                     <div className={cx("inputContainer")}>
@@ -225,7 +267,7 @@ function CreateBill() {
                         <div className={cx("cbTopBar")}>
                             <div className={cx("cbCustomerName")}>Khách Hàng: {userName}</div>
                             <div className={cx("cbCustomerTable")}>Bàn: {tableName}</div>
-                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán: {cartNumber } Món</div>
+                            <div className={cx("cbCart")} onClick={() => { navigate("/cart") }}>Thanh Toán: {cartNumber} Món</div>
                         </div>
                     </div>
                 </div>
