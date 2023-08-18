@@ -1,4 +1,41 @@
-
+.bar{
+  width: 30px;
+  height: 5px;
+  background-color: #2f3542;
+  border-radius: 15px;
+}
+.barGroup{
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 202;
+}
+.grayOverlay{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+  background-color: #a4b0be;
+  opacity: 0.5;
+}
+.navBoxWhite{
+  z-index: 201;
+  background-color: #fff;
+  position: absolute;
+  top: 18px;
+  right: calc(5% - 10px);
+  border-radius: 10px;
+  div{
+    border-bottom: 1px solid black;
+    padding: 30px 20px;
+  }
+  :last-child{
+    border: none;
+  }
+}
 .dWrapper {
   width: 100%;
   height: 80px;
@@ -70,6 +107,10 @@
       // margin-right: 0;
       // width: 20%;
       display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 30px;
+      align-self: center;
       // justify-content: space-between;
       // font-size: 1.3rem;
       // margin-right: 3%;
@@ -127,13 +168,19 @@
         }
       }
       .dRightContainer{
-        margin-right: 1%;
+        margin-right: 3%;
+        // display: inline;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
         .dCashierName{
           font-size: 1rem;
+          padding-top: 5px;
         }
         .dLogout{
           padding: 5px 5px;
-          margin-top: 3px;
+          // margin-top: 3px;
+          margin-bottom: 5px;
         }
       }
     }

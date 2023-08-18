@@ -2,7 +2,7 @@
 .lgBody {
   max-width: 90vw;
   margin: 0 auto;
-  min-height: 85vh;
+  min-height: 100vh;
   .lgContent {
     display: flex;
     justify-content: space-between;
@@ -23,8 +23,9 @@
       }
 
       .lg4flex {
-        position: absolute;
-        bottom: 20vh;
+        // position: absolute;
+        // bottom: 20vh;
+        margin-top: 35%;
         font-size: 1.2rem;
       }
     }
@@ -133,8 +134,9 @@
         text-align: center;
         margin-top: 12vh;
         .lg4flex{
-          bottom: 10vh;
-          left: 30vw;
+          position: absolute;
+          bottom: 20vh;
+          left: calc(50% - 74px);
         }
       }
       .lgRightContainer{

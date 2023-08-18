@@ -106,6 +106,9 @@ function TableManager() {
       .catch((error) => {
         console.log(error);
       });
+    if (document.getElementById("NewTableName") !== null) {
+      document.getElementById("NewTableName").value = "";
+    }
   }
 
   const subbmitNewtable = () => {

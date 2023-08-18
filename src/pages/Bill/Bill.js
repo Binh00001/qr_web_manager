@@ -59,7 +59,7 @@ function Bill() {
   }, [isSubmited, listCart, dateCart]);
 
   useEffect(() => {
-    let cartsToUse = isSubmited ? dateCart : listCart; // Choose which cart data to use
+    let cartsToUse = isSubmited ? dateCart : listCart;
 
     const completedCarts = cartsToUse.filter((cart) => cart.status === "COMPLETED");
 
@@ -70,6 +70,7 @@ function Bill() {
 
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
+    setNeedsClick(true)
     // setSelectedDate(event.target.value);
   };
 
@@ -168,10 +169,17 @@ function Bill() {
   };
 
   const handleDropdownItemClick = (value) => {
-    setSelectedValue(value);
-    setSelectedCashierName(value);
-    toggleDropdown();
-    setNeedsClick(true);
+    if(value === ""){
+      setSelectedValue("Tất Cả");
+      setSelectedCashierName(value);
+      toggleDropdown();
+      setNeedsClick(true);
+    }else{
+      setSelectedValue(value);
+      setSelectedCashierName(value);
+      toggleDropdown();
+      setNeedsClick(true);
+    }
   };
 
   const handleConvertCashierId = (ID) => {
