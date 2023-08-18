@@ -167,6 +167,9 @@ function Detail(props) {
     if (newOption.trim() !== "") {
       // thêm newOption vào mảng nếu nó khác rỗng
       const updatedDishOptions = [...dish.options, newOption];
+      console.log(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, {
+        option: [newOption],
+      });
       axios
         .post(
           `http://117.4.194.207:3003/dish/add-option/${dish._id}`,
@@ -190,13 +193,14 @@ function Detail(props) {
   };
 
   const removeOptionHandler = (opt) => {
-    console.log({ option: opt });
+    const abc = { option: opt };
+    console.log(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
+      option: [opt],
+    });
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, 
-      {
-        option: opt  // Đặt dữ liệu xóa trong trường 'data'
-      },
-       config)
+      .delete(
+        `http://117.4.194.207:3003/dish/delete-option/${dish._id}?option=${opt}`
+      )
       .then((response) => {
         // Xử lý thành công khi xóa
         if (response.status === 200) {
