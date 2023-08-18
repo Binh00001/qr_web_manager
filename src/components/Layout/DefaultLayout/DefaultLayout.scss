@@ -1,20 +1,59 @@
+.bar{
+  width: 30px;
+  height: 5px;
+  background-color: #2f3542;
+  border-radius: 15px;
+}
+.barGroup{
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  z-index: 202;
+}
+.grayOverlay{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 200;
+  background-color: #a4b0be;
+  opacity: 0.5;
+}
+.navBoxWhite{
+  z-index: 201;
+  background-color: #fff;
+  position: absolute;
+  top: 18px;
+  right: calc(5% - 10px);
+  border-radius: 10px;
+  div{
+    border-bottom: 1px solid black;
+    padding: 30px 20px;
+  }
+  :last-child{
+    border: none;
+  }
+}
 .dWrapper {
   width: 100%;
   height: 80px;
   border-bottom: 1px solid black;
   .dContent {
     height: 100%;
-    width: 70%;
-    max-width: 1200px;
+    width: 90%;
+    min-width: 600px;
+    max-width: 1100px;
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
 
     .dLeftContainer {
-      width: 60%;
+      // width: 60%;
       display: flex;
       justify-content: space-around;
-      margin-left: -45px;
+      margin-left: -5%;
       position: relative;
       .LogoBorder {
         height: 80px;
@@ -25,10 +64,21 @@
           cursor: pointer;
         }
       }
+      .dItemAdmin{
+        align-self: center;
+        position: relative;
+        font-size: 1.3rem;
+        margin: 0 10px;
+        padding: 20px 10px;
+        border-radius: 10px;
+      }
       .dItem {
         align-self: center;
         position: relative;
         font-size: 1.3rem;
+        margin: 0 10px;
+        padding: 20px 10px;
+        border-radius: 10px;
         cursor: pointer;
         &:hover {
           color: #009ef7;
@@ -39,21 +89,30 @@
           width: 14px;
           border-radius: 50%;
           position: absolute;
-          top: -5px;
-          left: 95px;
+          top: 10px;
+          // left: 110px;
+          right: -7%;
         }
         .redDotHided{
           display: none;
         }
       }
+      .dItem:active{
+        background-color: #000;
+        color: #fff;
+      }
     }
 
     .dRightContainer {
-      margin-right: 0;
+      // margin-right: 0;
       // width: 20%;
       display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      height: 30px;
+      align-self: center;
       // justify-content: space-between;
-      font-size: 1.3rem;
+      // font-size: 1.3rem;
       // margin-right: 3%;
       .dCashierName {
         align-self: center;
@@ -67,7 +126,7 @@
         font-size: 0.7rem;
         // border-bottom: 1px solid ;
         // text-decoration: underline;
-        margin-top: 1.2vh;
+        // margin-top: 1.2vh;
         border: none;
         background-color: #f04d4d;
         padding: 5px 10px;
@@ -75,6 +134,53 @@
         border-radius: 5px;
         &:hover{
           background-color: #c70505;
+        }
+      }
+    }
+  }
+}
+
+
+// for mobile
+
+@media (max-width: 768px){
+  .dWrapper{
+    height: 60px;
+    .dContent{
+      // display: none
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      .dLeftContainer{
+        margin: 0;
+        .LogoBorder{
+          display: none;
+        }
+        .dItem{
+          font-size: 1rem;
+          margin: 0;
+          padding: 10px 10px;
+        }
+        .dItemAdmin{
+          font-size: 0.9rem;
+          margin: 0;
+          padding: 10px 10px;
+        }
+      }
+      .dRightContainer{
+        margin-right: 3%;
+        // display: inline;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        .dCashierName{
+          font-size: 1rem;
+          padding-top: 5px;
+        }
+        .dLogout{
+          padding: 5px 5px;
+          // margin-top: 3px;
+          margin-bottom: 5px;
         }
       }
     }

@@ -1,20 +1,35 @@
 import classNames from "classnames";
 import styles from "~/pages/Login/Login.scss";
 import { useNavigate } from "react-router-dom";
-import { useSignIn } from "react-auth-kit";
+import { useSignIn, useSignOut } from "react-auth-kit";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useIsAuthenticated } from "react-auth-kit";
 
 const cx = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate();
   const signIn = useSignIn();
-
+  const signOut = useSignOut();
   const [formData, setFormData] = useState({
     cashierName: "",
     password: "",
   });
+  const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const cashierInfo = JSON.parse(localStorage.getItem("token_state"));
+      if (cashierInfo) {
+        if (cashierInfo.cashierName === "admin") {
+          navigate("/bill");
+        } else {
+          navigate("/");
+        }
+      }
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,20 +43,24 @@ function Login() {
         return;
       }
       if (!response.data) {
-        return alert("sai pass");
+        return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
       signIn({
         token: accessToken,
         tokenType: "Bearer",
-        expiresIn: 20,
+        expiresIn: 70,
         authState: {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
         },
         refreshToken: refreshToken,
-        refreshTokenExpireIn: 60,
+        refreshTokenExpireIn: 600,
       });
-      navigate("/");
+      if (cashier.cashierName === "admin") {
+        navigate("/bill");
+      } else {
+        navigate("/");
+      }
       window.location.reload();
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -65,12 +84,12 @@ function Login() {
         <div className={cx("lgContent")}>
           <div className={cx("lgLeftContainer")}>
             <div className={cx("lgResName")}>Tên Nhà Hàng</div>
-            <div className={cx("lgResDes")}>
+            {/* <div className={cx("lgResDes")}>
               My attempt at recreating one of my favorite paintings, The Fallen
               Angel by Alexandre Cabanel, in LEGO. I really wanted to capture
               the angry and sad stare of Lucifer. How do you think it compares
               to the painting?
-            </div>
+            </div> */}
             <div className={cx("lg4flex")}>Powered by 4flex</div>
           </div>
           <div className={cx("lgRightContainer")}>
@@ -109,11 +128,11 @@ function Login() {
                 </button>
               </div>
             </form>
-            <div className={cx("lgRegisterBox")}>
+            {/* <div className={cx("lgRegisterBox")}>
               <button value="Sign Up" onClick={() => navigate(`/signup`)}>
                 Sign Up
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

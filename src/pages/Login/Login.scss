@@ -2,16 +2,16 @@
 .lgBody {
   max-width: 90vw;
   margin: 0 auto;
-  min-height: 85vh;
+  min-height: 100vh;
   .lgContent {
     display: flex;
     justify-content: space-between;
     .lgLeftContainer {
       margin-top: 20vh;
-      width: 60%;
-      margin-left: 10%;
+      width: 50%;
+      margin-left: 5%;
       .lgResName {
-        font-size: 4rem;
+        font-size: 3rem;
         font-weight: bold;
         color: #3498db;
       }
@@ -23,19 +23,20 @@
       }
 
       .lg4flex {
-        position: absolute;
-        bottom: 20vh;
+        // position: absolute;
+        // bottom: 20vh;
+        margin-top: 35%;
         font-size: 1.2rem;
       }
     }
     .lgRightContainer {
       background-color: #fff;
-      margin-top: 15vh;
-      width: 35%;
+      margin-top: 20vh;
+      width: 50%;
       min-width: fit-content;
-      height: 45vh;
-      min-height: 340px;
-      margin-right: 20%;
+      height: 35vh;
+      min-height: 255px;
+      margin-right: 5%;
       border-radius: 15px;
       .lgBox {
         height: 60%;
@@ -114,6 +115,34 @@
           color: #fff;
           font-size: 1.3rem;
         }
+      }
+    }
+  }
+}
+
+
+@media (max-width: 768px) {
+  .lgBody{
+    .lgContent{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      .lgLeftContainer{
+        width:90%;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        margin-top: 12vh;
+        .lg4flex{
+          position: absolute;
+          bottom: 20vh;
+          left: calc(50% - 74px);
+        }
+      }
+      .lgRightContainer{
+        width: 90%;
+        margin-top: 5vh;
+        margin: 5vh auto 0 auto;
       }
     }
   }

@@ -1,34 +1,31 @@
 @import "normalize.css";
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,200;0,500;0,700;0,800;1,300;1,400;1,600&family=Roboto:ital,wght@0,100;1,100;1,400&display=swap');
 
-*{
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
-:root{
+
+:root {
     --primary: #333;
 }
-html{
+
+html {
     font-size: 62.5%;
-    // background-color: #f3f0f0;
     background-color: #fff;
 }
-body{
-    // font-family: 'Times New Roman', Times, serif;
+
+body {
+    font-family: 'Roboto', sans-serif; /* Use Roboto font */
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizeSpeed;
     color: #000;
-    // padding: 0 20px 0;   
-    // overflow: hidden;
-    // overflow-y: scroll;
-    // height: 100vh;
-    // padding-left: 10%;
-    // padding-right: 10%;
-    // margin-left: 15%;
-    // margin-right: 15%;
 }
+
+/* Rest of your CSS rules... */
+
 /* Apply a global style to hide the default scrollbars on all elements */
 ::-webkit-scrollbar {
     width: 0.5em; /* Set the width of the default scrollbar (optional) */

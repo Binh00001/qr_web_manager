@@ -3,41 +3,23 @@ import classNames from "classnames";
 import logo from "~/components/assets/image/food-logo-design-template-restaurant-free-png.webp";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
-import { useNewPingContext } from "~/App";
-import { useEffect, useState } from "react";
-import moment from "moment";
+import { useReddotShowContext, useIsAdminContext } from "~/App";
+import { Fragment, useEffect, useState } from "react";
+// import io from "socket.io-client";
+// import ting from "~/components/assets/sound/ting.mp3";
+// import moment from "moment";
+// import axios, { all } from "axios";
 import "moment/locale/vi";
 const cx = classNames.bind(styles);
 
 function DefaultLayout({ children }) {
-  const newPing = useNewPingContext();
-  const [isNewPing, setIsNewPing] = useState(false);
-  useEffect(() => {
-    const removeRedDot = () => {
-      if (newPing === null || !newPing) {
-        setIsNewPing(false);
-      } else {
-        const requestTime = moment(newPing.createdAt, "DD/MM/YYYY, HH:mm:ss");
-        const currentTime = moment();
-        const timeDifference = moment
-          .duration(currentTime.diff(requestTime))
-          .asMinutes();
-        setIsNewPing(timeDifference <= 0.9);
-      }
-    };
-
-    removeRedDot();
-
-    // Set up the interval to check for new ping every 1 minute
-    const interval = setInterval(removeRedDot, 5000); // 60000 milliseconds = 1 minute
-
-    // Clean up the interval when the component is unmounted
-    return () => clearInterval(interval);
-  }, [newPing]);
-
-  const singOut = useSignOut();
+  const showReddot = useReddotShowContext();
+  const isAdmin = useIsAdminContext();
+  const [isOpenNav, setIsOpenNav] = useState(false);
+  const signOut = useSignOut();
   let cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const navigate = useNavigate();
+  const [allowSound, setAllowSound] = useState("false");
   const handleClickLogo = () => {
     navigate(`/`);
   };
@@ -50,10 +32,23 @@ function DefaultLayout({ children }) {
   const handleClickTableManager = () => {
     navigate(`/tableManager`);
   };
+  const handleClickCreateBill = () => {
+    navigate(`/createbill`);
+  };
+  const handleClickSignUp = () => {
+    navigate(`/signup`);
+  };
+
   const logout = () => {
-    singOut();
+    signOut();
     navigate("/login");
   };
+
+  const openNavMenu = () => {
+    setIsOpenNav(!isOpenNav)
+    // console.log(isOpenNav);
+  }
+
   return (
     <div className={cx("dWrapper")}>
       <div className={cx("dContent")}>
@@ -61,26 +56,66 @@ function DefaultLayout({ children }) {
           <div className={cx("LogoBorder")}>
             <img onClick={handleClickLogo} src={logo} alt="LOGO"></img>
           </div>
-          <div className={cx("dItem")} onClick={handleClickLogo}>
-            Trang Chủ
-            <div className={cx("reddot", { redDotHided: !isNewPing })}></div>
-          </div>
-          <div className={cx("dItem")} onClick={handleClickMenu}>
-            Thực Đơn
-          </div>
-          <div className={cx("dItem")} onClick={handleClickBill}>
-            Hoá Đơn
-          </div>
-          <div className={cx("dItem")} onClick={handleClickTableManager}>
-            Quản Lý Bàn
-          </div>
+          {isAdmin === "admin" && (
+            <Fragment>
+              <div className={cx("dItemAdmin")} onClick={handleClickBill}>
+                Hoá Đơn
+              </div>
+              <div className={cx("dItemAdmin")} onClick={handleClickTableManager}>
+                Quản Lý Bàn
+              </div>
+              <div className={cx("dItemAdmin")} onClick={handleClickSignUp}>
+                Tài Khoản
+              </div>
+            </Fragment>
+
+          )}
+          {isAdmin === "cashier" && (
+            <Fragment>
+              <div className={cx("dItem")} onClick={handleClickLogo}>
+                Trang Chủ
+                <div className={cx("reddot", { redDotHided: !showReddot })}></div>
+              </div>
+              <div className={cx("dItem")} onClick={handleClickMenu}>
+                Thực Đơn
+              </div>
+              <div className={cx("dItem")} onClick={handleClickCreateBill}>
+                Tạo Đơn
+              </div>
+            </Fragment>
+
+          )}
         </div>
         <div className={cx("dRightContainer")}>
-          <div className={cx("dCashierName")}>{cashier.cashierName}</div>
-          {/* <div className={cx("UserName dItem")}></div> */}
+          {/* <div className={cx("dCashierName")}>{cashier.cashierName}</div>
           <button className={cx("dLogout")} onClick={logout}>
             Đăng Xuất
-          </button>
+          </button> */}
+          {!isOpenNav && (
+            <Fragment >
+              <div className={cx("barGroup")} onClick={() => openNavMenu()}>
+                <div className={cx("bar")}></div>
+                <div className={cx("bar")}></div>
+                <div className={cx("bar")}></div>
+              </div>
+            </Fragment>
+          )}
+          {isOpenNav && (
+            <Fragment>
+              <div className={cx("barGroup")} onClick={() => openNavMenu()}>
+                <div className={cx("bar")}></div>
+                <div className={cx("bar")}></div>
+                <div className={cx("bar")}></div>
+              </div>
+              <div className={cx("grayOverlay")} onClick={() => openNavMenu()}></div>
+              <div className={cx("navBoxWhite")}>
+                <div className={cx("accountName")}>{cashier.cashierName}</div>
+                <div className={cx("soundNotification")} onClick={() => { setAllowSound(!allowSound) }}>Âm Thanh Thông Báo : {allowSound ? "Bật" : "Tắt"}</div>
+                <div className={cx("logout")} onClick={logout}>Đăng Xuất</div>
+              </div>
+            </Fragment>
+          )}
+
         </div>
       </div>
       <div>{children}</div>
@@ -89,3 +124,4 @@ function DefaultLayout({ children }) {
 }
 
 export default DefaultLayout;
+

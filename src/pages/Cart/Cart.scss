@@ -1,0 +1,76 @@
+.cartTopBar{
+    width: 90%;
+    margin: 0 auto;
+    align-self: center;
+    display: flex;
+    justify-content: space-between;
+    div{
+        padding: 10px;
+        background-color: #fff;
+        color: black;
+        border-radius: 10px;
+    }
+    div:active{
+        background-color: #1BAC4B;
+        color: #fff;
+    }
+}
+.cartWrapper{
+    position: relative;
+    .cartItem{
+        background-color:#bdc3c7;
+        display: flex;
+        margin:20px 20px;
+        border-radius: 10px;
+        .imageBorder{
+            img{
+                height: 150px;
+                width: 200px;
+                object-fit: cover;
+                border-radius: 10px;
+                margin: 10px;
+            }
+        }
+        .infoBox{
+            margin: 20px 20px;
+            font-size: 1.2rem;
+            div{
+                padding: 3px;
+            }
+        }
+        .deleteItem{
+            position: absolute;
+            // margin-left: 78%;
+            right: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-bottom-left-radius: 10px;
+            border-top-right-radius: 10px;
+            border-top: #bdc3c7 1px solid;
+            border-right: #bdc3c7 1px solid;
+        }
+    }
+}
+
+
+//for mobile 
+// In your component's CSS file
+@media (max-width: 768px) {
+    .cartWrapper{
+        .mBody{
+            .cartItem{
+                .imageBorder{
+                    img{
+                        width: 120px;
+                        height: 120px;
+                    }
+                }
+                .infoBox{
+                    margin: 10px 0;
+                    font-size: 1rem;
+                }
+            }
+        }
+    }
+  }
+  

@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState,useEffect } from "react";
 import classNames from "classnames";
 import styles from "./AddDish.scss";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ const cx = classNames.bind(styles);
 
 function AddDish() {
   const navigate = useNavigate();
+  const [isDone, setIsDone] = useState(false);
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -21,6 +22,14 @@ function AddDish() {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
+
+  useEffect(() => {
+    if (isDone) {
+      setTimeout(() => {
+        setIsDone(false);
+      }, 1000);
+    }
+  }, [isDone]);
 
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
@@ -72,6 +81,7 @@ function AddDish() {
       .post("http://117.4.194.207:3003/dish/create", formData, config)
       .then((response) => {
         console.log(response);
+        setIsDone(true)
       })
       .catch((error) => {
         console.log(error);
@@ -82,13 +92,21 @@ function AddDish() {
 
   return (
     <Fragment>
+      {isDone && (
+        <Fragment>
+          <div className="overlay" onClick={() => {setIsDone(false)}}></div>
+          <div className={cx("DoneMessage")}>
+            Tạo Món Thành Công
+            </div>
+        </Fragment>
+      )}
       <div className={cx("Wrapper")}>
         <div className={cx("blackBar")}>
           <div className={cx("TopBar")}>
             <div className={cx("mTopBar")}>
               <div className={cx("mText")} onClick={() => navigate("/menu")}>
                 {" "}
-                Quản Lý Thực Đơn
+                Thực Đơn
               </div>
               <div
                 className={cx("mText")}
@@ -105,7 +123,7 @@ function AddDish() {
           <div className="margintopbody"></div>
           <div className={cx("aItem")}>
             <div className="aName">
-              <label htmlFor="name">Tên Món Ăn:</label>
+              <label htmlFor="name">Tên Món:</label>
               <input
                 onChange={changeHandler}
                 required

@@ -2,9 +2,9 @@ import React, { Fragment, useState, useEffect } from "react";
 import classNames from "classnames/bind";
 import styles from "./Detail.scss";
 import axios from "axios";
-import emptyStar from "~/components/assets/image/emptyStar.png";
-import filledStar from "~/components/assets/image/yellowStar.png";
-import xIcon from "~/components/assets/image/x_icon_150997.png";
+import emptyStar from "~/components/assets/image/Gray_heart.png";
+import filledStar from "~/components/assets/image/Red_heart.png";
+// import xIcon from "~/components/assets/image/x_icon_150997.png";
 const cx = classNames.bind(styles);
 
 function Detail(props) {
@@ -108,6 +108,7 @@ function Detail(props) {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    // console.log(e);
     if (!formChanged) {
       console.log("Không có sự thay đổi trong form.");
       return;
@@ -191,10 +192,11 @@ function Detail(props) {
   const removeOptionHandler = (opt) => {
     console.log({ option: opt });
     axios
-      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
-        data: { option: opt }, // Đặt dữ liệu xóa trong trường 'data'
-        config,
-      })
+      .delete(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, 
+      {
+        option: opt  // Đặt dữ liệu xóa trong trường 'data'
+      },
+       config)
       .then((response) => {
         // Xử lý thành công khi xóa
         if (response.status === 200) {
@@ -366,7 +368,7 @@ function Detail(props) {
               ></input>
 
               <div className={cx("dtOption")}>
-                Các Lựa Chọn:
+                Lựa Chọn:
                 {dish.options.map((opt, index) => (
                   <span key={index} className={cx("dtOptionItem")}>
                     {opt}
@@ -375,7 +377,7 @@ function Detail(props) {
                         className={cx("removeOption")}
                         onClick={() => removeOptionHandler(opt)}
                       >
-                        X
+                        Xoá
                       </span>
                     )}
                     <br />
