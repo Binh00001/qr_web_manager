@@ -48,13 +48,13 @@ function Login() {
       signIn({
         token: accessToken,
         tokenType: "Bearer",
-        expiresIn: 70,
+        expiresIn: 60,
         authState: {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
         },
         refreshToken: refreshToken,
-        refreshTokenExpireIn: 600,
+        refreshTokenExpireIn: 43200,
       });
       if (cashier.cashierName === "admin") {
         navigate("/bill");
