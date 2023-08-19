@@ -27,7 +27,9 @@ function Home() {
   const [cartStatusChange, setCartStatusChange] = useState(true);
   const [tableActive, setTableActive] = useState(false);
   const [callStaff, setCallStaff] = useState(false);
-  const [choosedTime, setChoosedTime] = useState("time=60");
+  const [choosedTime, setChoosedTime] = useState("time=360");
+  const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS")
+  const [totalBillInProgress, setTotalBillInProgress] = useState("")
 
   const navigate = useNavigate();
   const currentDate = new Date();
@@ -56,7 +58,7 @@ function Home() {
       setNewCart(response);
     });
   }, []);
-  
+
   useEffect(() => {
     if (isAdmin === "admin") {
       navigate(`/bill`);
@@ -71,6 +73,13 @@ function Home() {
         )
         .then((response) => {
           setListCart(response.data);
+          if (response.data.length !== 0 && response.data !== "No carts created") {
+            response.data.forEach((cart) => {
+              const inProgressCarts = response.data.filter(cart => cart.status === "IN_PROGRESS");
+              console.log(inProgressCarts.length);
+              setTotalBillInProgress(inProgressCarts.length);
+            })
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -215,6 +224,14 @@ function Home() {
     }
   };
 
+  const handleGetStatusFilter = (value) => {
+    if (value) {
+      setChoosedStatus(value)
+    } else {
+
+    }
+  }
+
   const handleOpenFunction = (value) => {
     if (value === "CheckBill") {
       setTableActive(false);
@@ -253,7 +270,7 @@ function Home() {
                   className={cx("redDot", {
                     redDotHided: !billInProgress,
                   })}
-                ></div>
+                >{totalBillInProgress}</div>
                 <button
                   onClick={() => {
                     handleOpenFunction("CheckBill");
@@ -292,7 +309,7 @@ function Home() {
           {!tableActive && !callStaff && (
             <Fragment>
               <div className={cx("hBillContainer")}>
-                <nav className={cx("timeFilterBar")}>
+                {/* <nav className={cx("timeFilterBar")}>
                   <button
                     className={cx("timeFilterItem", {
                       active: choosedTime === "time=60",
@@ -323,6 +340,38 @@ function Home() {
                   >
                     Hôm Nay
                   </button>
+                </nav> */}
+                <nav className={cx("timeFilterBar")}>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: choosedStatus === "IN_PROGRESS",
+                    })}
+                    onClick={() => {
+                      handleGetStatusFilter("IN_PROGRESS")
+                    }}
+                  >
+                    Đang Làm
+                  </button>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: choosedStatus === "COMPLETED",
+                    })}
+                    onClick={() => {
+                      handleGetStatusFilter("COMPLETED");
+                    }}
+                  >
+                    Đã Hoàn Thành
+                  </button>
+                  <button
+                    className={cx("timeFilterItem", {
+                      active: choosedStatus === "CANCEL",
+                    })}
+                    onClick={() => {
+                      handleGetStatusFilter("CANCEL");
+                    }}
+                  >
+                    Đã Huỷ
+                  </button>
                 </nav>
                 {(listCart === "No carts created" || listCart.length === 0) && (
                   <Fragment>
@@ -333,106 +382,108 @@ function Home() {
                 )}
                 {listCart.length !== 0 && listCart !== "No carts created" && (
                   <div className={cx("hListBill")}>
-                    {listCart.map((cart, index) => (
-                      <Fragment key={index}>
-                        <div className={cx("hItem", cart.status)} key={index}>
-                          <div className={cx("hItemContent")}>
-                            <div className={cx("hItemInfo")}>
-                              <div className={cx("hItemTitleName")}>
-                                Tên Món
+                    {listCart
+                      .filter(cart => cart.status === choosedStatus)
+                      .map((cart, index) => (
+                        <Fragment key={index}>
+                          <div className={cx("hItem", cart.status)} key={index}>
+                            <div className={cx("hItemContent")}>
+                              <div className={cx("hItemInfo")}>
+                                <div className={cx("hItemTitleName")}>
+                                  Tên Món
+                                </div>
+                                <div className={cx("hItemTitleOption")}>
+                                  Tuỳ Chọn
+                                </div>
+                                <div className={cx("hItemTitleQuantity")}>
+                                  Số Lượng
+                                </div>
                               </div>
-                              <div className={cx("hItemTitleOption")}>
-                                Tuỳ Chọn
-                              </div>
-                              <div className={cx("hItemTitleQuantity")}>
-                                Số Lượng
-                              </div>
+                              {cart.order.map((order, orderIndex) => (
+                                <div className={cx("hItemInfo")} key={orderIndex}>
+                                  <div className={cx("hItemName")}>
+                                    {order.dish_name}
+                                  </div>
+                                  <div className={cx("hItemOption")}>
+                                    <span>{order.options}</span>
+                                  </div>
+                                  <div className={cx("hItemQuantity")}>
+                                    {order.number}
+                                  </div>
+                                </div>
+                              ))}
                             </div>
-                            {cart.order.map((order, orderIndex) => (
-                              <div className={cx("hItemInfo")} key={orderIndex}>
-                                <div className={cx("hItemName")}>
-                                  {order.dish_name}
+                            <div className={cx("hItemDetailWrapper")}>
+                              <div className={cx("hItemDetail")}>
+                                <div className={cx("hItemBuyerName")}>
+                                  Khách Hàng: {cart.customer_name}
                                 </div>
-                                <div className={cx("hItemOption")}>
-                                  <span>{order.options}</span>
+                                <div className={cx("hItemTable")}>
+                                  Bàn: {cart.table}
                                 </div>
-                                <div className={cx("hItemQuantity")}>
-                                  {order.number}
+                                <div className={cx("hItemTime")}>
+                                  Thời Gian Tạo:{" "}
+                                  <span style={{ color: "#f04d4d" }}>
+                                    {moment(
+                                      cart.createAt,
+                                      "DD/MM/YYYY, HH:mm:ss"
+                                    ).format("HH:mm A")}
+                                  </span>
+                                </div>
+                                <div className={cx("hItemStatus")}>
+                                  Trạng Thái:
+                                  {cart.status === "IN_PROGRESS" && (
+                                    <span style={{ color: "#3498db" }}>
+                                      Đang Chờ
+                                    </span>
+                                  )}
+                                  {cart.status === "COMPLETED" && (
+                                    <span style={{ color: "#2ecc71" }}>
+                                      Đã Xong
+                                    </span>
+                                  )}
+                                  {cart.status === "CANCEL" && (
+                                    <span
+                                      style={{
+                                        color: "#f04d4d",
+                                        textDecoration: "line-through",
+                                      }}
+                                    >
+                                      Đã Huỷ
+                                    </span>
+                                  )}
                                 </div>
                               </div>
-                            ))}
-                          </div>
-                          <div className={cx("hItemDetailWrapper")}>
-                            <div className={cx("hItemDetail")}>
-                              <div className={cx("hItemBuyerName")}>
-                                Khách Hàng: {cart.customer_name}
-                              </div>
-                              <div className={cx("hItemTable")}>
-                                Bàn: {cart.table}
-                              </div>
-                              <div className={cx("hItemTime")}>
-                                Thời Gian Tạo:{" "}
+                              <div className={cx("hItemTotalPrice")}>
+                                Tổng Tiền:{" "}
                                 <span style={{ color: "#f04d4d" }}>
-                                  {moment(
-                                    cart.createAt,
-                                    "DD/MM/YYYY, HH:mm:ss"
-                                  ).format("HH:mm A")}
+                                  {cart.total.toLocaleString()} vnđ
                                 </span>
                               </div>
-                              <div className={cx("hItemStatus")}>
-                                Trạng Thái:
-                                {cart.status === "IN_PROGRESS" && (
-                                  <span style={{ color: "#3498db" }}>
-                                    Đang Chờ
-                                  </span>
-                                )}
-                                {cart.status === "COMPLETED" && (
-                                  <span style={{ color: "#2ecc71" }}>
-                                    Đã Xong
-                                  </span>
-                                )}
-                                {cart.status === "CANCEL" && (
-                                  <span
-                                    style={{
-                                      color: "#f04d4d",
-                                      textDecoration: "line-through",
-                                    }}
+                            </div>
+                            {cart.status === "IN_PROGRESS" && (
+                              <div className={cx("hItemButtonGroup")}>
+                                <div className={cx("")}>
+                                  <button
+                                    className={cx("cancelBillButton")}
+                                    onClick={() => handleSetCancelBill(cart._id)}
                                   >
-                                    Đã Huỷ
-                                  </span>
-                                )}
+                                    Huỷ Đơn
+                                  </button>
+                                </div>
+                                <div className={cx("")}>
+                                  <button
+                                    className={cx("readyBillButton")}
+                                    onClick={() => handleSetDoneBill(cart._id)}
+                                  >
+                                    Hoàn Thành
+                                  </button>
+                                </div>
                               </div>
-                            </div>
-                            <div className={cx("hItemTotalPrice")}>
-                              Tổng Tiền:{" "}
-                              <span style={{ color: "#f04d4d" }}>
-                                {cart.total.toLocaleString()} vnđ
-                              </span>
-                            </div>
+                            )}
                           </div>
-                          {cart.status === "IN_PROGRESS" && (
-                            <div className={cx("hItemButtonGroup")}>
-                              <div className={cx("")}>
-                                <button
-                                  className={cx("cancelBillButton")}
-                                  onClick={() => handleSetCancelBill(cart._id)}
-                                >
-                                  Huỷ Đơn
-                                </button>
-                              </div>
-                              <div className={cx("")}>
-                                <button
-                                  className={cx("readyBillButton")}
-                                  onClick={() => handleSetDoneBill(cart._id)}
-                                >
-                                  Hoàn Thành
-                                </button>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </Fragment>
-                    ))}
+                        </Fragment>
+                      ))}
                   </div>
                 )}
               </div>

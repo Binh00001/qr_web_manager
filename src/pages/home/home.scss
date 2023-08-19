@@ -36,13 +36,15 @@
       min-width: 185px;
     }
     .redDot {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
       background-color: #f04d4d;
       border-radius: 50%;
       position: absolute;
       margin-left: 10.9rem;
       margin-top: -7px;
+      text-align: center;
+      font-size: 17px;
       // left: 3%;
     }
     .redDotHided{
@@ -325,14 +327,15 @@
         .hText{
           margin: 0;
           .redDot {
-            width: 14px;
-            height: 14px;
+            width: 20px;
+            height: 20px;
             background-color: #f04d4d;
             border-radius: 50%;
             position: absolute;
             margin-left: 117px;
-            margin-top: -5px;
-            // left: 3%;
+            margin-top: -7px;
+            text-align: center;
+            font-size: 0.83rem;
           }
           .redDotHided{
             display: none;
