@@ -77,7 +77,7 @@ function TableManager() {
 
   const confirmHandle = () => {
     axios
-      .delete(`http://117.4.194.207:3003/table/delete/${tableId}`, config)
+      .delete(`${process.env.REACT_APP_API_URL}/table/delete/${tableId}`, config)
       .then((response) => {
         console.log("Bàn đã được xoá thành công!");
         setIsPopup(false);

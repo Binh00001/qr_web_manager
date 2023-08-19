@@ -31,7 +31,7 @@ function Menu() {
   useEffect(() => {
     axios
       .get(
-        `http://117.4.194.207:3003/category/allByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/category/allByCashier/${cashier.cashierId}`
       )
       .then((response) => {
         const data = response.data;
@@ -47,7 +47,7 @@ function Menu() {
       });
     axios
       .get(
-        `http://117.4.194.207:3003/dish/menu/activedByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.cashierId}`
       )
       .then((response) => {
         setListDish(response.data);
@@ -77,7 +77,7 @@ function Menu() {
   const submitAddAmountHandler = (id) => {
     axios
       .put(
-        `http://117.4.194.207:3003/dish/update/${id}`,
+        `${process.env.REACT_APP_API_URL}/dish/update/${id}`,
         {
           amount: state.amount,
         },
@@ -105,7 +105,7 @@ function Menu() {
     setSelectedItem()
     axios
       .put(
-        `http://117.4.194.207:3003/dish/active/${id}`,
+        `${process.env.REACT_APP_API_URL}/dish/active/${id}`,
         { isActive: false },
         config
       )

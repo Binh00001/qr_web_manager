@@ -35,7 +35,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://117.4.194.207:3003/cashier-auth/login`,
+        `${process.env.REACT_APP_API_URL}/cashier-auth/login`,
         formData
       );
       const { accessToken, refreshToken, cashier } = response.data;

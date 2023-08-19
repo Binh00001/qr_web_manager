@@ -78,7 +78,7 @@ function AddDish() {
     console.log(formDataObj);
 
     axios
-      .post("http://117.4.194.207:3003/dish/create", formData, config)
+      .post(`${process.env.REACT_APP_API_URL}/dish/create`, formData, config)
       .then((response) => {
         console.log(response);
         setIsDone(true)

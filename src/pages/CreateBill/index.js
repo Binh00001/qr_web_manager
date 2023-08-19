@@ -38,7 +38,6 @@ function CreateBill() {
 
     useEffect(() => {
         axios
-            // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
                 `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
             )
@@ -120,7 +119,7 @@ function CreateBill() {
     useEffect(() => {
         axios
             .get(
-                `http://117.4.194.207:3003/category/allByCashier/${cashier.cashierId}`, config
+                `${process.env.REACT_APP_API_URL}/category/allByCashier/${cashier.cashierId}`, config
             )
             .then((response) => {
                 const data = response.data;
@@ -136,7 +135,7 @@ function CreateBill() {
             });
         axios
             .get(
-                `http://117.4.194.207:3003/dish/menu/activedByCashier/${cashier.cashierId}`, config
+                `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.cashierId}`, config
             )
             .then((response) => {
                 setListDish(response.data.filter((dish) => (dish.amount !== 0)));

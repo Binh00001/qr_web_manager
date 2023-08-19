@@ -24,7 +24,7 @@ function HiddenMenu() {
   useEffect(() => {
     axios
       .get(
-        `http://117.4.194.207:3003/dish/menu/allHiddenByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/dish/menu/allHiddenByCashier/${cashier.cashierId}`
       )
       .then((response) => {
         setListDish(response.data);
@@ -41,7 +41,7 @@ function HiddenMenu() {
   const submitActiveDishHandler = (id) => {
     axios
       .put(
-        `http://117.4.194.207:3003/dish/active/${id}`,
+        `${process.env.REACT_APP_API_URL}/dish/active/${id}`,
         { isActive: true },
         config
       )

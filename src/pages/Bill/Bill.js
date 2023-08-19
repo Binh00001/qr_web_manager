@@ -95,7 +95,7 @@ function Bill() {
         const cashierId = selectedCashier.id;
         axios
           .get(
-            `http://117.4.194.207:3003/cart/menu/allByCashier/${cashierId}?date=${formattedDate}`
+            `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashierId}?date=${formattedDate}`
             // config
           )
           .then((response) => {
@@ -118,7 +118,7 @@ function Bill() {
       console.log(formattedDate);
       axios
         .get(
-          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedDate}`
+          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedDate}`
           // config
         )
         .then((response) => {
@@ -149,7 +149,7 @@ function Bill() {
     if (selectedCashierName === "") {
       axios
         .get(
-          `http://117.4.194.207:3003/cart/menu/all/?date=${formattedCurrentDate}`
+          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedCurrentDate}`
         )
         .then((response) => {
           if (response.data === "No carts created") {
