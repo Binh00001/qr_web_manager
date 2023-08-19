@@ -90,7 +90,12 @@ function Login() {
               the angry and sad stare of Lucifer. How do you think it compares
               to the painting?
             </div> */}
-            <div className={cx("lg4flex")}>Powered by gifttech</div>
+            <div className={cx("lgResDes")}>
+            </div>
+            <div className={cx("lg4flex")}>Powered by gifttech
+              <br />
+              Gmail: giftech.work@gmail.com
+            </div>
           </div>
           <div className={cx("lgRightContainer")}>
             <form className={cx("lgBox")} onSubmit={handleSubmit}>
