@@ -270,7 +270,9 @@ function Home() {
                   className={cx("redDot", {
                     redDotHided: !billInProgress,
                   })}
-                >{totalBillInProgress}</div>
+                >
+                  {totalBillInProgress < 99 ? totalBillInProgress : 99}
+                </div>
                 <button
                   onClick={() => {
                     handleOpenFunction("CheckBill");
