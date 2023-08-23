@@ -150,9 +150,14 @@ function SortedByTable() {
             <Fragment>
                 <div className={cx("sbtBlackBar")}>
                     {!showTableMap && (
-                        <div className={cx("sbtBlackBarItem")} onClick={() => { setShowTableMap(true) }}>
-                            Trở lại
-                        </div>
+                        <Fragment>
+                            <div className={cx("sbtBlackBarItem")} onClick={() => { setShowTableMap(true) }}>
+                                Trở lại
+                            </div>
+                            <div className={cx("sbtBlackBarText")} onClick={() => { setShowTableMap(true) }}>
+                                còn <span>{totalBillInProgress}</span> Đơn đang chờ
+                            </div>
+                        </Fragment>
                     )}
                     {showTableMap && (
                         <Fragment>
