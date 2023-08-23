@@ -22,6 +22,7 @@ function SortedByTable() {
     const [newCallStaff, setNewCallStaff] = useState([]);
     const [newCart, setNewCart] = useState([]);
     const [listCart, setListCart] = useState([]);
+    const [listCartPicked, setListCartPicked] = useState([]);
     const [choosedTime, setChoosedTime] = useState("time=3600");
     const [totalBillInProgress, setTotalBillInProgress] = useState("");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
@@ -93,6 +94,7 @@ function SortedByTable() {
 
     const handleClickTableName = (value) => {
         setShowTableMap(false)
+        setListCartPicked(listCart.filter(cart => (cart.table === value)))
     }
 
     const calcBillInProGress = (tableName) => {
@@ -145,23 +147,30 @@ function SortedByTable() {
         }
     }
 
+    const handleReturnToTableMap = () => {
+        setShowTableMap(true)
+        setListCartPicked([])
+        setChoosedStatus("IN_PROGRESS")
+    }
+
+    console.log(listCartPicked);
     return (
         <Fragment>
             <Fragment>
                 <div className={cx("sbtBlackBar")}>
                     {!showTableMap && (
                         <Fragment>
-                            <div className={cx("sbtBlackBarItem")} onClick={() => { setShowTableMap(true) }}>
+                            <div className={cx("sbtBlackBarItem")} onClick={() => {handleReturnToTableMap()}}>
                                 Trở lại
                             </div>
-                            <div className={cx("sbtBlackBarText")} onClick={() => { setShowTableMap(true) }}>
+                            <div className={cx("sbtBlackBarText")}>
                                 còn <span>{totalBillInProgress}</span> Đơn đang chờ
                             </div>
                         </Fragment>
                     )}
                     {showTableMap && (
                         <Fragment>
-                            <div className={cx("sbtBlackBarText")} onClick={() => { setShowTableMap(true) }}>
+                            <div className={cx("sbtBlackBarText")}>
                                 Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
                             </div>
 
@@ -289,16 +298,16 @@ function SortedByTable() {
                                     </button>
                                 </nav>
 
-                                {(listCart === "No carts created" || listCart.length === 0) && (
+                                {(listCartPicked === "No carts created" || listCartPicked.length === 0) && (
                                     <Fragment>
                                         <div className={cx("NoCartsNotification")}>
                                             Hiện Chưa Có Đơn
                                         </div>
                                     </Fragment>
                                 )}
-                                {listCart.length !== 0 && listCart !== "No carts created" && (
+                                {listCartPicked.length !== 0 && listCart !== "No carts created" && (
                                     <div className={cx("hListBill")}>
-                                        {listCart
+                                        {listCartPicked
                                             .filter(cart => cart.status === choosedStatus)
                                             .map((cart, index) => (
                                                 <Fragment key={index}>
