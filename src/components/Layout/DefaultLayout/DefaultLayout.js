@@ -21,7 +21,7 @@ function DefaultLayout({ children }) {
   const navigate = useNavigate();
   const [allowSound, setAllowSound] = useState("false");
   const handleClickLogo = () => {
-    navigate(`/`);
+    navigate(`/sortedbytable`);
   };
   const handleClickMenu = () => {
     navigate(`/menu`);

@@ -14,6 +14,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
 import { useEffect } from "react";
 import io from "socket.io-client";
+import SortedByTable from "~/pages/SortedByTable/SortedByTable";
 
 function MainRoutes() {
   const signOut = useSignOut();
@@ -70,6 +71,17 @@ function MainRoutes() {
             <RequireAuth loginPath={"/login"}>
               <DefaultLayout>
                 <Home />
+              </DefaultLayout>
+            </RequireAuth>
+          }
+          exact
+        />
+        <Route
+          path={"/SortedByTable"}
+          element={
+            <RequireAuth loginPath={"/login"}>
+              <DefaultLayout>
+                <SortedByTable></SortedByTable> 
               </DefaultLayout>
             </RequireAuth>
           }

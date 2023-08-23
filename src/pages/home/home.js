@@ -311,38 +311,6 @@ function Home() {
           {!tableActive && !callStaff && (
             <Fragment>
               <div className={cx("hBillContainer")}>
-                {/* <nav className={cx("timeFilterBar")}>
-                  <button
-                    className={cx("timeFilterItem", {
-                      active: choosedTime === "time=60",
-                    })}
-                    onClick={() => {
-                      handleGetTimeFilter("time=60");
-                    }}
-                  >
-                    1 Giờ
-                  </button>
-                  <button
-                    className={cx("timeFilterItem", {
-                      active: choosedTime === "time=360",
-                    })}
-                    onClick={() => {
-                      handleGetTimeFilter("time=360");
-                    }}
-                  >
-                    6 Giờ
-                  </button>
-                  <button
-                    className={cx("timeFilterItem", {
-                      active: !choosedTime.startsWith("time="),
-                    })}
-                    onClick={() => {
-                      handleGetTimeFilter();
-                    }}
-                  >
-                    Hôm Nay
-                  </button>
-                </nav> */}
                 <nav className={cx("timeFilterBar")}>
                   <button
                     className={cx("timeFilterItem", {
