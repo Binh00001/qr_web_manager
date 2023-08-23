@@ -88,7 +88,7 @@ function Cart() {
                                 // Handle the successful response from the server
                                 console.log(response);
                                 sessionStorage.clear();
-                                navigate("/")
+                                navigate("/sortedbytable")
                             })
                             .catch((error) => {
                                 // Handle the error response from the server
