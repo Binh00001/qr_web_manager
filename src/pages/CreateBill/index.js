@@ -241,7 +241,7 @@ function CreateBill() {
                             />
                         </div>
                         <div className={cx("buttonGroup")}>
-                            <button onClick={() => { navigate("/") }}>Huỷ</button>
+                            <button onClick={() => { navigate("/sortedbytable") }}>Huỷ</button>
                             <button onClick={handleSetInfo}>Xác Nhận</button>
                         </div>
                     </div>

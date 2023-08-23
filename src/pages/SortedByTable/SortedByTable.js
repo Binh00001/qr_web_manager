@@ -153,7 +153,6 @@ function SortedByTable() {
         setChoosedStatus("IN_PROGRESS")
     }
 
-    console.log(listCartPicked);
     return (
         <Fragment>
             <Fragment>

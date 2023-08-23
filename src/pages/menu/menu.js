@@ -35,6 +35,7 @@ function Menu() {
       )
       .then((response) => {
         const data = response.data;
+        console.log(data);
         if (!data || data === "No categories created") {
           setCategory([]);
         } else {
