@@ -1,23 +1,25 @@
 import classNames from "classnames";
 import styles from "~/pages/Login/Login.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSignIn, useSignOut } from "react-auth-kit";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useIsAuthenticated } from "react-auth-kit";
 
 const cx = classNames.bind(styles);
 
 function Login() {
   const navigate = useNavigate();
+  const { checkAdmin } = useParams();
   const signIn = useSignIn();
   const signOut = useSignOut();
   const [formData, setFormData] = useState({
     cashierName: "",
     password: "",
   });
+  const [checkOwner, setCheckOwner] = useState(false);
+  const forUser = (checkAdmin !== "admin");
   const isAuthenticated = useIsAuthenticated();
-
   useEffect(() => {
     if (isAuthenticated()) {
       const cashierInfo = JSON.parse(localStorage.getItem("token_state"));
@@ -59,7 +61,7 @@ function Login() {
       if (cashier.cashierName === "admin") {
         navigate("/bill");
       } else {
-        navigate("/");
+        navigate("/sortedbytable");
       }
       window.location.reload();
     } catch (error) {
@@ -72,6 +74,11 @@ function Login() {
       }
     }
   };
+
+  const handleOwnerLogin = () => {
+    setCheckOwner(!checkOwner)
+  }
+
   return (
     <div className={cx("lgWrapper")}>
       <div className={cx("blackBar")}>
@@ -83,16 +90,25 @@ function Login() {
         <div className={cx("bMarginTop")}></div>
         <div className={cx("lgContent")}>
           <div className={cx("lgLeftContainer")}>
-            <div className={cx("lgResName")}>Bún Cá 29+</div>
-            {/* <div className={cx("lgResDes")}>
-              My attempt at recreating one of my favorite paintings, The Fallen
-              Angel by Alexandre Cabanel, in LEGO. I really wanted to capture
-              the angry and sad stare of Lucifer. How do you think it compares
-              to the painting?
-            </div> */}
+            {(!checkOwner && forUser) &&
+              <Fragment>
+                <div className={cx("lgResName")}>Bún Cá 29+</div>
+              </Fragment>
+            }
+            {!forUser && (
+              <Fragment>
+                <div className={cx("lgResName")}>Admin</div>
+              </Fragment>
+            )}
+            {(checkOwner && forUser) &&
+              <Fragment>
+                <div className={cx("lgResName")}>Quản Lý</div>
+              </Fragment>
+            }
             <div className={cx("lgResDes")}>
             </div>
-            <div className={cx("lg4flex")}>Powered by gifttech
+            <div className={cx("lg4flex")}>
+              Powered by gifttech
               <br />
               Gmail: giftech.work@gmail.com
             </div>
@@ -132,12 +148,20 @@ function Login() {
                   Login
                 </button>
               </div>
+              <div className={cx("lgLoginAsOwner")}>
+                {(checkOwner && forUser) &&
+                  <div onClick={() => handleOwnerLogin()}>
+                    Đăng Nhập Nhân Viên
+                  </div>
+                }
+                {(!checkOwner && forUser) &&
+                  <div onClick={() => handleOwnerLogin()}>
+                    Đăng Nhập Chủ Cửa Hàng
+                  </div>
+                }
+              </div>
             </form>
-            {/* <div className={cx("lgRegisterBox")}>
-              <button value="Sign Up" onClick={() => navigate(`/signup`)}>
-                Sign Up
-              </button>
-            </div> */}
+
           </div>
         </div>
       </div>

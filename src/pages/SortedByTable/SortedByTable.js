@@ -24,7 +24,7 @@ function SortedByTable() {
     const [listCart, setListCart] = useState([]);
     const [listCartPicked, setListCartPicked] = useState([]);
     const [choosedTime, setChoosedTime] = useState("time=3600");
-    const [totalBillInProgress, setTotalBillInProgress] = useState("");
+    const [totalBillInProgress, setTotalBillInProgress] = useState("0");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
     const [cartStatusChange, setCartStatusChange] = useState(true);
     const [showTableMap, setShowTableMap] = useState(true);

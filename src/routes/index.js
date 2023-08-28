@@ -57,6 +57,15 @@ function MainRoutes() {
           exact
         />
         <Route
+          path={"/login/:checkAdmin"}
+          element={
+            // <DefaultLayout>
+            <Login />
+            // </DefaultLayout>
+          }
+          exact
+        />
+        <Route
           path={"/signup"}
           element={
             <DefaultLayout>
@@ -81,7 +90,7 @@ function MainRoutes() {
           element={
             <RequireAuth loginPath={"/login"}>
               <DefaultLayout>
-                <SortedByTable></SortedByTable> 
+                <SortedByTable></SortedByTable>
               </DefaultLayout>
             </RequireAuth>
           }
@@ -94,14 +103,14 @@ function MainRoutes() {
               <Menu />
             </DefaultLayout>
           </RequireAuth>} />
-          <Route
+        <Route
           path={"/createbill"}
           element={<RequireAuth loginPath={"/login"}>
             <DefaultLayout>
               <CreateBill />
             </DefaultLayout>
           </RequireAuth>} />
-          <Route
+        <Route
           path={"/cart"}
           element={<RequireAuth loginPath={"/login"}>
             <DefaultLayout>
