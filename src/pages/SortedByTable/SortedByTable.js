@@ -17,7 +17,6 @@ function SortedByTable() {
     const showReddot = useReddotShowContext();
     const billInProgress = useBillInProgress();
     const isAdmin = useIsAdminContext();
-
     const [tables, setTables] = useState([]);
     const [newCallStaff, setNewCallStaff] = useState([]);
     const [newCart, setNewCart] = useState([]);
@@ -48,17 +47,17 @@ function SortedByTable() {
             setNewCart(response);
         });
     }, []);
-
+    console.log(listCart);
     //get listcart, get toltal bill in progress
     useEffect(() => {
         const fetchData = () => {
             axios
                 .get(
-                    `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?${choosedTime}`
+                    `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/64ec7b6688d76eb8fbefae41?${choosedTime}`
                 )
                 .then((response) => {
-                    setListCart(response.data);
                     if (response.data.length !== 0 && response.data !== "No carts created") {
+                        setListCart(response.data);
                         response.data.forEach((cart) => {
                             const inProgressCarts = response.data.filter(cart => cart.status === "IN_PROGRESS");
                             setTotalBillInProgress(inProgressCarts.length);
@@ -77,12 +76,13 @@ function SortedByTable() {
             clearInterval(interval);
         };
     }, [cartStatusChange, newCart]);
-
+    
+    //get tablelist
     useEffect(() => {
         axios
             // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
-                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/64ec7b6688d76eb8fbefae41`
             )
             .then((response) => {
                 setTables(response.data);
@@ -152,7 +152,7 @@ function SortedByTable() {
         setListCartPicked([])
         setChoosedStatus("IN_PROGRESS")
     }
-
+    console.log(listCartPicked);
     return (
         <Fragment>
             <Fragment>

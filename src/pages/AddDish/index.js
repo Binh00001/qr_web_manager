@@ -1,4 +1,4 @@
-import { Fragment, useState,useEffect } from "react";
+import { Fragment, useState, useEffect } from "react";
 import classNames from "classnames";
 import styles from "./AddDish.scss";
 import { useNavigate } from "react-router-dom";
@@ -82,6 +82,14 @@ function AddDish() {
       .then((response) => {
         console.log(response);
         setIsDone(true)
+        setState({
+          name: "",
+          description: "",
+          category: "",
+          price: "",
+          image_detail: null,
+        })
+        window.location.reload();
       })
       .catch((error) => {
         console.log(error);
@@ -94,10 +102,10 @@ function AddDish() {
     <Fragment>
       {isDone && (
         <Fragment>
-          <div className="overlay" onClick={() => {setIsDone(false)}}></div>
+          <div className="overlay" onClick={() => { setIsDone(false) }}></div>
           <div className={cx("DoneMessage")}>
             Tạo Món Thành Công
-            </div>
+          </div>
         </Fragment>
       )}
       <div className={cx("Wrapper")}>

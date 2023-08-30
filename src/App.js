@@ -80,7 +80,6 @@ function App() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`)
       .then((response) => {
-        console.log(cashierInfo);
         if (
           cashierInfo.cashierName === "admin" &&
           cashierInfo.cashierName === response.data.cashierName

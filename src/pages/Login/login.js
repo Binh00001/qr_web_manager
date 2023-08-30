@@ -40,10 +40,12 @@ function Login() {
         `${process.env.REACT_APP_API_URL}/cashier-auth/login`,
         formData
       );
+      console.log(response);
       const { accessToken, refreshToken, cashier } = response.data;
       if (!formData.cashierName || !formData.password) {
         return;
       }
+      console.log(cashier);
       if (!response.data || (cashier.role === "ADMIN" && checkAdmin !== "admin") || (cashier.role === "OWNER" && !checkOwner)) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
@@ -54,12 +56,13 @@ function Login() {
         authState: {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
+          // groupId: cashier/
         },
         refreshToken: refreshToken,
         refreshTokenExpireIn: 600,
       });
       if (cashier.role === "ADMIN" && checkAdmin === "admin") {
-        navigate("/bill");
+        navigate("/signup");
         window.location.reload();
       }
       if (cashier.role === "OWNER" && checkOwner) {

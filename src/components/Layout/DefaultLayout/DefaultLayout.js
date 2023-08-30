@@ -56,12 +56,9 @@ function DefaultLayout({ children }) {
           </div> */}
           {isAdmin === "admin" && (
             <Fragment>
-              <div className={cx("dItemAdmin")} onClick={handleClickBill}>
+              {/* <div className={cx("dItemAdmin")} onClick={handleClickBill}>
                 Hoá Đơn
-              </div>
-              <div className={cx("dItemAdmin")} onClick={handleClickTableManager}>
-                Quản Lý Bàn
-              </div>
+              </div> */}
               <div className={cx("dItemAdmin")} onClick={handleClickSignUp}>
                 Tài Khoản
               </div>

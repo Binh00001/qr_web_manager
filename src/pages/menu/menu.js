@@ -31,7 +31,7 @@ function Menu() {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/category/allByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/category/allByCashier/64ec7b6688d76eb8fbefae41`
       )
       .then((response) => {
         const data = response.data;
@@ -48,7 +48,7 @@ function Menu() {
       });
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/64ec7b6688d76eb8fbefae41`
       )
       .then((response) => {
         setListDish(response.data);
@@ -97,6 +97,7 @@ function Menu() {
       .catch((error) => {
         console.log(error);
       });
+      setSelectedItem(null)
   };
 
   const cancelHandler = () => {

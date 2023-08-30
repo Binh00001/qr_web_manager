@@ -8,11 +8,12 @@ import { useIsAdminContext } from "~/App";
 const cx = classNames.bind(styles);
 
 function TableManager() {
+  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const [tables, setTables] = useState([]);
   const [listCashier, setListCashier] = useState([]);
   const [tableId, setTableId] = useState("");
   const [tableName, setTableName] = useState("");
-  const [selectedCashierId, setSelectedCashierId] = useState('');
+  const [selectedCashierId, setSelectedCashierId] = useState(cashier.cashierId);
   const [selectedCashierName, setSelectedCashierName] = useState('');
   const [warningNote, setWarningNote] = useState('');
   const [isPopup, setIsPopup] = useState(false);
@@ -21,19 +22,12 @@ function TableManager() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isOverlay, setIsOverlay] = useState(false);
   const navigate = useNavigate();
-
   const isAdmin = useIsAdminContext();
   // const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const token = localStorage.getItem("token") || [];
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-
-  useEffect(() => {
-    if (isAdmin === "cashier") {
-      navigate(`/`);
-    }
-  }, [isAdmin, navigate]);
 
   useEffect(() => {
     axios
@@ -52,7 +46,6 @@ function TableManager() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/table/allByCashier/${selectedCashierId}`, config)
       .then((response) => {
-        // setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
         setTables(response.data);
       })
       .catch((error) => {
@@ -214,7 +207,7 @@ function TableManager() {
           <div className={cx("TopBar")}>
             <div className={cx("tmgTopBarWrapper")}>
               <div className={cx("tmgText")}>
-                <div className={cx("dropdown")} onClick={toggleDropdown}>
+                {/* <div className={cx("dropdown")} onClick={toggleDropdown}>
                   <div id="cashier">
                     {selectedCashierName || "Chọn Chi Nhánh"}
                   </div>
@@ -241,19 +234,11 @@ function TableManager() {
                         }
 
                       </div>
-
-                      {/* <div
-                        className={cx("dropdownContent")}
-                        onClick={() => handleDropdownItemClick("NV1")}
-                      >
-                        NV1
-                      </div> */}
                     </div>
                   )}
-                </div>
+                </div> */}
               </div>
               <div className={cx("tmgText")}>
-                {selectedCashierName !== '' && (
                   <Fragment>
                     <input
                       placeholder="Nhập Tên Bàn"
@@ -261,11 +246,8 @@ function TableManager() {
                     ></input>
                     <button
                       onClick={() => subbmitNewtable()}
-
                     >Tạo Bàn</button>
-
                   </Fragment>
-                )}
               </div>
             </div>
 

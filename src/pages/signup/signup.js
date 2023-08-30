@@ -50,7 +50,7 @@ function Signup() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/all`, config)
       .then((response) => {
-        // setListCashier(response.data.filter((name) => (name.cashierName !== "admin")))
+        console.log(response.data);
         setListCashier(
           response.data.filter((name) => name.cashierName !== "admin")
         );
