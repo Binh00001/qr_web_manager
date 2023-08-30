@@ -53,18 +53,14 @@ function App() {
       if (isAdmin === "cashier") {
         console.log(response);
         if (response.cashier_id === cashierInfo.cashierId) {
-          // playSound();
           setNewPing(response);
-          console.log("staffTing");
         }
       }
     });
     socket.on("newCart", (response) => {
       if (isAdmin === "cashier") {
         if (response.cashier_id === cashierInfo.cashierId) {
-          // playSound();
           setNewPing(response);
-          // console.log("ting");
         }
       }
     });
@@ -84,14 +80,14 @@ function App() {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`)
       .then((response) => {
+        console.log(cashierInfo);
         if (
           cashierInfo.cashierName === "admin" &&
           cashierInfo.cashierName === response.data.cashierName
         ) {
           setIsAdmin("admin");
-          // console.log(cashierInfo.cashierName === "admin" && cashierInfo.cashierName === response.data.cashierName);
         } else {
-          setIsAdmin("cashier");
+          setIsAdmin(response.data.cashierName);
         }
       })
       .catch((error) => {
@@ -160,11 +156,6 @@ function App() {
       clearInterval(interval);
     };
   }, [newPing, checkBill]);
-
-  const playSound = () => {
-    const audio = new Audio(ting);
-    audio.play();
-  };
 
   const removeRedDot = (request) => {
     if (requests.length > 0 && request) {

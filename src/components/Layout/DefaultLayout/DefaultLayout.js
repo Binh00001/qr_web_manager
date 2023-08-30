@@ -19,7 +19,6 @@ function DefaultLayout({ children }) {
   const signOut = useSignOut();
   let cashier = JSON.parse(localStorage.getItem("token_state")) || [];
   const navigate = useNavigate();
-  const [allowSound, setAllowSound] = useState("false");
   const handleClickLogo = () => {
     navigate(`/sortedbytable`);
   };
@@ -46,16 +45,15 @@ function DefaultLayout({ children }) {
 
   const openNavMenu = () => {
     setIsOpenNav(!isOpenNav)
-    // console.log(isOpenNav);
   }
 
   return (
     <div className={cx("dWrapper")}>
       <div className={cx("dContent")}>
         <div className={cx("dLeftContainer")}>
-          <div className={cx("LogoBorder")}>
+          {/* <div className={cx("LogoBorder")}>
             <img onClick={handleClickLogo} src={logo} alt="LOGO"></img>
-          </div>
+          </div> */}
           {isAdmin === "admin" && (
             <Fragment>
               <div className={cx("dItemAdmin")} onClick={handleClickBill}>
@@ -70,7 +68,21 @@ function DefaultLayout({ children }) {
             </Fragment>
 
           )}
-          {isAdmin === "cashier" && (
+          {isAdmin === "staff" && (
+            <Fragment>
+              <div className={cx("dItem")} onClick={handleClickLogo}>
+                Trang Chủ
+                <div className={cx("reddot", { redDotHided: !showReddot })}></div>
+              </div>
+              {/* <div className={cx("dItem")} onClick={handleClickMenu}>
+                Thực Đơn
+              </div> */}
+              <div className={cx("dItem")} onClick={handleClickCreateBill}>
+                Tạo Đơn
+              </div>
+            </Fragment>
+          )}
+          {isAdmin === "manage" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ
@@ -83,7 +95,6 @@ function DefaultLayout({ children }) {
                 Tạo Đơn
               </div>
             </Fragment>
-
           )}
         </div>
         <div className={cx("dRightContainer")}>
