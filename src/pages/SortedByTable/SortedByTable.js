@@ -47,7 +47,7 @@ function SortedByTable() {
             setNewCart(response);
         });
     }, []);
-    console.log(listCart);
+
     //get listcart, get toltal bill in progress
     useEffect(() => {
         const fetchData = () => {
@@ -152,7 +152,7 @@ function SortedByTable() {
         setListCartPicked([])
         setChoosedStatus("IN_PROGRESS")
     }
-    console.log(listCartPicked);
+
     return (
         <Fragment>
             <Fragment>

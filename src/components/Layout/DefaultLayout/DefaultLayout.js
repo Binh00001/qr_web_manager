@@ -54,7 +54,7 @@ function DefaultLayout({ children }) {
           {/* <div className={cx("LogoBorder")}>
             <img onClick={handleClickLogo} src={logo} alt="LOGO"></img>
           </div> */}
-          {isAdmin === "admin" && (
+          {isAdmin === "ADMIN" && (
             <Fragment>
               {/* <div className={cx("dItemAdmin")} onClick={handleClickBill}>
                 Hoá Đơn
@@ -65,7 +65,7 @@ function DefaultLayout({ children }) {
             </Fragment>
 
           )}
-          {isAdmin === "staff" && (
+          {isAdmin === "STAFF" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ
@@ -79,7 +79,21 @@ function DefaultLayout({ children }) {
               </div>
             </Fragment>
           )}
-          {isAdmin === "manage" && (
+          {isAdmin === "MANAGER" && (
+            <Fragment>
+              <div className={cx("dItem")} onClick={handleClickLogo}>
+                Trang Chủ
+                <div className={cx("reddot", { redDotHided: !showReddot })}></div>
+              </div>
+              <div className={cx("dItem")} onClick={handleClickMenu}>
+                Thực Đơn
+              </div>
+              <div className={cx("dItem")} onClick={handleClickCreateBill}>
+                Tạo Đơn
+              </div>
+            </Fragment>
+          )}
+           {isAdmin === "OWNER" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ

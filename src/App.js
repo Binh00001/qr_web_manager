@@ -34,8 +34,12 @@ function App() {
   const [reddotShow, setReddotShow] = useState(false);
   const [billInProgress, setBillInProgress] = useState(false);
   const [isAdmin, setIsAdmin] = useState("loading");
+
   const cashierInfo = JSON.parse(localStorage.getItem("token_state")) || [];
-  const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
+  const token = localStorage.getItem("token") || [];
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
   useEffect(() => {
     const allBillDone = () => {
@@ -47,6 +51,7 @@ function App() {
     setBillInProgress(anyBillInProgress);
   }, [listCart]);
 
+  //socket
   useEffect(() => {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
@@ -66,8 +71,8 @@ function App() {
     });
     socket.on("status", (response) => {
       if (isAdmin === "cashier") {
-          setCheckBill(response._id);
-          console.log(response._id);
+        setCheckBill(response._id);
+        console.log(response._id);
       }
     });
 
@@ -76,18 +81,34 @@ function App() {
     };
   }, [isAdmin]);
 
+  //get role
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/${cashierInfo.cashierId}`)
       .then((response) => {
+
         if (
-          cashierInfo.cashierName === "admin" &&
-          cashierInfo.cashierName === response.data.cashierName
+          cashierInfo.role === "ADMIN" &&
+          cashierInfo.role === response.data.role
         ) {
-          setIsAdmin("admin");
+          setIsAdmin("ADMIN");
         } else {
-          setIsAdmin(response.data.cashierName);
+          setIsAdmin(response.data.role);
         }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //get gr id
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
+      )
+      .then((response) => {
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -98,7 +119,7 @@ function App() {
     const fetchData = () => {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/call-staff/all/${cashier.cashierId}?time=3360`
+          `${process.env.REACT_APP_API_URL}/call-staff/all/${cashierInfo.cashierId}?time=3360`
         )
         .then((response) => {
           if (response.data === "No call staff created") {
@@ -136,7 +157,7 @@ function App() {
     const fetchData = () => {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.cashierId}?time= 60`
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashierInfo.cashierId}?time= 60`
         )
         .then((response) => {
           if (response.data !== "No carts created") {

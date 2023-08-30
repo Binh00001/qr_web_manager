@@ -15,6 +15,7 @@ function TableActive() {
 
     const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
     const token = localStorage.getItem("token") || [];
+    console.log(cashier);
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };

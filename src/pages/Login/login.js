@@ -56,7 +56,7 @@ function Login() {
         authState: {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
-          // groupId: cashier/
+          role: cashier.role,
         },
         refreshToken: refreshToken,
         refreshTokenExpireIn: 600,
@@ -69,7 +69,7 @@ function Login() {
         navigate("/bill")
         window.location.reload();
       }
-      if (cashier.role === "STAFF" || cashier.role === "MANAGE") {
+      if (cashier.role === "STAFF" || cashier.role === "MANAGER") {
         navigate("/sortedbytable")
         window.location.reload();
       }
