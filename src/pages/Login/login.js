@@ -44,7 +44,7 @@ function Login() {
       if (!formData.cashierName || !formData.password) {
         return;
       }
-      if (!response.data) {
+      if (!response.data || (cashier.role === "ADMIN" && checkAdmin !== "admin") || (cashier.role === "OWNER" && !checkOwner)) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
       signIn({
@@ -58,12 +58,18 @@ function Login() {
         refreshToken: refreshToken,
         refreshTokenExpireIn: 600,
       });
-      if (cashier.cashierName === "admin") {
+      if (cashier.role === "ADMIN" && checkAdmin === "admin") {
         navigate("/bill");
-      } else {
-        navigate("/sortedbytable");
+        window.location.reload();
       }
-      window.location.reload();
+      if (cashier.role === "OWNER" && checkOwner) {
+        navigate("/bill")
+        window.location.reload();
+      }
+      if (cashier.role === "STAFF" || cashier.role === "MANAGE") {
+        navigate("/sortedbytable")
+        window.location.reload();
+      }
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.log(error.response);
@@ -81,11 +87,6 @@ function Login() {
 
   return (
     <div className={cx("lgWrapper")}>
-      <div className={cx("blackBar")}>
-        <div className={cx("TopBar")}>
-          <div className={cx("mTopBar")}></div>
-        </div>
-      </div>
       <div className={cx("lgBody")}>
         <div className={cx("bMarginTop")}></div>
         <div className={cx("lgContent")}>
