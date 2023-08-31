@@ -22,6 +22,7 @@ function SortedByTable() {
     const [newCart, setNewCart] = useState([]);
     const [listCart, setListCart] = useState([]);
     const [listCartPicked, setListCartPicked] = useState([]);
+    const [tablePicked, setTablePicked] = useState([]);
     const [choosedTime, setChoosedTime] = useState("time=3600");
     const [totalBillInProgress, setTotalBillInProgress] = useState("0");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
@@ -63,6 +64,10 @@ function SortedByTable() {
                             const inProgressCarts = response.data.filter(cart => cart.status === "IN_PROGRESS");
                             setTotalBillInProgress(inProgressCarts.length);
                         })
+                        if (tablePicked.length !== 0) { 
+                            setListCartPicked(response.data.filter(cart => (cart.table === tablePicked && cart.status === choosedStatus)))
+                            console.log(listCartPicked);
+                        }
                     }
                 })
                 .catch((error) => {
@@ -76,7 +81,7 @@ function SortedByTable() {
         return () => {
             clearInterval(interval);
         };
-    }, [ cartStatusChange, newCart]);
+    }, [cartStatusChange, newCart, cartPaidChange]);
 
     //get tablelist
     useEffect(() => {
@@ -94,6 +99,7 @@ function SortedByTable() {
     }, []);
 
     const handleClickTableName = (value) => {
+        setTablePicked(value)
         setShowTableMap(false)
         setListCartPicked(listCart.filter(cart => (cart.table === value)))
     }
@@ -126,19 +132,22 @@ function SortedByTable() {
     };
 
 
-    const handleSetDoneBill = (cartId) => {
-        axios
-            .put(
-                `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
-                { status: "COMPLETED" },
-                config
-            )
-            .then((response) => {
-                setCartStatusChange(!cartStatusChange);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
+    const handleSetDoneBill = (cartId, cartPaid) => {
+        if (cartPaid) {
+            axios
+                .put(
+                    `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
+                    { status: "COMPLETED" },
+                    config
+                )
+                .then((response) => {
+                    setCartStatusChange(!cartStatusChange);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
     };
 
     const handleSetCancelBill = (cartId) => {
@@ -159,13 +168,12 @@ function SortedByTable() {
     const handleGetStatusFilter = (value) => {
         if (value) {
             setChoosedStatus(value)
-        } else {
-
         }
     }
 
     const handleReturnToTableMap = () => {
         setShowTableMap(true)
+        setTablePicked([])
         setListCartPicked([])
         setChoosedStatus("IN_PROGRESS")
     }
@@ -174,22 +182,48 @@ function SortedByTable() {
         <Fragment>
             <Fragment>
                 <div className={cx("sbtBlackBar")}>
-                    {!showTableMap && (
+                    {isAdmin === "MANAGER" && (
                         <Fragment>
-                            <div className={cx("sbtBlackBarItem")} onClick={() => { handleReturnToTableMap() }}>
-                                Trở lại
-                            </div>
-                            <div className={cx("sbtBlackBarText")}>
-                                còn <span>{totalBillInProgress}</span> Đơn đang chờ
-                            </div>
+                            {!showTableMap && (
+                                <Fragment>
+                                    <div className={cx("sbtBlackBarItem")} onClick={() => { handleReturnToTableMap() }}>
+                                        Trở lại
+                                    </div>
+                                    <div className={cx("sbtBlackBarText")}>
+                                        còn <span>{totalBillInProgress}</span> Đơn đang chờ
+                                    </div>
+                                </Fragment>
+                            )}
+                            {showTableMap && (
+                                <Fragment>
+                                    <div className={cx("sbtBlackBarText")}>
+                                        Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
+                                    </div>
+
+                                </Fragment>
+                            )}
                         </Fragment>
                     )}
-                    {showTableMap && (
+                    {isAdmin === "STAFF" && (
                         <Fragment>
-                            <div className={cx("sbtBlackBarText")}>
-                                Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
-                            </div>
+                            {!showTableMap && (
+                                <Fragment>
+                                    <div className={cx("sbtBlackBarItem")} onClick={() => { handleReturnToTableMap() }}>
+                                        Trở lại
+                                    </div>
+                                    <div className={cx("sbtBlackBarText")}>
+                                        còn <span>{totalBillInProgress}</span> Đơn đang chờ
+                                    </div>
+                                </Fragment>
+                            )}
+                            {showTableMap && (
+                                <Fragment>
+                                    <div className={cx("sbtBlackBarText")}>
+                                        Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
+                                    </div>
 
+                                </Fragment>
+                            )}
                         </Fragment>
                     )}
                 </div>
@@ -326,6 +360,7 @@ function SortedByTable() {
                                         {listCartPicked
                                             .filter(cart => cart.status === choosedStatus)
                                             .map((cart, index) => (
+                                                
                                                 <Fragment key={index}>
                                                     <div className={cx("hItem", cart.status)} key={index}>
                                                         <div className={cx("hItemContent")}>
@@ -425,30 +460,31 @@ function SortedByTable() {
                                                                         Huỷ Đơn
                                                                     </button>
                                                                 </div>
-                                                                {cashier.role === "MANAGER" && (
+                                                                {isAdmin === "MANAGER" && (
                                                                     <Fragment>
                                                                         <div className={cx("")}>
                                                                             <button
                                                                                 className={cx("readyBillButton")}
-                                                                                onClick={() => handleSetDoneBill(cart._id)}
+                                                                                onClick={() => handleSetDoneBill(cart._id, cart.isPaid)}
                                                                             >
                                                                                 Hoàn Thành
                                                                             </button>
                                                                         </div>
                                                                     </Fragment>
                                                                 )}
-                                                                {cashier.role === "STAFF" && (
+                                                                {isAdmin === "STAFF" && (
                                                                     <Fragment>
                                                                         <div className={cx("")}>
                                                                             <button
                                                                                 className={cx("readyBillButton")}
                                                                                 onClick={() => handleSetPaidBill(cart._id)}
                                                                             >
-                                                                                Đã Thu Tiền
+                                                                                Thu Tiền
                                                                             </button>
                                                                         </div>
                                                                     </Fragment>
                                                                 )}
+
                                                             </div>
                                                         )}
                                                     </div>

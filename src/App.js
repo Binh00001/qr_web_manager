@@ -101,20 +101,6 @@ function App() {
       });
   }, []);
 
-  //get gr id
-  // useEffect(() => {
-  //   axios
-  //     .get(
-  //       `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
-  //     )
-  //     .then((response) => {
-  //       console.log(response);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
-
   useEffect(() => {
     const fetchData = () => {
       axios
