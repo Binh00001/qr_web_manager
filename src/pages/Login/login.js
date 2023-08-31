@@ -49,6 +49,7 @@ function Login() {
       if (!response.data || (cashier.role === "ADMIN" && checkAdmin !== "admin") || (cashier.role === "OWNER" && !checkOwner)) {
         return alert("Sai Tên Tài Khoản Hoặc Mật Khẩu");
       }
+      console.log(cashier);
       signIn({
         token: accessToken,
         tokenType: "Bearer",
@@ -57,10 +58,12 @@ function Login() {
           cashierName: cashier.cashierName,
           cashierId: cashier.id,
           role: cashier.role,
+          group_id: cashier.group_id,
         },
         refreshToken: refreshToken,
         refreshTokenExpireIn: 600,
       });
+
       if (cashier.role === "ADMIN" && checkAdmin === "admin") {
         navigate("/signup");
         window.location.reload();
@@ -73,6 +76,7 @@ function Login() {
         navigate("/sortedbytable")
         window.location.reload();
       }
+
     } catch (error) {
       if (error.response && error.response.status === 401) {
         console.log(error.response);

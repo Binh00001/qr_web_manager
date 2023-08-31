@@ -48,7 +48,7 @@ function Cart() {
         } else {
             axios
                 .get(
-                    `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/64ec7b6688d76eb8fbefae41`
+                    `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.group_id}`
                 )
                 .then((response) => {
                     const availableDishes = response.data;
@@ -81,7 +81,7 @@ function Cart() {
                     } else {
                         axios
                             .post(
-                                `${process.env.REACT_APP_API_URL}/cart/create/64ec7b6688d76eb8fbefae41`,
+                                `${process.env.REACT_APP_API_URL}/cart/create/${cashier.group_id}`,
                                 pushData
                             )
                             .then((response) => {

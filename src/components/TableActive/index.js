@@ -23,7 +23,7 @@ function TableActive() {
         axios
             // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
-                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.cashierId}`
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.group_id}`
             )
             .then((response) => {
                 setTables(response.data);

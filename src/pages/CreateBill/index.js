@@ -39,7 +39,7 @@ function CreateBill() {
     useEffect(() => {
         axios
             .get(
-                `${process.env.REACT_APP_API_URL}/table/allByCashier/64ec7b6688d76eb8fbefae41`
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.group_id}`
             )
             .then((response) => {
                 setTables(response.data);
@@ -119,7 +119,7 @@ function CreateBill() {
     useEffect(() => {
         axios
             .get(
-                `${process.env.REACT_APP_API_URL}/category/allByCashier/64ec7b6688d76eb8fbefae41`, config
+                `${process.env.REACT_APP_API_URL}/category/allByCashier/${cashier.group_id}`, config
             )
             .then((response) => {
                 const data = response.data;
@@ -135,7 +135,7 @@ function CreateBill() {
             });
         axios
             .get(
-                `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/64ec7b6688d76eb8fbefae41`, config
+                `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.group_id}`, config
             )
             .then((response) => {
                 setListDish(response.data.filter((dish) => (dish.amount !== 0)));

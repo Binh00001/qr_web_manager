@@ -31,7 +31,7 @@ function Menu() {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/category/allByCashier/64ec7b6688d76eb8fbefae41`
+        `${process.env.REACT_APP_API_URL}/category/allByCashier/${cashier.group_id}`
       )
       .then((response) => {
         const data = response.data;
@@ -48,7 +48,7 @@ function Menu() {
       });
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/64ec7b6688d76eb8fbefae41`
+        `${process.env.REACT_APP_API_URL}/dish/menu/activedByCashier/${cashier.group_id}`
       )
       .then((response) => {
         setListDish(response.data);

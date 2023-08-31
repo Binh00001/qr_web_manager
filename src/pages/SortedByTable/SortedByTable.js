@@ -26,6 +26,7 @@ function SortedByTable() {
     const [totalBillInProgress, setTotalBillInProgress] = useState("0");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
     const [cartStatusChange, setCartStatusChange] = useState(true);
+    const [cartPaidChange, setCartPaidChange] = useState(true);
     const [showTableMap, setShowTableMap] = useState(true);
 
     const navigate = useNavigate();
@@ -53,7 +54,7 @@ function SortedByTable() {
         const fetchData = () => {
             axios
                 .get(
-                    `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/64ec7b6688d76eb8fbefae41?${choosedTime}`
+                    `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashier.group_id}?${choosedTime}`
                 )
                 .then((response) => {
                     if (response.data.length !== 0 && response.data !== "No carts created") {
@@ -75,14 +76,14 @@ function SortedByTable() {
         return () => {
             clearInterval(interval);
         };
-    }, [cartStatusChange, newCart]);
-    
+    }, [ cartStatusChange, newCart]);
+
     //get tablelist
     useEffect(() => {
         axios
             // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
-                `${process.env.REACT_APP_API_URL}/table/allByCashier/64ec7b6688d76eb8fbefae41`
+                `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.group_id}`
             )
             .then((response) => {
                 setTables(response.data);
@@ -107,6 +108,24 @@ function SortedByTable() {
         }
     }
 
+    // Inside the handleSetPaidBill function
+    const handleSetPaidBill = (cartId) => {
+        axios
+            .put(
+                `${process.env.REACT_APP_API_URL}/cart/pay/${cartId}`,
+                { isPaid: true },
+                config
+            )
+            .then((response) => {
+                console.log(response.data);
+                setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
+
     const handleSetDoneBill = (cartId) => {
         axios
             .put(
@@ -115,7 +134,6 @@ function SortedByTable() {
                 config
             )
             .then((response) => {
-                // console.log("Cart marked as complete:", response.data);
                 setCartStatusChange(!cartStatusChange);
             })
             .catch((error) => {
@@ -131,7 +149,6 @@ function SortedByTable() {
                 config
             )
             .then((response) => {
-                console.log("Cart marked as complete:", response.data);
                 setCartStatusChange(!cartStatusChange);
             })
             .catch((error) => {
@@ -159,7 +176,7 @@ function SortedByTable() {
                 <div className={cx("sbtBlackBar")}>
                     {!showTableMap && (
                         <Fragment>
-                            <div className={cx("sbtBlackBarItem")} onClick={() => {handleReturnToTableMap()}}>
+                            <div className={cx("sbtBlackBarItem")} onClick={() => { handleReturnToTableMap() }}>
                                 Trở lại
                             </div>
                             <div className={cx("sbtBlackBarText")}>
@@ -377,6 +394,19 @@ function SortedByTable() {
                                                                         </span>
                                                                     )}
                                                                 </div>
+                                                                <div className={cx("hItemIsPaid")}>
+                                                                    {/* Thanh Toán:  */}
+                                                                    {cart.isPaid === false && (
+                                                                        <span style={{ color: "#f04d4d" }}>
+                                                                            Cần Thu Tiền
+                                                                        </span>
+                                                                    )}
+                                                                    {cart.isPaid === true && (
+                                                                        <span style={{ color: "#2ecc71" }}>
+                                                                            Đã Thanh Toán
+                                                                        </span>
+                                                                    )}
+                                                                </div>
                                                             </div>
                                                             <div className={cx("hItemTotalPrice")}>
                                                                 Tổng Tiền:{" "}
@@ -395,14 +425,30 @@ function SortedByTable() {
                                                                         Huỷ Đơn
                                                                     </button>
                                                                 </div>
-                                                                <div className={cx("")}>
-                                                                    <button
-                                                                        className={cx("readyBillButton")}
-                                                                        onClick={() => handleSetDoneBill(cart._id)}
-                                                                    >
-                                                                        Hoàn Thành
-                                                                    </button>
-                                                                </div>
+                                                                {cashier.role === "MANAGER" && (
+                                                                    <Fragment>
+                                                                        <div className={cx("")}>
+                                                                            <button
+                                                                                className={cx("readyBillButton")}
+                                                                                onClick={() => handleSetDoneBill(cart._id)}
+                                                                            >
+                                                                                Hoàn Thành
+                                                                            </button>
+                                                                        </div>
+                                                                    </Fragment>
+                                                                )}
+                                                                {cashier.role === "STAFF" && (
+                                                                    <Fragment>
+                                                                        <div className={cx("")}>
+                                                                            <button
+                                                                                className={cx("readyBillButton")}
+                                                                                onClick={() => handleSetPaidBill(cart._id)}
+                                                                            >
+                                                                                Đã Thu Tiền
+                                                                            </button>
+                                                                        </div>
+                                                                    </Fragment>
+                                                                )}
                                                             </div>
                                                         )}
                                                     </div>

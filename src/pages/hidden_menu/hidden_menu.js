@@ -24,7 +24,7 @@ function HiddenMenu() {
   useEffect(() => {
     axios
       .get(
-        `${process.env.REACT_APP_API_URL}/dish/menu/allHiddenByCashier/${cashier.cashierId}`
+        `${process.env.REACT_APP_API_URL}/dish/menu/allHiddenByCashier/${cashier.group_id}`
       )
       .then((response) => {
         setListDish(response.data);

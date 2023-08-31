@@ -44,7 +44,7 @@ function TableManager() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_API_URL}/table/allByCashier/${selectedCashierId}`, config)
+      .get(`${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.group_id}`, config)
       .then((response) => {
         setTables(response.data);
       })
