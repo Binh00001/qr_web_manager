@@ -27,6 +27,8 @@ function Signup() {
   const [updateAccId, setUpdateAccId] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedValue2, setSelectedValue2] = useState("");
+  const [signupState, setSignupState] = useState("Tạo Chi Nhánh");
+  const [openGroup, setOpenGroup] = useState({}); // Initialize with an empty object
 
   const isAdmin = useIsAdminContext();
   const [formData, setFormData] = useState({
@@ -41,6 +43,9 @@ function Signup() {
     name: "",
     oldPassword: "",
     newPassword: "",
+  });
+  const [groupData, setGroupData] = useState({
+    name: "",
   });
 
   const token = localStorage.getItem("token") || [];
@@ -109,12 +114,12 @@ function Signup() {
   //đăng kí tài khoản mới
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
-    if(!selectedValue){
+    if (!selectedValue) {
       setIsOverlay(true)
       setRegisterMessage("Hãy Chọn Group")
       return console.log("Hãy Chọn Group");
     }
-    if(!selectedValue2){
+    if (!selectedValue2) {
       setIsOverlay(true)
       setRegisterMessage("Hãy Chọn Role")
       return console.log("Hãy Chọn Role");
@@ -243,6 +248,41 @@ function Signup() {
       });
   };
 
+  //tạo nhóm
+  const handleCreateGroupSubmit = (e) => {
+    e.preventDefault();
+    if (!groupData.name) {
+      setIsOverlay(true)
+      setRegisterMessage("Hãy nhập tên chi nhánh")
+      return console.log("Hãy nhập tên chi nhánh");
+    } else {
+      console.log("Gửi form");
+      axios
+        .post(
+          `${process.env.REACT_APP_API_URL}/group/create`,
+          groupData,
+          config
+        )
+        .then((response) => {
+          if (response.data === "CashierName Existed!") {
+            // Handle existing cashier name case
+          } else {
+            setIsOverlay(true);
+            setRegisterMessage("Tạo Chi Nhánh Thành Công");
+            setGroupData({
+              name: "",
+            });
+            setReload(!reload);
+            window.location.reload();
+          }
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
+
   const handleSignUpClick = () => {
     setIsSignUp(true);
     setIsAccountManager(false);
@@ -301,6 +341,13 @@ function Signup() {
       setRegisterMessage("")
     }
   }
+
+  const toggleOpenGroup = (groupId) => {
+    setOpenGroup((prevOpenGroup) => ({
+      ...prevOpenGroup,
+      [groupId]: !prevOpenGroup[groupId],
+    }));
+  };
 
   return (
     <div className={cx("lgWrapper")}>
@@ -420,166 +467,253 @@ function Signup() {
         <div className={cx("lgContent")}>
           {isSignUp && (
             <Fragment>
-              <div className={cx("spRightContainer")}>
-                <form className={cx("spBox")} onSubmit={handleSignUpSubmit}>
-                  <div className={cx("spUserNameBox")}>
-                    <input
-                      required
-                      className={cx("userName-input")}
-                      type="text"
-                      placeholder="Tên Người Dùng"
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          // userName: e.target.value,
-                          name: e.target.value,
-                        })
-                      }
-                    ></input>
-                  </div>
-                  <div className={cx("spAccountBox")}>
-                    <input
-                      required
-                      className={cx("account-input")}
-                      type="text"
-                      placeholder="Tên Đăng Nhập(tối đa 10 kí tự) "
-                      value={formData.cashierName}
-                      onChange={(e) => {
-                        const inputValue = e.target.value.slice(0, 10); // Limit to 10 characters
-                        setFormData({
-                          ...formData,
-                          cashierName: inputValue,
-                        });
-                      }}
-                    ></input>
-
-                  </div>
-                  <div className={cx("spPasswordBox")}>
-                    <input
-                      required
-                      className={cx("password-input")}
-                      type="password"
-                      placeholder="Mật Khẩu"
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          password: e.target.value,
-                        })
-                      }
-                    ></input>
-                  </div>
-                  <div className={cx("spReInputPasswordBox")}>
-                    <input
-                      required
-                      className={cx("password-re-input")}
-                      type="password"
-                      placeholder="Nhập Lại Mật Khẩu"
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          reEnterPassword: e.target.value,
-                        })
-                      }
-                    ></input>
-                  </div>
-                  <div className={cx("spRoleBox")}>
-                    <div className={cx("spDropdown")} onClick={toggleDropdown2}>
-                      {!isOpen2 && (
-                        <div id="group">{selectedValue2 || "Chọn Role"}</div>
-                      )}
-
-                      {isOpen2 && (
-                        <div>
-                          <div className={cx("spDropdownWrapper")}>
-                            <div
-                              className={cx("spDropdownContent")}
-                              onClick={() =>
-                                handleDropdownItemClick2("MANAGER")
-                              }
-                            >
-                              MANAGER
-                            </div>
-                            <div
-                              className={cx("spDropdownContent")}
-                              onClick={() =>
-                                handleDropdownItemClick2("STAFF")
-                              }
-                            >
-                              STAFF
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className={cx("spGroupBox")}>
-                    <div className={cx("spDropdown")} onClick={toggleDropdown}>
-                      {!isOpen && (
-                        <div id="group">{selectedValue || "Chọn Group"}</div>
-                      )}
-
-                      {isOpen && (
-                        <div>
-                          <div className={cx("spDropdownWrapper")}>
-                            {listGroup
-                              .map((user, index) => (
-                                <div
-                                  key={index}
-                                  className={cx("spDropdownContent")}
-                                  onClick={() =>
-                                    handleDropdownItemClick(user.name, user._id)
-                                  }
-                                >
-                                  {user.name}
-                                </div>
-                              ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </form>
-                <div className={cx("spRegisterBox")}>
-                  <button
-                    type="submit"
-                    value="Sign Up"
-                    onClick={handleSignUpSubmit}
-                  >
-                    Đăng Kí
-                  </button>
+              <div className={cx("signupStateBar")}>
+                  <div className={cx("signupStateItem", {active: signupState === "Tạo Chi Nhánh"})} onClick={() => setSignupState("Tạo Chi Nhánh")}>
+                  Tạo Chi Nhánh
+                </div>
+                <div className={cx("signupStateItem",  {active: signupState === "Tạo Tài Khoản"})} onClick={() => setSignupState("Tạo Tài Khoản")}>
+                  Tạo Tài Khoản
                 </div>
               </div>
+              {signupState === "Tạo Chi Nhánh" && (
+                <Fragment>
+                  <div className={cx("spGroupContainer")}>
+                    <form className={cx("spBox")}>
+                      <input
+                        required
+                        className={cx("userName-input")}
+                        type="text"
+                        placeholder="Tên Chi Nhánh"
+                        onChange={(e) =>
+                          setGroupData({
+                            ...groupData,
+                            name: e.target.value,
+                          })
+                        }
+                      ></input>
+                    </form>
+                    <div className={cx("spRegisterBox")}>
+                      <button
+                        type="submit"
+                        value="Sign Up"
+                        onClick={handleCreateGroupSubmit}
+                      >
+                        Tạo Nhóm
+                      </button>
+                    </div>
+                  </div>
+                </Fragment>
+              )}
+              {signupState === "Tạo Tài Khoản" && (
+                <Fragment>
+                  <div className={cx("spRightContainer")}>
+                    <form className={cx("spBox")} onSubmit={handleSignUpSubmit}>
+                      <div className={cx("spUserNameBox")}>
+                        <input
+                          required
+                          className={cx("userName-input")}
+                          type="text"
+                          placeholder="Tên Người Dùng"
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              // userName: e.target.value,
+                              name: e.target.value,
+                            })
+                          }
+                        ></input>
+                      </div>
+                      <div className={cx("spAccountBox")}>
+                        <input
+                          required
+                          className={cx("account-input")}
+                          type="text"
+                          placeholder="Tên Đăng Nhập(tối đa 20 kí tự) "
+                          value={formData.cashierName}
+                          onChange={(e) => {
+                            const inputValue = e.target.value.slice(0, 20); // Limit to 10 characters
+                            setFormData({
+                              ...formData,
+                              cashierName: inputValue,
+                            });
+                          }}
+                        ></input>
+
+                      </div>
+                      <div className={cx("spPasswordBox")}>
+                        <input
+                          required
+                          className={cx("password-input")}
+                          type="password"
+                          placeholder="Mật Khẩu"
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              password: e.target.value,
+                            })
+                          }
+                        ></input>
+                      </div>
+                      <div className={cx("spReInputPasswordBox")}>
+                        <input
+                          required
+                          className={cx("password-re-input")}
+                          type="password"
+                          placeholder="Nhập Lại Mật Khẩu"
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              reEnterPassword: e.target.value,
+                            })
+                          }
+                        ></input>
+                      </div>
+                      <div className={cx("spRoleBox")}>
+                        <div className={cx("spDropdown")} onClick={toggleDropdown2}>
+                          {!isOpen2 && (
+                            <div id="group">{selectedValue2 || "Chọn Role"}</div>
+                          )}
+
+                          {isOpen2 && (
+                            <div>
+                              <div className={cx("spDropdownWrapper")}>
+                                <div
+                                  className={cx("spDropdownContent")}
+                                  onClick={() =>
+                                    handleDropdownItemClick2("MANAGER")
+                                  }
+                                >
+                                  MANAGER
+                                </div>
+                                <div
+                                  className={cx("spDropdownContent")}
+                                  onClick={() =>
+                                    handleDropdownItemClick2("STAFF")
+                                  }
+                                >
+                                  STAFF
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className={cx("spGroupBox")}>
+                        <div className={cx("spDropdown")} onClick={toggleDropdown}>
+                          {!isOpen && (
+                            <div id="group">{selectedValue || "Chọn Group"}</div>
+                          )}
+
+                          {isOpen && (
+                            <div>
+                              <div className={cx("spDropdownWrapper")}>
+                                {listGroup
+                                  .map((user, index) => (
+                                    <div
+                                      key={index}
+                                      className={cx("spDropdownContent")}
+                                      onClick={() =>
+                                        handleDropdownItemClick(user.name, user._id)
+                                      }
+                                    >
+                                      {user.name}
+                                    </div>
+                                  ))}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </form>
+                    <div className={cx("spRegisterBox")}>
+                      <button
+                        type="submit"
+                        value="Sign Up"
+                        onClick={handleSignUpSubmit}
+                      >
+                        Đăng Kí
+                      </button>
+                    </div>
+                  </div>
+                </Fragment>
+              )}
             </Fragment>
           )}
           {isAccountManager && (
             <Fragment>
               <div className={cx("amWrapper")}>
-                {listCashier.map((user, index) => (
-                  <div className={cx("amItem")} key={index}>
-                    <div className={cx("amLeft")}>
-                      <div className={cx("amItemInfo")}>
-                        Tên Chi Nhánh: {user.name}
+                {listGroup
+                  .map((group, index) => (
+                    <Fragment>
+                      <div className={cx("amGroupBox")}>
+                        <div className={cx("amGroupName")} onClick={() => toggleOpenGroup(group._id)}>
+                          {group.name}
+                          ({listCashier.filter(cart => (cart.group_id === group._id)).length} Tài Khoản)
+                        </div>
+                        {openGroup[group._id] && (
+                          <Fragment>
+                            {listCashier
+                              .filter(cart => (cart.group_id === group._id && cart.role === "MANAGER"))
+                              .map((user, index) => (
+                                <div className={cx("amItem")} key={index}>
+                                  <div className={cx("amLeft")}>
+                                    <div className={cx("amItemInfo")}>
+                                      Tên: {user.name}
+                                    </div>
+                                    <div className={cx("amItemInfo")}>
+                                      Tài Khoản: {user.cashierName}
+                                    </div>
+                                  </div>
+                                  <div className={cx("amRight")}>
+                                    <button
+                                      className={cx("amChangePassword")}
+                                      onClick={() => handleChangePassword(user)}
+                                    >
+                                      Đổi Mật Khẩu
+                                    </button>
+                                    <button
+                                      className={cx("amDeleteAccount")}
+                                      onClick={() => handleDeleteAccount(user.id)}
+                                    >
+                                      Xoá Tài Khoản
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                            {listCashier
+                              .filter(cart => (cart.group_id === group._id && cart.role === "STAFF"))
+                              .map((user, index) => (
+                                <div className={cx("amItem")} key={index}>
+                                  <div className={cx("amLeft")}>
+                                    <div className={cx("amItemInfo")}>
+                                      Tên: {user.name}
+                                    </div>
+                                    <div className={cx("amItemInfo")}>
+                                      Tài Khoản: {user.cashierName}
+                                    </div>
+                                  </div>
+                                  <div className={cx("amRight")}>
+                                    <button
+                                      className={cx("amChangePassword")}
+                                      onClick={() => handleChangePassword(user)}
+                                    >
+                                      Đổi Mật Khẩu
+                                    </button>
+                                    <button
+                                      className={cx("amDeleteAccount")}
+                                      onClick={() => handleDeleteAccount(user.id)}
+                                    >
+                                      Xoá Tài Khoản
+                                    </button>
+                                  </div>
+                                </div>
+                              ))}
+                          </Fragment>
+                        )}
                       </div>
-                      <div className={cx("amItemInfo")}>
-                        Tên Đăng Nhập: {user.cashierName}
-                      </div>
-                    </div>
-                    <div className={cx("amRight")}>
-                      <button
-                        className={cx("amChangePassword")}
-                        onClick={() => handleChangePassword(user)}
-                      >
-                        Đổi Mật Khẩu
-                      </button>
-                      <button
-                        className={cx("amDeleteAccount")}
-                        onClick={() => handleDeleteAccount(user.id)}
-                      >
-                        Xoá Tài Khoản
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                    </Fragment>
+                  ))
+                }
               </div>
             </Fragment>
           )}

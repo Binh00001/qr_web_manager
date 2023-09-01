@@ -68,7 +68,7 @@ function DefaultLayout({ children }) {
               <div className={cx("dItem")} onClick={handleClickBill}>
                 Hoá Đơn
               </div>
-              <div className={cx("dItemAdmin")} onClick={handleClickSignUpOwner}>
+              <div className={cx("dItem")} onClick={handleClickSignUpOwner}>
                 Tài Khoản
               </div>
             </Fragment>
