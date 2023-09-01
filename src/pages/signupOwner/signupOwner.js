@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import styles from "~/pages/signup/signup.scss";
+import styles from "~/pages/signupOwner/signupOwner.scss";
 import { useNavigate } from "react-router-dom";
 import { useSignIn } from "react-auth-kit";
 import axios from "axios";
@@ -10,23 +10,31 @@ const cx = classNames.bind(styles);
 
 function Signup() {
   const navigate = useNavigate();
+  const [listGroup, setListGroup] = useState([]);
   const [listCashier, setListCashier] = useState([]);
   const [isSignUp, setIsSignUp] = useState(true);
   const [isOverlay, setIsOverlay] = useState(false);
   const [isChangePasswordPopup, setIsChangePasswordPopup] = useState(false);
   const [isDeleteAccountPopup, setIsDeleteAccountPopup] = useState(false);
   const [isAccountManager, setIsAccountManager] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
   const [chooseAccountName, setChooseAccountName] = useState("");
   const [reload, setReload] = useState(true);
   const [deleteAccId, setDeleteAccId] = useState("");
   const [changePasswordMessage, setChangePasswordMessage] = useState("");
   const [registerMessage, setRegisterMessage] = useState("");
   const [updateAccId, setUpdateAccId] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedValue2, setSelectedValue2] = useState("");
+
   const isAdmin = useIsAdminContext();
   const [formData, setFormData] = useState({
     cashierName: "",
     name: "",
     password: "",
+    role: "",
+    group_id: "",
   });
   const [updateFormData, setUpdateFormData] = useState({
     cashierName: "",
@@ -40,11 +48,25 @@ function Signup() {
     headers: { Authorization: `Bearer ${token}` },
   };
 
+  //get list group
+  useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
+      )
+      .then((response) => {
+        setListGroup(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  //get listcashier
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/all`, config)
       .then((response) => {
-        console.log(response.data);
         setListCashier(
           response.data.filter((name) => name.cashierName !== "admin")
         );
@@ -54,8 +76,49 @@ function Signup() {
       });
   }, [reload]);
 
+  //open group
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+
+  //set group id
+  const handleDropdownItemClick = (value, groupId) => {
+    toggleDropdown();
+    setSelectedValue(value)
+    setFormData({
+      ...formData,
+      group_id: groupId,
+    });
+  }
+
+  //open role
+  const toggleDropdown2 = () => {
+    setIsOpen2(!isOpen2);
+  };
+
+  //set role
+  const handleDropdownItemClick2 = (value) => {
+    toggleDropdown2();
+    setSelectedValue2(value)
+    setFormData({
+      ...formData,
+      role: value,
+    });
+  }
+
+  //đăng kí tài khoản mới
   const handleSignUpSubmit = (e) => {
     e.preventDefault();
+    if(!selectedValue){
+      setIsOverlay(true)
+      setRegisterMessage("Hãy Chọn Group")
+      return console.log("Hãy Chọn Group");
+    }
+    if(!selectedValue2){
+      setIsOverlay(true)
+      setRegisterMessage("Hãy Chọn Role")
+      return console.log("Hãy Chọn Role");
+    }
     if (!formData.name) {
       setIsOverlay(true)
       setRegisterMessage("Hãy nhập tên người dùng")
@@ -94,12 +157,12 @@ function Signup() {
               name: "",
               password: "",
               reEnterPassword: "",
+              role: "",
+              group_id: "",
             });
+
             setReload(!reload);
-
-            // Reload the page
             window.location.reload();
-
           }
         })
 
@@ -164,12 +227,6 @@ function Signup() {
           setChangePasswordMessage("Cập Nhật Thành Công")
           console.log("cập nhật thành cong");
           setUpdateAccId("");
-          // setUpdateFormData({
-          //   cashierName: "",
-          //   name: null,
-          //   oldPassword: "",
-          //   newPassword: null,
-          // });
           setUpdateFormData({
             cashierName: "",
             name: "",
@@ -185,6 +242,7 @@ function Signup() {
         console.log(error);
       });
   };
+
   const handleSignUpClick = () => {
     setIsSignUp(true);
     setIsAccountManager(false);
@@ -271,27 +329,12 @@ function Signup() {
             <div className="spTitle" onClick={() => handleSignUpClick()}>
               Đăng Kí
             </div>
-            {isAdmin === "ADMIN" && (
-              <Fragment>
-                <div
-                  className="spTitle"
-                  onClick={() => handleAccountManagerClick()}
-                >
-                  Quản Lý Tài Khoản
-                </div>
-              </Fragment>
-            )}
-            {isAdmin !== "ADMIN" && (
-              <Fragment>
-                <div
-                  className="spTitle"
-                  onClick={() => handleAccountManagerClick()}
-                >
-                  Quản Lý Group
-                </div>
-              </Fragment>
-            )}
-
+            <div
+              className="spTitle"
+              onClick={() => handleAccountManagerClick()}
+            >
+              Quản Lý Group
+            </div>
           </div>
         </div>
       </div>
@@ -375,16 +418,6 @@ function Signup() {
           </Fragment>
         )}
         <div className={cx("lgContent")}>
-          {/* <div className={cx("lgLeftContainer")}> */}
-          {/* <div className={cx("lgResName")}>Tên Nhà Hàng</div> */}
-          {/* <div className={cx("lgResDes")}>
-              My attempt at recreating one of my favorite paintings, The Fallen
-              Angel by Alexandre Cabanel, in LEGO. I really wanted to capture
-              the angry and sad stare of Lucifer. How do you think it compares
-              to the painting?
-            </div> */}
-          {/* <div className={cx("lg4flex")}>Powered by 4flex</div> */}
-          {/* </div> */}
           {isSignUp && (
             <Fragment>
               <div className={cx("spRightContainer")}>
@@ -449,11 +482,62 @@ function Signup() {
                       }
                     ></input>
                   </div>
-                  {/* <div className={cx("lgLoginButtonBox")}>
-                <button type="submit" value="Log in">
-                  Login
-                </button>
-              </div> */}
+                  <div className={cx("spRoleBox")}>
+                    <div className={cx("spDropdown")} onClick={toggleDropdown2}>
+                      {!isOpen2 && (
+                        <div id="group">{selectedValue2 || "Chọn Role"}</div>
+                      )}
+
+                      {isOpen2 && (
+                        <div>
+                          <div className={cx("spDropdownWrapper")}>
+                            <div
+                              className={cx("spDropdownContent")}
+                              onClick={() =>
+                                handleDropdownItemClick2("MANAGER")
+                              }
+                            >
+                              MANAGER
+                            </div>
+                            <div
+                              className={cx("spDropdownContent")}
+                              onClick={() =>
+                                handleDropdownItemClick2("STAFF")
+                              }
+                            >
+                              STAFF
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className={cx("spGroupBox")}>
+                    <div className={cx("spDropdown")} onClick={toggleDropdown}>
+                      {!isOpen && (
+                        <div id="group">{selectedValue || "Chọn Group"}</div>
+                      )}
+
+                      {isOpen && (
+                        <div>
+                          <div className={cx("spDropdownWrapper")}>
+                            {listGroup
+                              .map((user, index) => (
+                                <div
+                                  key={index}
+                                  className={cx("spDropdownContent")}
+                                  onClick={() =>
+                                    handleDropdownItemClick(user.name, user._id)
+                                  }
+                                >
+                                  {user.name}
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </form>
                 <div className={cx("spRegisterBox")}>
                   <button

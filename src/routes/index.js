@@ -5,6 +5,7 @@ import Bill from "~/pages/Bill/Bill";
 import HiddenMenu from "~/pages/hidden_menu/hidden_menu";
 import Login from "~/pages/Login/login";
 import Signup from "~/pages/signup/signup";
+import SignupOwner from "~/pages/signupOwner/signupOwner";
 import TableManager from "~/pages/TableMananger/TableManager";
 import Test from "~/components/loadingScreen/loadingScreen"
 import CreateBill from "~/pages/CreateBill";
@@ -70,6 +71,15 @@ function MainRoutes() {
           element={
             <DefaultLayout>
               <Signup />
+            </DefaultLayout>
+          }
+          exact
+        />
+        <Route
+          path={"/signupowner"}
+          element={
+            <DefaultLayout>
+              <SignupOwner />
             </DefaultLayout>
           }
           exact

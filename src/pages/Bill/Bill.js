@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import classNames from "classnames";
@@ -36,7 +36,7 @@ function Bill() {
     headers: { Authorization: `Bearer ${token}` },
   };
 
-  //get gr id
+  //get group id
   useEffect(() => {
     axios
       .get(
@@ -84,8 +84,9 @@ function Bill() {
           console.log(error);
         });
     }
-  }, [pickedGroupId]);
+  }, []);
 
+  //choose which cart to display
   useEffect(() => {
     if (!isSubmited) {
       setDisplayCart(listCart)
@@ -150,12 +151,11 @@ function Bill() {
   const handleDropdownItemClick = (value) => {
     if (value === "") {
       setSelectedValue("Tất Cả");
-      setSelectedCashierName(value);
+      setPickedGroupId([])
       toggleDropdown();
       setNeedsClick(true);
     } else {
       setSelectedValue(value);
-      setSelectedCashierName(value);
       let group = listGroup.filter(group => (group.name === value))
       setPickedGroupId(group[0]._id)
       toggleDropdown();
@@ -164,16 +164,9 @@ function Bill() {
   }
 
   const handleConvertCashierId = (ID) => {
-    let cashierName = ""; // Use 'let' instead of 'const'
-
-    listCashier.forEach(item => {
-      if (item.id === ID) {
-        cashierName = item.cashierName;
-      }
-    });
-
-    return cashierName;
-  }
+    const cashier = listCashier.find(item => item.id === ID);
+    return cashier ? cashier.cashierName : "";
+  };
 
   const handleButtonClick = () => {
     setNeedsClick(false);
@@ -220,20 +213,13 @@ function Bill() {
                             </div>
                           ))}
                       </div>
-
-                      {/* <div
-                        className={cx("dropdownContent")}
-                        onClick={() => handleDropdownItemClick("NV1")}
-                      >
-                        NV1
-                      </div> */}
                     </div>
                   )}
                 </div>
                 <button
                   id="submitButton"
                   className={needsClick ? 'needClick' : 'Hiden'}
-                  onClick={(event) => handleDate(event)}
+                  onClick={handleDate}
                 >
                   Submit
                 </button>
@@ -261,7 +247,6 @@ function Bill() {
           {displayCart.map((cart, index) => (
             <div key={index} className={cx("bItem")}>
               <div className={cx("bItemLeftContainer")}>
-                {/* <div className={cx("bId")}>Chi Nhánh: {handleConvertCashierId(cart.cashier_id)}</div> */}
 
                 <div className={cx("bTable")}>Bàn: {cart.table}</div>
 
@@ -282,9 +267,7 @@ function Bill() {
 
                 <div className={cx("bId")}>
                   Trạng Thái:{" "}
-                  {cart.status === "IN_PROGRESS" && "Đang Chờ"}
-                  {cart.status === "COMPLETED" && "Đã Xong"}
-                  {cart.status === "CANCEL" && "Đã Huỷ"}
+                  {cart.status === "IN_PROGRESS" ? "Đang Chờ" : cart.status === "COMPLETED" ? "Đã Xong" : "Đã Huỷ"}
                 </div>
 
                 <div className={cx("bNote")}>Tên Khách: {cart.customer_name}</div>

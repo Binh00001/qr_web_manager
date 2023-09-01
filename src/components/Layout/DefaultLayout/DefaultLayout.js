@@ -37,6 +37,9 @@ function DefaultLayout({ children }) {
   const handleClickSignUp = () => {
     navigate(`/signup`);
   };
+  const handleClickSignUpOwner = () => {
+    navigate(`/signupowner`);
+  };
 
   const logout = () => {
     signOut();
@@ -51,9 +54,6 @@ function DefaultLayout({ children }) {
     <div className={cx("dWrapper")}>
       <div className={cx("dContent")}>
         <div className={cx("dLeftContainer")}>
-          {/* <div className={cx("LogoBorder")}>
-            <img onClick={handleClickLogo} src={logo} alt="LOGO"></img>
-          </div> */}
           {isAdmin === "ADMIN" && (
             <Fragment>
               <div className={cx("dItemAdmin")} onClick={handleClickSignUp}>
@@ -63,15 +63,23 @@ function DefaultLayout({ children }) {
 
           )}
 
+          {isAdmin === "OWNER" && (
+            <Fragment>
+              <div className={cx("dItem")} onClick={handleClickBill}>
+                Hoá Đơn
+              </div>
+              <div className={cx("dItemAdmin")} onClick={handleClickSignUpOwner}>
+                Tài Khoản
+              </div>
+            </Fragment>
+          )}
+
           {isAdmin === "STAFF" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
                 Trang Chủ
                 <div className={cx("reddot", { redDotHided: !showReddot })}></div>
               </div>
-              {/* <div className={cx("dItem")} onClick={handleClickMenu}>
-                Thực Đơn
-              </div> */}
               <div className={cx("dItem")} onClick={handleClickCreateBill}>
                 Tạo Đơn
               </div>
@@ -92,20 +100,8 @@ function DefaultLayout({ children }) {
               </div>
             </Fragment>
           )}
-
-          {isAdmin === "OWNER" && (
-            <Fragment>
-              <div className={cx("dItem")} onClick={handleClickBill}>
-                Hoá Đơn
-              </div>
-            </Fragment>
-          )}
         </div>
         <div className={cx("dRightContainer")}>
-          {/* <div className={cx("dCashierName")}>{cashier.cashierName}</div>
-          <button className={cx("dLogout")} onClick={logout}>
-            Đăng Xuất
-          </button> */}
           {!isOpenNav && (
             <Fragment >
               <div className={cx("barGroup")} onClick={() => openNavMenu()}>
