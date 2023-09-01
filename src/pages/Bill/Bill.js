@@ -10,6 +10,7 @@ import "moment/locale/vi";
 const cx = classNames.bind(styles);
 
 function Bill() {
+  const [listGroup, setListGroup] = useState([]);
   const [listCart, setListCart] = useState([]);
   const [dateCart, setDateCart] = useState([]);
   const [listCashier, setLishCashier] = useState([]);
@@ -20,6 +21,8 @@ function Bill() {
   const [totalIncome, setTotalIncome] = useState(0);
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
+  const [pickedGroupId, setPickedGroupId] = useState([]);
+
   const navigate = useNavigate();
   const currentDate = new Date();
   const [datePush, setDatePush] = useState(currentDate);
@@ -33,11 +36,19 @@ function Bill() {
     headers: { Authorization: `Bearer ${token}` },
   };
 
+  //get gr id
   useEffect(() => {
-    if (isAdmin === "cashier") {
-      navigate(`/`);
-    }
-  }, [isAdmin, navigate]);
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
+      )
+      .then((response) => {
+        setListGroup(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   useEffect(() => {
     axios
@@ -49,6 +60,31 @@ function Bill() {
         console.log(error);
       });
   }, []);
+
+  //get list cart today
+  useEffect(() => {
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
+    const year = currentDate.getFullYear();
+    // Create the formatted date string
+    const formattedCurrentDate = `${day}/${month}/${year}`;
+    if (pickedGroupId.length > 0) {
+      axios
+        .get(
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedCurrentDate}`, config
+        )
+        .then((response) => {
+          if (response.data === "No carts created") {
+            setListCart([]);
+          } else {
+            setListCart(response.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [pickedGroupId]);
 
   useEffect(() => {
     if (!isSubmited) {
@@ -71,59 +107,26 @@ function Bill() {
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
     setNeedsClick(true)
-    // setSelectedDate(event.target.value);
   };
 
+  //get DateCart
   const handleDate = (event) => {
     event.preventDefault();
     setNeedsClick(false)
     setDateCart([]);
-    // Convert the input value to a Date object
     const inputDate = new Date(datePush);
-    // Extract the day, month, and year components
     const day = inputDate.getDate();
-    const month = inputDate.getMonth() + 1; // Months are zero-based, so add 1
+    const month = inputDate.getMonth() + 1;
     const year = inputDate.getFullYear();
-    // Create the formatted date string
     const formattedDate = `${day}/${month}/${year}`;
-    if (selectedCashierName !== "") {
-      console.log(selectedCashierName);
-      const selectedCashier = listCashier.find(
-        (cashier) => cashier.cashierName === selectedCashierName
-      );
-      if (selectedCashier) {
-        const cashierId = selectedCashier.id;
-        axios
-          .get(
-            `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashierId}?date=${formattedDate}`
-            // config
-          )
-          .then((response) => {
-            setIsSubmited(true);
-            if (
-              response.data.length === 0 ||
-              response.data === "No carts created"
-            ) {
-              setIsEmpty(true);
-            } else {
-              setDateCart(response.data);
-              setIsEmpty(false);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    } else {
-      console.log(formattedDate);
+    if (pickedGroupId.length > 0) {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedDate}`
-          // config
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedDate}`,
+          config
         )
         .then((response) => {
           setIsSubmited(true);
-          console.log(response);
           if (
             response.data.length === 0 ||
             response.data === "No carts created"
@@ -140,47 +143,25 @@ function Bill() {
     }
   };
 
-  useEffect(() => {
-    const day = currentDate.getDate();
-    const month = currentDate.getMonth() + 1; // Months are zero-based, so add 1
-    const year = currentDate.getFullYear();
-    // Create the formatted date string
-    const formattedCurrentDate = `${day}/${month}/${year}`;
-    if (selectedCashierName === "") {
-      axios
-        .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedCurrentDate}`
-        )
-        .then((response) => {
-          if (response.data === "No carts created") {
-            setListCart([]);
-          } else {
-            setListCart(response.data);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, []);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleDropdownItemClick = (value) => {
-    if(value === ""){
+    if (value === "") {
       setSelectedValue("Tất Cả");
       setSelectedCashierName(value);
       toggleDropdown();
       setNeedsClick(true);
-    }else{
+    } else {
       setSelectedValue(value);
       setSelectedCashierName(value);
+      let group = listGroup.filter(group => (group.name === value))
+      setPickedGroupId(group[0]._id)
       toggleDropdown();
       setNeedsClick(true);
     }
-  };
+  }
 
   const handleConvertCashierId = (ID) => {
     let cashierName = ""; // Use 'let' instead of 'const'
@@ -226,17 +207,16 @@ function Bill() {
                         >
                           Tất Cả
                         </div>
-                        {listCashier
-                          .filter((user) => user.cashierName !== "admin")
+                        {listGroup
                           .map((user, index) => (
                             <div
                               key={index}
                               className={cx("dropdownContent")}
                               onClick={() =>
-                                handleDropdownItemClick(user.cashierName)
+                                handleDropdownItemClick(user.name)
                               }
                             >
-                              {user.cashierName}
+                              {user.name}
                             </div>
                           ))}
                       </div>
@@ -281,11 +261,9 @@ function Bill() {
           {displayCart.map((cart, index) => (
             <div key={index} className={cx("bItem")}>
               <div className={cx("bItemLeftContainer")}>
-                <div className={cx("bId")}>Chi Nhánh: {handleConvertCashierId(cart.cashier_id)}</div>
+                {/* <div className={cx("bId")}>Chi Nhánh: {handleConvertCashierId(cart.cashier_id)}</div> */}
 
                 <div className={cx("bTable")}>Bàn: {cart.table}</div>
-
-                <div className={cx("bNote")}>Ghi Chú: {cart.note}</div>
 
                 <div className={cx("bTotalBill")}>
                   Tổng Tiền:{" "}
@@ -301,12 +279,19 @@ function Bill() {
                     )}
                   </span>
                 </div>
+
                 <div className={cx("bId")}>
                   Trạng Thái:{" "}
                   {cart.status === "IN_PROGRESS" && "Đang Chờ"}
                   {cart.status === "COMPLETED" && "Đã Xong"}
                   {cart.status === "CANCEL" && "Đã Huỷ"}
                 </div>
+
+                <div className={cx("bNote")}>Tên Khách: {cart.customer_name}</div>
+
+                <div className={cx("bNote")}>Ghi Chú: {cart.note}</div>
+
+
               </div>
               <div className={cx("bItemRightContainer")}>
                 <div>

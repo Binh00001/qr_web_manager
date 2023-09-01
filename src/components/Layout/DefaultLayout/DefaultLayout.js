@@ -56,15 +56,13 @@ function DefaultLayout({ children }) {
           </div> */}
           {isAdmin === "ADMIN" && (
             <Fragment>
-              {/* <div className={cx("dItemAdmin")} onClick={handleClickBill}>
-                Hoá Đơn
-              </div> */}
               <div className={cx("dItemAdmin")} onClick={handleClickSignUp}>
                 Tài Khoản
               </div>
             </Fragment>
 
           )}
+
           {isAdmin === "STAFF" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
@@ -79,6 +77,7 @@ function DefaultLayout({ children }) {
               </div>
             </Fragment>
           )}
+
           {isAdmin === "MANAGER" && (
             <Fragment>
               <div className={cx("dItem")} onClick={handleClickLogo}>
@@ -93,10 +92,11 @@ function DefaultLayout({ children }) {
               </div>
             </Fragment>
           )}
-           {isAdmin === "OWNER" && (
+
+          {isAdmin === "OWNER" && (
             <Fragment>
-              <div className={cx("dItem")} onClick={handleClickLogo}>
-                Trang Chủ
+              <div className={cx("dItem")} onClick={handleClickBill}>
+                Hoá Đơn
               </div>
             </Fragment>
           )}
