@@ -464,7 +464,7 @@ function Signup() {
             </div>
           </Fragment>
         )}
-        <div className={cx("lgContent")}>
+        <div className={cx("spContent")}>
           {isSignUp && (
             <Fragment>
               <div className={cx("signupStateBar")}>

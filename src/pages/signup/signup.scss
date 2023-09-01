@@ -67,7 +67,7 @@
   max-width: 100vw;
   margin: 0 auto;
 
-  .lgContent {
+  .sp1Content {
     display: flex;
     justify-content: space-between;
     max-width: 1200px;
@@ -76,26 +76,6 @@
 
     .lgLeftContainer {
 
-      // margin-top: 20vh;
-      // width: 50%;
-      // margin-left: 10%;
-      .lgResName {
-        font-size: 3rem;
-        font-weight: bold;
-        color: #3498db;
-      }
-
-      .lgResDes {
-        margin-top: 3vh;
-        max-width: 75%;
-        font-size: 1.2rem;
-      }
-
-      // .lg4flex {
-      //   position: absolute;
-      //   bottom: 20vh;
-      //   font-size: 1.2rem;
-      // }
     }
 
     .spRightContainer {
@@ -329,7 +309,7 @@
 
 @media (max-width: 768px) {
   .lgBody {
-    .lgContent {
+    .sp1Content {
       .spRightContainer {
         width: 95%;
 

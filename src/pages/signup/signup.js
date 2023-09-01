@@ -374,7 +374,7 @@ function Signup() {
             </div>
           </Fragment>
         )}
-        <div className={cx("lgContent")}>
+        <div className={cx("sp1Content")}>
           {/* <div className={cx("lgLeftContainer")}> */}
           {/* <div className={cx("lgResName")}>Tên Nhà Hàng</div> */}
           {/* <div className={cx("lgResDes")}>
