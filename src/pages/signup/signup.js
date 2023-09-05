@@ -10,6 +10,7 @@ const cx = classNames.bind(styles);
 
 function Signup() {
   const navigate = useNavigate();
+  const [listGroup, setListGroup] = useState([]);
   const [listCashier, setListCashier] = useState([]);
   const [isSignUp, setIsSignUp] = useState(true);
   const [isOverlay, setIsOverlay] = useState(false);
@@ -24,9 +25,10 @@ function Signup() {
   const [updateAccId, setUpdateAccId] = useState("");
   const isAdmin = useIsAdminContext();
   const [formData, setFormData] = useState({
-    cashierName: "",
     name: "",
+    cashierName: "",
     password: "",
+    role:"OWNER",
   });
   const [updateFormData, setUpdateFormData] = useState({
     cashierName: "",
@@ -40,11 +42,25 @@ function Signup() {
     headers: { Authorization: `Bearer ${token}` },
   };
 
+  //get list group
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
+  //     )
+  //     .then((response) => {
+  //       setListGroup(response.data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // }, []);
+
+  //get list cashier
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/cashier/all`, config)
       .then((response) => {
-        console.log(response.data);
         setListCashier(
           response.data.filter((name) => name.cashierName !== "admin")
         );
@@ -96,10 +112,7 @@ function Signup() {
               reEnterPassword: "",
             });
             setReload(!reload);
-
-            // Reload the page
             window.location.reload();
-
           }
         })
 
@@ -164,12 +177,6 @@ function Signup() {
           setChangePasswordMessage("Cập Nhật Thành Công")
           console.log("cập nhật thành cong");
           setUpdateAccId("");
-          // setUpdateFormData({
-          //   cashierName: "",
-          //   name: null,
-          //   oldPassword: "",
-          //   newPassword: null,
-          // });
           setUpdateFormData({
             cashierName: "",
             name: "",
@@ -375,16 +382,6 @@ function Signup() {
           </Fragment>
         )}
         <div className={cx("sp1Content")}>
-          {/* <div className={cx("lgLeftContainer")}> */}
-          {/* <div className={cx("lgResName")}>Tên Nhà Hàng</div> */}
-          {/* <div className={cx("lgResDes")}>
-              My attempt at recreating one of my favorite paintings, The Fallen
-              Angel by Alexandre Cabanel, in LEGO. I really wanted to capture
-              the angry and sad stare of Lucifer. How do you think it compares
-              to the painting?
-            </div> */}
-          {/* <div className={cx("lg4flex")}>Powered by 4flex</div> */}
-          {/* </div> */}
           {isSignUp && (
             <Fragment>
               <div className={cx("spRightContainer")}>
@@ -449,11 +446,6 @@ function Signup() {
                       }
                     ></input>
                   </div>
-                  {/* <div className={cx("lgLoginButtonBox")}>
-                <button type="submit" value="Log in">
-                  Login
-                </button>
-              </div> */}
                 </form>
                 <div className={cx("spRegisterBox")}>
                   <button
@@ -474,10 +466,10 @@ function Signup() {
                   <div className={cx("amItem")} key={index}>
                     <div className={cx("amLeft")}>
                       <div className={cx("amItemInfo")}>
-                        Tên Chi Nhánh: {user.name}
+                        Tên: {user.name}
                       </div>
                       <div className={cx("amItemInfo")}>
-                        Tên Đăng Nhập: {user.cashierName}
+                        Tài Khoản: {user.cashierName}
                       </div>
                     </div>
                     <div className={cx("amRight")}>

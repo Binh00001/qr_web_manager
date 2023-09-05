@@ -66,7 +66,7 @@ function Signup() {
         console.log(error);
       });
   }, []);
-
+  
   //get listcashier
   useEffect(() => {
     axios
