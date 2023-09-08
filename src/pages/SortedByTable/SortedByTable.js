@@ -9,6 +9,7 @@ import moment from "moment";
 import { useIsAdminContext, useReddotShowContext, useBillInProgress } from "~/App";
 import "moment/locale/vi";
 
+import extendArrow from "~/components/assets/image/extend down arrow.png"
 import tableIcon from "~/components/assets/image/dinning-table.png"
 
 const cx = classNames.bind(styles);
@@ -25,10 +26,12 @@ function SortedByTable() {
     const [tablePicked, setTablePicked] = useState([]);
     const [choosedTime, setChoosedTime] = useState("time=3600");
     const [totalBillInProgress, setTotalBillInProgress] = useState("0");
+    const [totalBillWaitPay, setTotalBillWaitPay] = useState("0");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
     const [cartStatusChange, setCartStatusChange] = useState(true);
     const [cartPaidChange, setCartPaidChange] = useState(true);
     const [showTableMap, setShowTableMap] = useState(true);
+    const [showImage, setShowImage] = useState("");
 
     const navigate = useNavigate();
     const currentDate = new Date();
@@ -38,6 +41,16 @@ function SortedByTable() {
     const config = {
         headers: { Authorization: `Bearer ${token}` },
     };
+
+    //handle setting for staff / manager
+    useEffect(() => {
+        if (isAdmin === "MANAGER") {
+            setChoosedStatus("IN_PROGRESS")
+        } else if (isAdmin === "STAFF") {
+            setChoosedStatus("WAITPAY")
+        }
+    }, [isAdmin])
+
     //socket
     useEffect(() => {
         const socket = io(process.env.REACT_APP_API_URL);
@@ -52,6 +65,7 @@ function SortedByTable() {
 
     //get listcart, get toltal bill in progress
     useEffect(() => {
+        setShowImage("")
         const fetchData = () => {
             axios
                 .get(
@@ -63,10 +77,11 @@ function SortedByTable() {
                         response.data.forEach((cart) => {
                             const inProgressCarts = response.data.filter(cart => cart.status === "IN_PROGRESS");
                             setTotalBillInProgress(inProgressCarts.length);
+                            const waitPayCart = response.data.filter(cart => cart.status === "WAITPAY");
+                            setTotalBillWaitPay(waitPayCart.length)
                         })
-                        if (tablePicked.length !== 0) { 
+                        if (tablePicked.length !== 0) {
                             setListCartPicked(response.data.filter(cart => (cart.table === tablePicked && cart.status === choosedStatus)))
-                            console.log(listCartPicked);
                         }
                     }
                 })
@@ -81,7 +96,7 @@ function SortedByTable() {
         return () => {
             clearInterval(interval);
         };
-    }, [cartStatusChange, newCart, cartPaidChange]);
+    }, [cartStatusChange, newCart, cartPaidChange, choosedStatus]);
 
     //get tablelist
     useEffect(() => {
@@ -118,12 +133,10 @@ function SortedByTable() {
     const handleSetPaidBill = (cartId) => {
         axios
             .put(
-                `${process.env.REACT_APP_API_URL}/cart/pay/${cartId}`,
-                { isPaid: true },
+                `${process.env.REACT_APP_API_URL}/cart/payByStaff/${cartId}`,
                 config
             )
             .then((response) => {
-                console.log(response.data);
                 setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
             })
             .catch((error) => {
@@ -132,22 +145,19 @@ function SortedByTable() {
     };
 
 
-    const handleSetDoneBill = (cartId, cartPaid) => {
-        if (cartPaid) {
-            axios
-                .put(
-                    `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
-                    { status: "COMPLETED" },
-                    config
-                )
-                .then((response) => {
-                    setCartStatusChange(!cartStatusChange);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
-
+    const handleSetDoneBill = (cartId) => {
+        axios
+            .put(
+                `${process.env.REACT_APP_API_URL}/cart/status/${cartId}`,
+                { status: "COMPLETED" },
+                config
+            )
+            .then((response) => {
+                setCartStatusChange(!cartStatusChange);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     const handleSetCancelBill = (cartId) => {
@@ -166,16 +176,27 @@ function SortedByTable() {
     };
 
     const handleGetStatusFilter = (value) => {
-        if (value) {
-            setChoosedStatus(value)
-        }
+        setChoosedStatus(value)
     }
 
     const handleReturnToTableMap = () => {
         setShowTableMap(true)
         setTablePicked([])
         setListCartPicked([])
-        setChoosedStatus("IN_PROGRESS")
+        setShowImage("")
+        if (isAdmin === "MANAGER") {
+            setChoosedStatus("IN_PROGRESS")
+        } else if (isAdmin === "STAFF") {
+            setChoosedStatus("WAITPAY")
+        }
+    }
+
+    const handleShowImage = (id) => {
+        if (showImage !== id) {
+            setShowImage(id)
+        } else if (showImage === id) {
+            setShowImage("")
+        }
     }
 
     return (
@@ -212,14 +233,14 @@ function SortedByTable() {
                                         Trở lại
                                     </div>
                                     <div className={cx("sbtBlackBarText")}>
-                                        còn <span>{totalBillInProgress}</span> Đơn đang chờ
+                                        còn <span>{totalBillWaitPay}</span> Đơn Chưa Thu Tiền
                                     </div>
                                 </Fragment>
                             )}
                             {showTableMap && (
                                 <Fragment>
                                     <div className={cx("sbtBlackBarText")}>
-                                        Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
+                                        Hiện đang có <span>{totalBillWaitPay}</span> Đơn Chưa Thu Tiền
                                     </div>
 
                                 </Fragment>
@@ -318,6 +339,16 @@ function SortedByTable() {
                                 <nav className={cx("sbtFilterBar")}>
                                     <button
                                         className={cx("sbtFilterItem", {
+                                            active: choosedStatus === "WAITPAY",
+                                        })}
+                                        onClick={() => {
+                                            handleGetStatusFilter("WAITPAY");
+                                        }}
+                                    >
+                                        Chưa Thu Tiền
+                                    </button>
+                                    <button
+                                        className={cx("sbtFilterItem", {
                                             active: choosedStatus === "IN_PROGRESS",
                                         })}
                                         onClick={() => {
@@ -336,16 +367,6 @@ function SortedByTable() {
                                     >
                                         Đã Hoàn Thành
                                     </button>
-                                    <button
-                                        className={cx("sbtFilterItem", {
-                                            active: choosedStatus === "CANCEL",
-                                        })}
-                                        onClick={() => {
-                                            handleGetStatusFilter("CANCEL");
-                                        }}
-                                    >
-                                        Đã Huỷ
-                                    </button>
                                 </nav>
 
                                 {(listCartPicked === "No carts created" || listCartPicked.length === 0) && (
@@ -360,7 +381,7 @@ function SortedByTable() {
                                         {listCartPicked
                                             .filter(cart => cart.status === choosedStatus)
                                             .map((cart, index) => (
-                                                
+
                                                 <Fragment key={index}>
                                                     <div className={cx("hItem", cart.status)} key={index}>
                                                         <div className={cx("hItemContent")}>
@@ -397,6 +418,15 @@ function SortedByTable() {
                                                                 <div className={cx("hItemTable")}>
                                                                     Bàn: {cart.table}
                                                                 </div>
+                                                                <div className={cx("hItemTable")}>
+                                                                    Thanh Toán: {cart.paymentMethod === "BANK" && "Chuyển Khoản"}
+                                                                    {cart.paymentMethod === "CASH" && "Tiền Mặt"}
+                                                                </div>
+                                                                {cart.paymentMethod === "CASH" && (
+                                                                    <div className={cx("hItemTable")}>
+                                                                        Nhân Viên: { }
+                                                                    </div>
+                                                                )}
                                                                 <div className={cx("hItemTime")}>
                                                                     Thời Gian Tạo:{" "}
                                                                     <span style={{ color: "#f04d4d" }}>
@@ -408,6 +438,11 @@ function SortedByTable() {
                                                                 </div>
                                                                 <div className={cx("hItemStatus")}>
                                                                     Trạng Thái:
+                                                                    {cart.status === "WAITPAY" && (
+                                                                        <span style={{ color: "#3498db" }}>
+                                                                            CHỜ THU TIỀN
+                                                                        </span>
+                                                                    )}
                                                                     {cart.status === "IN_PROGRESS" && (
                                                                         <span style={{ color: "#3498db" }}>
                                                                             Đang Chờ
@@ -429,63 +464,78 @@ function SortedByTable() {
                                                                         </span>
                                                                     )}
                                                                 </div>
-                                                                <div className={cx("hItemIsPaid")}>
-                                                                    {/* Thanh Toán:  */}
-                                                                    {cart.isPaid === false && (
-                                                                        <span style={{ color: "#f04d4d" }}>
-                                                                            Cần Thu Tiền
-                                                                        </span>
-                                                                    )}
-                                                                    {cart.isPaid === true && (
-                                                                        <span style={{ color: "#2ecc71" }}>
-                                                                            Đã Thanh Toán
-                                                                        </span>
-                                                                    )}
-                                                                </div>
                                                             </div>
                                                             <div className={cx("hItemTotalPrice")}>
-                                                                Tổng Tiền:{" "}
+                                                                Tổng:{" "}
                                                                 <span style={{ color: "#f04d4d" }}>
                                                                     {cart.total.toLocaleString()} vnđ
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        {cart.status === "IN_PROGRESS" && (
-                                                            <div className={cx("hItemButtonGroup")}>
-                                                                <div className={cx("")}>
-                                                                    <button
-                                                                        className={cx("cancelBillButton")}
-                                                                        onClick={() => handleSetCancelBill(cart._id)}
-                                                                    >
-                                                                        Huỷ Đơn
-                                                                    </button>
-                                                                </div>
-                                                                {isAdmin === "MANAGER" && (
-                                                                    <Fragment>
+                                                        {isAdmin === "MANAGER" && (
+                                                            <Fragment>
+                                                                {cart.status === "IN_PROGRESS" && (
+                                                                    <div className={cx("hItemButtonGroup")}>
+                                                                        <div className={cx("")}>
+                                                                            <button
+                                                                                className={cx("cancelBillButton")}
+                                                                                onClick={() => handleSetCancelBill(cart._id)}
+                                                                            >
+                                                                                Huỷ Đơn
+                                                                            </button>
+                                                                        </div>
                                                                         <div className={cx("")}>
                                                                             <button
                                                                                 className={cx("readyBillButton")}
-                                                                                onClick={() => handleSetDoneBill(cart._id, cart.isPaid)}
+                                                                                onClick={() => handleSetDoneBill(cart._id)}
                                                                             >
                                                                                 Hoàn Thành
                                                                             </button>
                                                                         </div>
-                                                                    </Fragment>
+                                                                    </div>
                                                                 )}
-                                                                {isAdmin === "STAFF" && (
-                                                                    <Fragment>
+                                                            </Fragment>
+                                                        )}
+                                                        {isAdmin === "STAFF" && (
+                                                            <Fragment>
+                                                                {cart.status === "WAITPAY" && (
+                                                                    <div className={cx("hItemButtonGroup")}>
+                                                                        <div className={cx("")}>
+                                                                            <button
+                                                                                className={cx("cancelBillButton")}
+                                                                                onClick={() => handleSetCancelBill(cart._id)}
+                                                                            >
+                                                                                Huỷ Đơn
+                                                                            </button>
+                                                                        </div>
                                                                         <div className={cx("")}>
                                                                             <button
                                                                                 className={cx("readyBillButton")}
                                                                                 onClick={() => handleSetPaidBill(cart._id)}
                                                                             >
-                                                                                Thu Tiền
+                                                                                ĐÃ THU TIỀN
                                                                             </button>
                                                                         </div>
-                                                                    </Fragment>
+                                                                    </div>
+                                                                )}
+                                                            </Fragment>
+                                                        )}
+                                                        {cart.paymentMethod === "BANK" && (
+                                                            <Fragment>
+                                                                <div className={cx("extendPayBill")} onClick={() => handleShowImage(cart.image_payment.id)}>
+                                                                    {/* <img src={extendArrow} alt="Xem Bill"></img> */}
+                                                                    <span>
+                                                                        {showImage === cart.image_payment.id && "Ẩn Bill"}
+                                                                        {showImage !== cart.image_payment.id && "Xem Bill"}
+                                                                    </span>
+                                                                </div>
+                                                                {showImage === cart.image_payment.id && (
+                                                                    <div className={cx("payBillBorder")}>
+                                                                        <img src={cart.image_payment.path}></img>
+                                                                    </div>
                                                                 )}
 
-                                                            </div>
+                                                            </Fragment>
                                                         )}
                                                     </div>
                                                 </Fragment>

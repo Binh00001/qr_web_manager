@@ -165,6 +165,35 @@
                 justify-content: space-around;
                 padding: 10px;
                 border-radius: 10px;
+                
+                .payBillBorder{
+                    margin-top: 15px;
+                    width: 100%;
+                    img{
+                        max-width: 100%;
+                        border-radius: 15px;
+                        object-fit: cover;
+                    }
+                }
+
+                .extendPayBill{
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                    margin: 5px auto;
+                    img{
+                        width: 10%;
+                        height: 25px;
+                    }
+                    span{
+                        width: 100%;
+                        padding: 10px;
+                        background-color: #3498db;
+                        border-radius: 10px;
+                        color: #ecf0f1;
+                        text-align: center;
+                    }
+                }
 
                 .hItemStatus {
                     span {
