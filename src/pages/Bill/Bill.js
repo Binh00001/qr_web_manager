@@ -77,7 +77,7 @@ function Bill() {
           if (response.data === "No carts created") {
             setListCart([]);
           } else {
-            setListCart(response.data);
+            setListCart(response.data.filter((cart) => cart.status !== "CANCEL"));
           }
         })
         .catch((error) => {
@@ -86,14 +86,14 @@ function Bill() {
     } else {
       axios
         .get(
-        // `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedCurrentDate}`, config
-        `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedCurrentDate}`, config
-      )
+          // `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedCurrentDate}`, config
+          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedCurrentDate}`, config
+        )
         .then((response) => {
           if (response.data === "No carts created") {
             setListCart([]);
           } else {
-            setListCart(response.data);
+            setListCart(response.data.filter((cart) => cart.status !== "CANCEL"));
           }
         })
         .catch((error) => {
@@ -101,8 +101,6 @@ function Bill() {
         });
     }
   }, []);
-
-  console.log(listCart);
 
   //choose which cart to display
   useEffect(() => {
@@ -152,8 +150,25 @@ function Bill() {
           ) {
             setIsEmpty(true);
           } else {
-            setDateCart(response.data);
+            setDateCart(response.data.filter((cart) => cart.status !== "CANCEL"));
             setIsEmpty(false);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .get(
+          // `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedCurrentDate}`, config
+          `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedDate}`, config
+        )
+        .then((response) => {
+          setIsSubmited(true);
+          if (response.data === "No carts created") {
+            setDateCart([]);
+          } else {
+            setDateCart(response.data.filter((cart) => cart.status !== "CANCEL"));
           }
         })
         .catch((error) => {
@@ -180,11 +195,6 @@ function Bill() {
       setNeedsClick(true);
     }
   }
-
-  const handleConvertCashierId = (ID) => {
-    const cashier = listCashier.find(item => item.id === ID);
-    return cashier ? cashier.cashierName : "";
-  };
 
   const handleButtonClick = () => {
     setNeedsClick(false);
