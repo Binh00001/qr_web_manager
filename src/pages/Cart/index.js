@@ -115,7 +115,7 @@ function Cart() {
 
     const deleteCartHandle = () => {
         sessionStorage.clear();
-        navigate("/")
+        navigate("/sortedbytable")
     }
 
     const removeFromObj = (itemId) => {

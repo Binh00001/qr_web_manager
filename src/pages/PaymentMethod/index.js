@@ -49,8 +49,8 @@ function PaymentMethod() {
     
     const cashier = JSON.parse(localStorage.getItem("token_state")) || [];
     let storedSession = JSON.parse(sessionStorage.getItem("obj")) || [];
-    let customer_name_session = JSON.parse(sessionStorage.getItem("name")) || [];
-    let cart_id = paymentid;
+    let customer_name_session = sessionStorage.getItem("name") || [];
+    let cart_id = paymentid
     const group_id = cashier.group_id;
     useEffect(() => {
         axios

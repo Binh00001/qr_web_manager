@@ -146,8 +146,7 @@ function SortedByTable() {
         axios
             .put(
                 `${process.env.REACT_APP_API_URL}/cart/payByStaff/${cartId}`,
-                null
-                ,config
+                { "staffId" : cashier.cashierId },
             )
             .then((response) => {
                 setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
