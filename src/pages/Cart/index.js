@@ -18,7 +18,7 @@ function Cart() {
             {
                 dish_id: "",
                 number: "",
-                options: [], 
+                options: [],
             },
         ],
     });
@@ -85,19 +85,15 @@ function Cart() {
                                 pushData
                             )
                             .then((response) => {
-                                // Handle the successful response from the server
-                                console.log(response);
-                                sessionStorage.clear();
-                                navigate("/sortedbytable")
+                                // sessionStorage.clear();
+                                navigate(`/paymentmethod/${response.data._id}`)
                             })
                             .catch((error) => {
-                                // Handle the error response from the server
                                 console.log(error);
                             });
                     }
                 })
                 .catch((error) => {
-                    // Handle the error response from the server
                     console.log(error);
                 });
         }
@@ -125,7 +121,7 @@ function Cart() {
     const removeFromObj = (itemId) => {
         const updatedCart = cartStored.filter(item => item.id !== itemId);
         setCartStored(updatedCart);
-    
+
         // Update the session storage
         sessionStorage.setItem("obj", JSON.stringify(updatedCart));
     }

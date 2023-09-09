@@ -3,7 +3,8 @@
     background-color: #202124;
     display: flex;
     align-items: center;
-    .sbtBlackBarItem{
+
+    .sbtBlackBarItem {
         display: flex;
         align-items: center;
         background-color: #ecf0f1;
@@ -16,20 +17,30 @@
         font-size: 0.8rem;
         margin-right: 10px;
     }
-    .sbtBlackBarText{
+
+    .sbtBlackBarText {
         color: #ecf0f1;
         text-transform: capitalize;
-        span{
+
+        span {
             font-size: 1.2rem;
             font-weight: 600;
             padding: 0px 5px;
         }
     }
+
+    #switchShowPayBill {
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+    }
 }
+
 .sbtFilterBar {
     width: 100%;
     display: flex;
     justify-content: space-around;
+
     .sbtFilterItem {
         min-width: 100px;
         height: 30px;
@@ -43,18 +54,31 @@
         margin: 15px 0 0 0;
         border: none;
     }
-    .active{
+
+    .active {
         background-color: #1BAC4B;
         border: none;
         color: #fff;
     }
 }
 
-.addEffect {
-    background-color: #2ecc71;
+.addEffect1 {
+    background-color: #ffdd59;
     // border: 2px #3498db solid;
     border-radius: 10px;
 }
+
+.addEffect2 {
+    background-color: #4bcffa;
+    // border: 2px #3498db solid;
+    border-radius: 10px;
+}
+
+// .addEffect3{
+//     background-color: #0be881;
+//     // border: 2px #3498db solid;
+//     border-radius: 10px;
+// }
 
 .sbtItem {
     // position: absolute;
@@ -94,6 +118,42 @@
             font-size: 1rem;
         }
 
+        .Paydot {
+            top: 20px;
+            right: 0px;
+            position: absolute;
+            // height: 25px;
+            // width: 25px;
+
+            text-align: center;
+            // color: #ecf0f1;
+            font-weight: 600;
+            font-size: 1rem;
+
+            div {
+                border: 1px solid black;
+                color: #202124;
+                padding: 2px 5px;
+                border-radius: 10px;
+                background-color: #0be881;
+            }
+
+            span {
+                background-color: #f04d4d;
+                top: 0px;
+                right: -10px;
+                position: absolute;
+                height: 25px;
+                width: 25px;
+                background-color: #0be881;
+                border-radius: 50%;
+                text-align: center;
+                // color: #ecf0f1;
+                font-weight: 600;
+                font-size: 1rem;
+            }
+        }
+
         .hided {
             display: none;
         }
@@ -123,12 +183,32 @@
     width: calc(100vw - 15px);
     display: flex;
     justify-content: space-between;
+
+    .totalBillText {
+        align-self: center;
+        display: flex;
+        font-size: 1.2rem;
+
+        span {
+            padding: 0 5px;
+        }
+    }
 }
 
 .fourthGroup {
     width: calc(100vw - 15px);
     display: flex;
     justify-content: space-between;
+
+    .totalBillText {
+        align-self: center;
+        display: flex;
+        font-size: 1.2rem;
+
+        span {
+            padding: 0 5px;
+        }
+    }
 }
 
 .fifthGroup {
@@ -165,27 +245,30 @@
                 justify-content: space-around;
                 padding: 10px;
                 border-radius: 10px;
-                
-                .payBillBorder{
+
+                .payBillBorder {
                     margin-top: 15px;
                     width: 100%;
-                    img{
+
+                    img {
                         max-width: 100%;
                         border-radius: 15px;
                         object-fit: cover;
                     }
                 }
 
-                .extendPayBill{
+                .extendPayBill {
                     width: 100%;
                     display: flex;
                     justify-content: center;
                     margin: 5px auto;
-                    img{
+
+                    img {
                         width: 10%;
                         height: 25px;
                     }
-                    span{
+
+                    span {
                         width: 100%;
                         padding: 10px;
                         background-color: #3498db;
@@ -309,6 +392,10 @@
                     background-color: #1BAC4B;
                     border-top-left-radius: 0;
                     border-bottom-left-radius: 0;
+                }
+                #PayButton{
+                    background-color: #3498db;
+                    color: #000;
                 }
             }
         }

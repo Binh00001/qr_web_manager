@@ -29,6 +29,7 @@ function SortedByTable() {
     const [totalBillWaitPay, setTotalBillWaitPay] = useState("0");
     const [choosedStatus, setChoosedStatus] = useState("IN_PROGRESS");
     const [cartStatusChange, setCartStatusChange] = useState(true);
+    const [showTotalPayBill, setShowTotalPayBill] = useState(true);
     const [cartPaidChange, setCartPaidChange] = useState(true);
     const [showTableMap, setShowTableMap] = useState(true);
     const [showImage, setShowImage] = useState("");
@@ -48,6 +49,7 @@ function SortedByTable() {
             setChoosedStatus("IN_PROGRESS")
         } else if (isAdmin === "STAFF") {
             setChoosedStatus("WAITPAY")
+            setShowTotalPayBill(false)
         }
     }, [isAdmin])
 
@@ -96,7 +98,7 @@ function SortedByTable() {
         return () => {
             clearInterval(interval);
         };
-    }, [cartStatusChange, newCart, cartPaidChange, choosedStatus]);
+    }, [cartStatusChange, newCart, cartPaidChange, choosedStatus, tablePicked]);
 
     //get tablelist
     useEffect(() => {
@@ -124,6 +126,16 @@ function SortedByTable() {
             return 0
         } else if (listCart.filter(cart => (cart.table === tableName && cart.status === "IN_PROGRESS")).length < 99) {
             return listCart.filter(cart => (cart.table === tableName && cart.status === "IN_PROGRESS")).length
+        } else {
+            return "99+"
+        }
+    }
+
+    const calcBillWaitPay = (tableName) => {
+        if (listCart.filter(cart => (cart.table === tableName && cart.status === "WAITPAY")).length === 0) {
+            return 0
+        } else if (listCart.filter(cart => (cart.table === tableName && cart.status === "WAITPAY")).length < 99) {
+            return listCart.filter(cart => (cart.table === tableName && cart.status === "WAITPAY")).length
         } else {
             return "99+"
         }
@@ -217,10 +229,9 @@ function SortedByTable() {
                             )}
                             {showTableMap && (
                                 <Fragment>
-                                    <div className={cx("sbtBlackBarText")}>
-                                        Hiện đang có <span>{totalBillInProgress}</span> Đơn đang chờ
-                                    </div>
-
+                                    <button id="switchShowPayBill" onClick={() => setShowTotalPayBill(!showTotalPayBill)}>
+                                        Đơn Chưa Thu: {showTotalPayBill ? "Số Lượng" : "Giá Tiền"}
+                                    </button>
                                 </Fragment>
                             )}
                         </Fragment>
@@ -237,14 +248,13 @@ function SortedByTable() {
                                     </div>
                                 </Fragment>
                             )}
-                            {showTableMap && (
+                            {/* {showTableMap && (
                                 <Fragment>
                                     <div className={cx("sbtBlackBarText")}>
                                         Hiện đang có <span>{totalBillWaitPay}</span> Đơn Chưa Thu Tiền
                                     </div>
-
                                 </Fragment>
-                            )}
+                            )} */}
                         </Fragment>
                     )}
                 </div>
@@ -254,80 +264,291 @@ function SortedByTable() {
                         <div className={cx("GroupBox")}>
                             <div className={cx("firstGroup")}>
                                 {tables.filter(table => ["1", "2", "3"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                             </div>
+
 
                             <div className={cx("secondGroup")}>
                                 {tables.filter(table => ["4", "5", "6"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                             </div>
 
                             <div className={cx("thirdGroup")}>
                                 {tables.filter(table => ["7"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
+                                <div className={cx("totalBillText")}>
+                                    Còn<span>{" " + totalBillWaitPay + " "}</span> Đơn Chưa Thu Tiền
+                                </div>
                             </div>
 
                             <div className={cx("fourthGroup")}>
                                 {tables.filter(table => ["8"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
+                                <div className={cx("totalBillText")}>
+                                    Có <span>{" " + totalBillInProgress + " "}</span> Đơn Đang Chờ
+                                </div>
                             </div>
 
                             <div className={cx("fifthGroup")}>
                                 {tables.filter(table => ["9", "10"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                             </div>
 
                             <div className={cx("sixthGroup")}>
                                 {tables.filter(table => ["11", "12", "13"].includes(table.name))
-                                    .map((table, index) => (
-                                        <div className={cx("sbtItem", `table${table.name}`, calcBillInProGress(table.name) === 0 ? "" : "addEffect")} key={index} onClick={() => { handleClickTableName(table.name) }}>
-                                            <div className={cx("sbtIconBorder")}>
-                                                <div className={cx("sbtName")}>{table.name}</div>
-                                                <div className={cx("reddot", calcBillInProGress(table.name) === 0 ? "hided" : "")}>{calcBillInProGress(table.name)}</div>
-                                                <img src={tableIcon} alt="Table"></img>
+                                    .map((table, index) => {
+                                        const hasAddEffect1 = calcBillInProGress(table.name) !== 0;
+                                        const hasAddEffect2 = calcBillWaitPay(table.name) !== 0;
+                                        const className = cx(
+                                            "sbtItem",
+                                            `table${table.name}`,
+                                            hasAddEffect1 ? "addEffect1" : "",
+                                            hasAddEffect2 ? "addEffect2" : "",
+                                            hasAddEffect1 && hasAddEffect2 ? "addEffect3" : ""
+                                        );
+
+                                        return (
+                                            <div
+                                                className={className}
+                                                key={index}
+                                                onClick={() => { handleClickTableName(table.name) }}
+                                            >
+                                                <div className={cx("sbtIconBorder")}>
+                                                    <div className={cx("sbtName")}>{table.name}</div>
+                                                    <div className={cx("reddot", !hasAddEffect1 ? "hided" : "")}>
+                                                        {hasAddEffect1 ? calcBillInProGress(table.name) : ""}
+                                                    </div>
+                                                    <div className={cx("Paydot", !hasAddEffect2 ? "hided" : "")}>
+                                                        {!showTotalPayBill && (
+                                                            <Fragment>
+                                                                {listCart
+                                                                    .filter(cart => cart.table === table.name && cart.status === "WAITPAY")
+                                                                    .map((cartItem, cartIndex) => (
+                                                                        <div key={cartIndex}>
+                                                                            {new Intl.NumberFormat("vi-VN").format(cartItem.total / 1000)}K
+                                                                        </div>
+                                                                    ))}
+                                                            </Fragment>
+                                                        )}
+                                                        {showTotalPayBill && (
+                                                            <span>{calcBillWaitPay(table.name)}</span>
+                                                        )}
+                                                    </div>
+                                                    <img src={tableIcon} alt="Table" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                             </div>
                         </div>
                     </Fragment>
@@ -445,7 +666,7 @@ function SortedByTable() {
                                                                     )}
                                                                     {cart.status === "IN_PROGRESS" && (
                                                                         <span style={{ color: "#3498db" }}>
-                                                                            Đang Chờ
+                                                                            Đang Làm
                                                                         </span>
                                                                     )}
                                                                     {cart.status === "COMPLETED" && (
@@ -496,7 +717,7 @@ function SortedByTable() {
                                                                 )}
                                                             </Fragment>
                                                         )}
-                                                        {isAdmin === "STAFF" && (
+                                                        {/* {isAdmin === "STAFF" && ( */}
                                                             <Fragment>
                                                                 {cart.status === "WAITPAY" && (
                                                                     <div className={cx("hItemButtonGroup")}>
@@ -510,16 +731,17 @@ function SortedByTable() {
                                                                         </div>
                                                                         <div className={cx("")}>
                                                                             <button
+                                                                                id="PayButton"
                                                                                 className={cx("readyBillButton")}
                                                                                 onClick={() => handleSetPaidBill(cart._id)}
                                                                             >
-                                                                                ĐÃ THU TIỀN
+                                                                                THU TIỀN
                                                                             </button>
                                                                         </div>
                                                                     </div>
                                                                 )}
                                                             </Fragment>
-                                                        )}
+                                                        {/* )} */}
                                                         {cart.paymentMethod === "BANK" && (
                                                             <Fragment>
                                                                 <div className={cx("extendPayBill")} onClick={() => handleShowImage(cart.image_payment.id)}>

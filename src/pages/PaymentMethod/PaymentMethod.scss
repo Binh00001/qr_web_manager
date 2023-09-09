@@ -1,0 +1,349 @@
+.pmWrapper {
+    .blackBar {
+        .TopBar {
+            .cartTopBar {
+                .pmTitle {
+                    width: 100%;
+                    background-color: transparent;
+                    color: #fff;
+                    font-size: 2rem;
+                    text-align: center;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+}
+
+.choosePaymentBody {
+    height: calc(100vh - 60px);
+    max-width: 100vw;
+    // margin-top: 58px;
+    background-color: #f1f2f6;
+
+    .margintop {
+        // height: 2px;
+    }
+
+    .guideOverlay {
+        position: fixed;
+        z-index: 200;
+        margin-top: -60px;
+        height: 100vh;
+        width: 100vw;
+        background-color: #747d8c;
+        opacity: 0.7;
+    }
+
+    .guideBox {
+        position: fixed;
+        background-color: #fff;
+        border: 1px solid #747d8c;
+        min-width: 310px;
+        width: 80%;
+        top: 25%;
+        left: 10%;
+        z-index: 201;
+        min-height: 150px;
+        height: 30vh;
+        border-radius: 10px;
+
+        .guideTitle {
+            font-size: 2rem;
+            text-align: center;
+            margin: 10px;
+        }
+
+        .guideStep1,
+        .guideStep2,
+        .guideStep3 {
+            margin: 10px 0 10px 15px;
+        }
+
+        .understoodConfirmButton {
+            position: absolute;
+            background-color: #2ed573;
+            width: 50%;
+            margin-left: 25%;
+            text-align: center;
+            padding: 10px 0;
+            border-radius: 10px;
+            bottom: 20px;
+            color: #fff;
+        }
+    }
+
+    .PayByMoneyBox {
+        position: relative;
+        background-color: #fff;
+        height: 60px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        border: 1px solid #ced6e0;
+
+        .PayByMoneyIconBorder {
+            min-width: 40px;
+            width: 15%;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 40px;
+            }
+        }
+
+        .PayByMoneyTitle {
+            font-size: 1.3rem;
+            margin-left: 10px;
+        }
+
+        .PickedIcon {
+            position: absolute;
+            right: 20px;
+
+            img {
+                margin-top: 5px;
+                height: 20px;
+            }
+        }
+    }
+
+    .PayByBankBox {
+
+        position: relative;
+        background-color: #fff;
+        min-height: 60px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ced6e0;
+
+        .PayByBankTopContainer {
+            position: relative;
+            display: flex;
+            height: 60px;
+            align-items: center;
+
+            .PickedIcon {
+                position: absolute;
+                right: 20px;
+
+                img {
+                    margin-top: 5px;
+                    height: 20px;
+                }
+            }
+
+            .PayByBankIconBorder {
+                min-width: 40px;
+                width: 15%;
+                display: flex;
+                justify-content: center;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                }
+            }
+
+            .PayByBankTitle {
+                font-size: 1.3rem;
+                margin-left: 10px;
+            }
+        }
+
+        .PayByBankBottomContainer {
+            min-height: 80vh;
+
+            .AddImage {
+                font-size: 1.3rem;
+                // font-weight: 600;
+                border: none;
+                width: 90%;
+                margin-left: 5%;
+                background-color: #f04d4d;
+                color: #fff;
+                border-radius: 10px;
+
+                .custom-file {
+
+                    // padding: 10px;
+                    label {
+                        display: block;
+                        padding: 10px;
+                        width: 100%;
+                    }
+                }
+            }
+
+            .active {
+                background-color: #2ed573;
+            }
+
+            input {
+                display: none;
+            }
+
+            .BankListItem {
+                min-width: 300px;
+                width: 90%;
+                margin: 10px auto;
+                border: 1px solid #bdc3c7;
+                border-radius: 10px;
+
+                .BankName {
+                    padding: 10px;
+                }
+
+                .BankQRCode {
+                    display: flex;
+                    justify-content: center;
+
+                    img {
+                        width: 80%;
+                        max-width: 200px;
+                    }
+                }
+
+                .BankID {
+                    margin: 10px;
+                    display: flex;
+                    justify-content: center;
+
+                    img {
+                        height: 25px;
+                        margin-left: 10px;
+                    }
+                }
+
+                .BankOwnerName {
+                    display: flex;
+                    justify-content: center;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+}
+
+#confirmPaymentButton {
+    height: 60px;
+    min-width: 140px;
+    width: 80%;
+    left: 10%;
+    font-size: 2rem;
+    position: fixed;
+    bottom: 40px;
+    background-color: #2ed573;
+    border: 2px solid #fff;
+    border-radius: 15px;
+    color: #fff;
+}
+
+.successContainer {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    background-color: rgb(0, 0, 0, 0.5);
+    z-index: 100;
+
+    button {
+        position: relative;
+        top: 33%;
+        text-align: center;
+        height: 40px;
+        width: 24vw;
+        background-color: #1BAC4B;
+        color: #f0f0f0;
+        border: none;
+        border-radius: 7px;
+        margin: 0 auto 0 18vw;
+    }
+
+    .failBox {
+        min-height: fit-content;
+        position: absolute;
+        display: block;
+        z-index: 100;
+        // height: 23vh;
+        width: 80vw;
+        background-color: #f0f0f0;
+        top: auto;
+        bottom: 43vh;
+        right: auto;
+        left: 10vw;
+        border-radius: 15px;
+
+        .failPopup {
+            padding: 5%;
+            position: relative;
+            text-align: center;
+            font-size: 1.3rem;
+            width: 90%;
+            margin: auto;
+        }
+    }
+
+    .successBox {
+        position: absolute;
+        display: block;
+        z-index: 100;
+        min-height: 130px;
+        height: fit-content;
+        width: 60vw;
+        background-color: #f0f0f0;
+        top: auto;
+        bottom: 45vh;
+        right: auto;
+        left: 20vw;
+        border-radius: 15px;
+        animation: slideFromTop 0.3s;
+
+        .returnButton {
+            top: 0;
+            position: sticky;
+            margin-bottom: 10px;
+        }
+
+        .UnableReturnButton {
+            top: 0;
+            position: sticky;
+            text-align: center;
+            height: 40px;
+            width: 24vw;
+            background-color: #1BAC4B;
+            color: #f0f0f0;
+            border: none;
+            border-radius: 7px;
+            margin: 10px auto 15px 18vw;
+        }
+    }
+
+    .successPopup {
+        display: inline-block;
+        text-align: center;
+        font-size: 1.3rem;
+        width: 100%;
+        height: 45px;
+        margin-top: 7%;
+    }
+
+    .confirmButtonGroup {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 5%;
+
+        button {
+            margin: 0;
+        }
+
+        .cancelButton {
+            background-color: #ffffff;
+            border: 1px solid #1BAC4B;
+            color: #1BAC4B;
+        }
+    }
+}

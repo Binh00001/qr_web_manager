@@ -10,6 +10,7 @@ import TableManager from "~/pages/TableMananger/TableManager";
 import Test from "~/components/loadingScreen/loadingScreen"
 import CreateBill from "~/pages/CreateBill";
 import Cart from "~/pages/Cart"
+import PayMentMethod from "~/pages/PaymentMethod/index"
 import { RequireAuth, useSignOut } from "react-auth-kit";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import DefaultLayout from "~/components/Layout/DefaultLayout/DefaultLayout";
@@ -112,6 +113,13 @@ function MainRoutes() {
             <DefaultLayout>
               <Menu />
             </DefaultLayout>
+          </RequireAuth>} />
+        <Route
+          path={"/paymentmethod"}
+          element={<RequireAuth loginPath={"/login"}>
+            {/* <DefaultLayout> */}
+              <PayMentMethod />
+            {/* </DefaultLayout> */}
           </RequireAuth>} />
         <Route
           path={"/createbill"}
