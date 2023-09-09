@@ -146,7 +146,8 @@ function SortedByTable() {
         axios
             .put(
                 `${process.env.REACT_APP_API_URL}/cart/payByStaff/${cartId}`,
-                config
+                null
+                ,config
             )
             .then((response) => {
                 setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
@@ -155,7 +156,6 @@ function SortedByTable() {
                 console.error(error);
             });
     };
-
 
     const handleSetDoneBill = (cartId) => {
         axios
@@ -645,7 +645,8 @@ function SortedByTable() {
                                                                 </div>
                                                                 {cart.paymentMethod === "CASH" && (
                                                                     <div className={cx("hItemTable")}>
-                                                                        Nhân Viên: { }
+                                                                        Nhân Viên: {cart.paymentStaff}
+
                                                                     </div>
                                                                 )}
                                                                 <div className={cx("hItemTime")}>

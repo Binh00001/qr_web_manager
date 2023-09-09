@@ -83,8 +83,26 @@ function Bill() {
         .catch((error) => {
           console.log(error);
         });
+    } else {
+      axios
+        .get(
+        // `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${pickedGroupId}?date=${formattedCurrentDate}`, config
+        `${process.env.REACT_APP_API_URL}/cart/menu/all/?date=${formattedCurrentDate}`, config
+      )
+        .then((response) => {
+          if (response.data === "No carts created") {
+            setListCart([]);
+          } else {
+            setListCart(response.data);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, []);
+
+  console.log(listCart);
 
   //choose which cart to display
   useEffect(() => {
@@ -244,62 +262,64 @@ function Bill() {
               <p>Hôm Nay Chưa Có Hoá Đơn</p>
             </div>
           } */}
-          {displayCart.map((cart, index) => (
-            <div key={index} className={cx("bItem")}>
-              <div className={cx("bItemLeftContainer")}>
+          {displayCart
+            .filter((cart) => cart.status !== "CANCEL")
+            .map((cart, index) => (
+              <div key={index} className={cx("bItem")}>
+                <div className={cx("bItemLeftContainer")}>
 
-                <div className={cx("bTable")}>Bàn: {cart.table}</div>
+                  <div className={cx("bTable")}>Bàn: {cart.table}</div>
 
-                <div className={cx("bTotalBill")}>
-                  Tổng Tiền:{" "}
-                  <span style={{ color: "#f04d4d" }}>
-                    {cart.total.toLocaleString()} vnđ
-                  </span>
-                </div>
-                <div className={cx("bCreateTime")}>
-                  Thời Gian Tạo:{" "}
-                  <span style={{ color: "#f04d4d" }}>
-                    {moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format(
-                      "HH:mm A"
-                    )}
-                  </span>
-                </div>
-
-                <div className={cx("bId")}>
-                  Trạng Thái:{" "}
-                  {cart.status === "IN_PROGRESS" ? "Đang Chờ" : cart.status === "COMPLETED" ? "Đã Xong" : "Đã Huỷ"}
-                </div>
-
-                <div className={cx("bNote")}>Tên Khách: {cart.customer_name}</div>
-
-                <div className={cx("bNote")}>Ghi Chú: {cart.note}</div>
-
-
-              </div>
-              <div className={cx("bItemRightContainer")}>
-                <div>
-                  <div className={cx("bTopTitle")}>
-                    <div className={cx("bTitleText")}>Tên Món</div>
-                    <div className={cx("bTitleText")}>Tuỳ Chọn</div>
-                    <div className={cx("bTitleText")}>Số Lượng</div>
+                  <div className={cx("bTotalBill")}>
+                    Tổng Tiền:{" "}
+                    <span style={{ color: "#f04d4d" }}>
+                      {cart.total.toLocaleString()} vnđ
+                    </span>
                   </div>
-                  {cart.order.map((order, orderIndex) => (
-                    <div className={cx("bFoodItem")} key={orderIndex}>
-                      <div className={cx("bFoodName")}>{order.dish_name}</div>
-                      <div className={cx("bFoodOption")}>
-                        <span>{order.options}</span>
-                      </div>
-                      <div className={cx("bFoodQuantity")}>{order.number}</div>
-                    </div>
-                  ))}
-                </div>
+                  <div className={cx("bCreateTime")}>
+                    Thời Gian Tạo:{" "}
+                    <span style={{ color: "#f04d4d" }}>
+                      {moment(cart.createAt, "DD/MM/YYYY, HH:mm:ss").format(
+                        "HH:mm A"
+                      )}
+                    </span>
+                  </div>
 
-                <div className={cx("bPrintButton")}>
-                  <button className={cx("PrintBillButton")}>In Hoá Đơn</button>
+                  <div className={cx("bId")}>
+                    Trạng Thái:{" "}
+                    {cart.status === "IN_PROGRESS" ? "Đang Chờ" : cart.status === "COMPLETED" ? "Đã Xong" : "Chưa Thu Tiền"}
+                  </div>
+
+                  <div className={cx("bNote")}>Tên Khách: {cart.customer_name}</div>
+
+                  <div className={cx("bNote")}>Ghi Chú: {cart.note}</div>
+
+
+                </div>
+                <div className={cx("bItemRightContainer")}>
+                  <div>
+                    <div className={cx("bTopTitle")}>
+                      <div className={cx("bTitleText")}>Tên Món</div>
+                      <div className={cx("bTitleText")}>Tuỳ Chọn</div>
+                      <div className={cx("bTitleText")}>Số Lượng</div>
+                    </div>
+                    {cart.order.map((order, orderIndex) => (
+                      <div className={cx("bFoodItem")} key={orderIndex}>
+                        <div className={cx("bFoodName")}>{order.dish_name}</div>
+                        <div className={cx("bFoodOption")}>
+                          <span>{order.options}</span>
+                        </div>
+                        <div className={cx("bFoodQuantity")}>{order.number}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className={cx("bPrintButton")}>
+                    <button className={cx("PrintBillButton")}>In Hoá Đơn</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </Fragment>

@@ -115,7 +115,7 @@ function MainRoutes() {
             </DefaultLayout>
           </RequireAuth>} />
         <Route
-          path={"/paymentmethod"}
+          path={"/paymentmethod/:paymentid"}
           element={<RequireAuth loginPath={"/login"}>
             {/* <DefaultLayout> */}
               <PayMentMethod />
