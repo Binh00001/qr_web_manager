@@ -273,7 +273,7 @@ function PaymentMethod() {
 
     return (
         <Fragment>
-            {isWaiting && (
+            {/* {isWaiting && (
                 <Fragment>
                     <div className={cx("loadingOverlay")}>
                         <div class="preloader">
@@ -336,7 +336,7 @@ function PaymentMethod() {
                         </div>
                     </div>
                 </Fragment>
-            )}
+            )} */}
             {isUnable && (
                 <div className={cx("successContainer")}>
                     <div className="successBox">
