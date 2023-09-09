@@ -22,6 +22,8 @@ function Bill() {
   const [selectedValue, setSelectedValue] = useState("");
   const [selectedCashierName, setSelectedCashierName] = useState("");
   const [pickedGroupId, setPickedGroupId] = useState([]);
+  const [paidMethod, setPaidMethod] = useState("CASH")
+  const [showImage, setShowImage] = useState("");
 
   const navigate = useNavigate();
   const currentDate = new Date();
@@ -100,7 +102,7 @@ function Bill() {
           console.log(error);
         });
     }
-  }, []);
+  }, [paidMethod]);
 
   //choose which cart to display
   useEffect(() => {
@@ -109,7 +111,7 @@ function Bill() {
     } else {
       setDisplayCart(dateCart)
     }
-  }, [isSubmited, listCart, dateCart]);
+  }, [isSubmited, listCart, dateCart, paidMethod]);
 
   useEffect(() => {
     let cartsToUse = isSubmited ? dateCart : listCart;
@@ -119,7 +121,7 @@ function Bill() {
     const money = completedCarts.reduce((total, cart) => total + cart.total, 0);
 
     setTotalIncome(money);
-  }, [isSubmited, dateCart, listCart]);
+  }, [isSubmited, dateCart, listCart, paidMethod]);
 
   const handleDateChange = (event) => {
     setDatePush(event.target.value);
@@ -150,7 +152,7 @@ function Bill() {
           ) {
             setIsEmpty(true);
           } else {
-            setDateCart(response.data.filter((cart) => cart.status !== "CANCEL"));
+            setDateCart(response.data.filter((cart) => cart.status !== "CANCEL" ));
             setIsEmpty(false);
           }
         })
@@ -177,6 +179,14 @@ function Bill() {
     }
   };
 
+  const handleShowImage = (id) => {
+    if (showImage !== id) {
+        setShowImage(id)
+    } else if (showImage === id) {
+        setShowImage("")
+    }
+}
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -200,6 +210,8 @@ function Bill() {
     setNeedsClick(false);
     // ... any other logic you might have
   };
+
+  console.log(listCart);
 
   return (
     <Fragment>
@@ -262,6 +274,10 @@ function Bill() {
         </div>
         <div className={cx("bBody")}>
           <div className={cx("bMarginTop")}></div>
+          <div className={cx("filterPaymentBox")}>
+            <div className={cx("payByCash", paidMethod === "CASH" ? "active" : "")} onClick={() => setPaidMethod("CASH")}>Tiền Mặt</div>
+            <div className={cx("payByBank", paidMethod === "BANK" ? "active" : "")} onClick={() => setPaidMethod("BANK")}>Chuyển Khoản</div>
+          </div>
           {isEmpty && (
             <div className={cx("emptyCart")}>
               <p>Ngày Này Không Có Hoá Đơn</p>
@@ -273,7 +289,7 @@ function Bill() {
             </div>
           } */}
           {displayCart
-            .filter((cart) => cart.status !== "CANCEL")
+            .filter((cart) => cart.status !== "CANCEL" && cart.paymentMethod === paidMethod)
             .map((cart, index) => (
               <div key={index} className={cx("bItem")}>
                 <div className={cx("bItemLeftContainer")}>
@@ -299,7 +315,10 @@ function Bill() {
                     Trạng Thái:{" "}
                     {cart.status === "IN_PROGRESS" ? "Đang Chờ" : cart.status === "COMPLETED" ? "Đã Xong" : "Chưa Thu Tiền"}
                   </div>
-
+                  <div className={cx("bNote")}>Thanh Toán: {cart.paymentMethod === "CASH" ? "Tiền Mặt" : "Chuyển Khoản"}</div>
+                  {cart.paymentMethod === "CASH" && (
+                    <div className={cx("bNote")}>Nhân Viên: {cart.paymentStaff}</div>
+                  )}
                   <div className={cx("bNote")}>Tên Khách: {cart.customer_name}</div>
 
                   <div className={cx("bNote")}>Ghi Chú: {cart.note}</div>
@@ -328,6 +347,23 @@ function Bill() {
                     <button className={cx("PrintBillButton")}>In Hoá Đơn</button>
                   </div>
                 </div>
+                {cart.paymentMethod === "BANK" && (
+                  <Fragment>
+                    <div className={cx("extendPayBill")} onClick={() => handleShowImage(cart.image_payment.id)}>
+                      {/* <img src={extendArrow} alt="Xem Bill"></img> */}
+                      <span>
+                        {showImage === cart.image_payment.id && "Ẩn Bill"}
+                        {showImage !== cart.image_payment.id && "Xem Bill"}
+                      </span>
+                    </div>
+                    {showImage === cart.image_payment.id && (
+                      <div className={cx("payBillBorder")}>
+                        <img src={cart.image_payment.path}></img>
+                      </div>
+                    )}
+
+                  </Fragment>
+                )}
               </div>
             ))}
         </div>

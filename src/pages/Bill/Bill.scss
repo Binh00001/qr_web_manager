@@ -51,6 +51,26 @@
         height: 40px;
     }
 
+    .filterPaymentBox{
+        margin: 10px auto;
+        width: 80%;
+        display: flex;
+        // justify-content: space-around;
+        .payByCash, .payByBank{
+            text-align: center;
+            width: 50%;
+            padding: 10px;
+            border: 1px solid #2ecc71;
+            border-radius: 10px;    
+        }
+        .active{
+            background-color:#2ecc71 ;
+            color: #fff;
+            font-weight: 600;
+        }
+        
+    }
+
     .bItem {
         min-height: 200px;
         width: 80%;
@@ -60,6 +80,26 @@
         display: flex;
         border: 1px solid black;
         border-radius: 20px;
+
+        .extendPayBill{
+            width: 50%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            background-color: #1e90ff;
+            margin: 0px 0 10px 20%;
+            color: #fff;
+            border-radius: 10px;
+        }
+        
+        .payBillBorder{
+            width: 90%;
+            margin:10px auto;
+            img{
+                width: 100%;
+                object-fit: cover;
+            }
+        }
 
         .bItemLeftContainer {
             width: 50%;
