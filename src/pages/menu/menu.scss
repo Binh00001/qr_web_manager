@@ -70,6 +70,7 @@
       .mItemBox {
         border: 1px solid black;
         min-height: 250px;
+        border-radius: 10px;
 
         .mImageBorder {
           height: 12vh;
@@ -77,6 +78,8 @@
           min-height: 165px;
           border-bottom: 1px solid black;
           overflow: hidden;
+          border-top-right-radius: 10px;
+          border-top-left-radius: 10px;
 
           img {
             width: 210px;
@@ -113,6 +116,7 @@
         display: grid;
         align-content: space-evenly;
         bottom: 0%;
+        border-radius: 10px;
 
         .optionsHoverBox {
           cursor: pointer;
