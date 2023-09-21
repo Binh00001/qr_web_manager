@@ -109,13 +109,14 @@
           width: 180px;
           height: 165px;
           display: flex;
+          justify-content: center;
           background-color: #fff;
           // opacity: 0.6;
           cursor: pointer;
           font-size: 1rem;
           color: #000;
           align-items: center;
-          padding-left: 10px;
+          // padding-left: 10px;
           // word-wrap: break-word;
           // white-space: pre-wrap;
         }
