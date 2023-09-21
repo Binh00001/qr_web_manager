@@ -32,20 +32,23 @@
     // align-items: center;
     justify-content: center;
     position: relative;
-    .Star{
+
+    .Star {
       width: 60px;
       height: 60px;
       // background-color: #f04d4d;
       position: absolute;
       top: 15px;
       left: 25px;
-      img{
+
+      img {
         height: 75%;
         width: 75%;
         background-color: transparent;
       }
     }
-    .xIcon{
+
+    .xIcon {
       padding: 10px;
       color: #fff;
       border-radius: 10px;
@@ -54,6 +57,7 @@
       top: 20px;
       right: 15px;
     }
+
     .dtName {
       font-size: 1.4rem;
       font-weight: 600;
@@ -72,7 +76,8 @@
       margin-top: 20px;
       margin-bottom: 20px;
     }
-    .hided{
+
+    .hided {
       display: none;
     }
   }
@@ -145,6 +150,7 @@
       display: flex;
       flex-direction: column;
       height: max-content;
+
       .dtDescription {
         margin-bottom: 5%;
         font-size: 1.3rem;
@@ -189,40 +195,75 @@
           color: #000;
         }
       }
+    }
+  }
 
-      .dtOption {
-        .dtOptionItem {
-          margin-left: 80px;
-          span{
-            color: #f04d4d;
-          }
-        }
+  .dtOption {
+    display: flex;
+    width: 90%;
+    margin-top: 20px; 
 
-        :first-child {
-          margin-left: 10px;
-        }
-        .dtAddOptionGroup{
-          margin-top: 10px;
-          margin-bottom: 10px;
-          :first-child{
-            margin-left: 0;
-          }
-        }
-        .dtInputAddOption{
-          padding: 5px;
-          padding-left: 10px;
-          // border-top-right-radius: 0;
-          // border-bottom-right-radius: 0;
-        }
-        .dtSubmitOption{
-          border-radius: 5px;
-          margin-left: 10px;
-          background-color: #f04d4d;
-          color: #fff;
-          padding: 10px;
-          border: none;
-        }
+    .dtOptionFirstItem{
+      // position: absolute;
+      padding-top: 7px;
+    }
+
+    .column-flex {
+      display: flex;
+      flex-direction: column;
+      width: calc(100% - 80px);
+    }
+
+    .dtOptionItem {
+      min-height: 35px;
+      padding-bottom: 5px;
+      position: relative;
+      margin-left: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      :first-child{
+        text-align: start;
       }
+      div{
+        align-self: center;
+        width: 100%;
+        text-align: end;
+      }
+      .removeOption{
+        padding: 7px;
+        background-color: #f04d4d;
+        color: #fff;
+        border-radius: 5px;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  .dtAddOptionGroup{
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    .column-flex {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      margin:auto;
+      input{
+        margin-bottom: 5px;
+        align-self: flex-end;
+        padding: 5px;
+        width: calc(100% - 105px);
+      }
+    }
+    button{
+      width: 44px;
+      border: none;
+      background-color: #f04d4d;
+      color: #fff;
+      margin-right: 5%;
+      border-radius: 5px;
+      margin-left: 10px;
     }
   }
 
@@ -232,6 +273,7 @@
     justify-content: space-between;
     margin-top: 30px;
     margin-bottom: 20px;
+
     button {
       background-color: #fff;
       border: 1px solid #f04d4d;
@@ -252,7 +294,7 @@ input[type="number"]::-webkit-outer-spin-button {
   margin: 0;
 }
 
-.warningBox{
+.warningBox {
   position: fixed;
   z-index: 200;
   background-color: #fff;
@@ -266,16 +308,19 @@ input[type="number"]::-webkit-outer-spin-button {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  .warningMessage{
+
+  .warningMessage {
     padding: 15px;
     font-size: 1.1rem;
   }
-  .warningGroupButton{
+
+  .warningGroupButton {
     width: 100%;
     display: flex;
     justify-content: space-around;
     margin-top: 5px;
-    button{
+
+    button {
       height: 30px;
       width: 80px;
       background-color: #f04d4d;
@@ -283,62 +328,80 @@ input[type="number"]::-webkit-outer-spin-button {
       color: #fff;
       border-radius: 5px;
     }
-    .warningCancel{
+
+    .warningCancel {
       background-color: #fff;
       color: #f04d4d;
       border: #f04d4d 1px solid;
     }
   }
 }
+
 // In your component's CSS file
 @media (max-width: 768px) {
-  .dtItem{
+  .dtItem {
     width: 100vw;
     // top: 0;
     left: 0;
     min-height: max-content;
-    .dtTopWrapper{
-      .dtName{
+
+    .dtTopWrapper {
+      .dtName {
         font-size: 1.1rem;
         height: 60px;
       }
-      .dtInputName{
+
+      .dtInputName {
         font-size: 1.1rem;
         width: 40%;
         margin: 15px 0;
       }
-      .Star{
+
+      .Star {
         top: 10px;
         left: 15px;
-        img{
+
+        img {
           height: 65%;
           width: 65%;
         }
       }
-      .xIcon{
+
+      .xIcon {
         top: 10px;
         padding: 8px;
       }
     }
-    .dtContent{
+
+    .dtContent {
       width: 95%;
-      min-height: 0;
-      .dtImageBorder{
+      min-height: 150px;
+
+      .dtImageBorder {
         width: 150px;
         height: 150px;
-        img{
+        .custom-file{
+          .custom-file-label{
+            height: 150px;
+          }
+        }
+        img {
           height: 150px;
         }
       }
-      .dtInfo{
+
+      .dtInfo {
         width: 50%;
-        .dtOption{
-          .dtAddOptionGroup{
+
+        .dtOption {
+          .dtAddOptionGroup {
             display: flex;
-            input{
+
+            input {
               width: 70%;
             }
-            button{
+
+            button {
               margin: 0;
               padding: 8px;
             }
@@ -346,7 +409,8 @@ input[type="number"]::-webkit-outer-spin-button {
         }
       }
     }
-    .dtButtonGroup{
+
+    .dtButtonGroup {
       width: 100%;
       justify-content: space-around;
       margin-top: 20px;

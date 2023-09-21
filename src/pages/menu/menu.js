@@ -35,7 +35,6 @@ function Menu() {
       )
       .then((response) => {
         const data = response.data;
-        console.log(data);
         if (!data || data === "No categories created") {
           setCategory([]);
         } else {
@@ -57,19 +56,6 @@ function Menu() {
         console.log(error);
       });
   }, [reload, detail]);
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event) => {
-  //     if (ref.current && !ref.current.contains(event.target)) {
-  //       setSelectedItem(null);
-  //     }
-  //   };
-  //   document.addEventListener("click", handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener("click", handleClickOutside);
-  //   };
-  // }, []);
 
   const changeHandler = (e) => {
     setState({ [e.target.name]: e.target.value });

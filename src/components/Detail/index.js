@@ -17,6 +17,7 @@ function Detail(props) {
   const [formChanged, setFormChanged] = useState(false);
   const [isBestSale, setIsBestSale] = useState(false);
   const [newOption, setNewOption] = useState("");
+  const [newOptionPrice, setNewOptionPrice] = useState("");
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -155,6 +156,8 @@ function Detail(props) {
 
   const cancelHandler2 = () => {
     setIsAddOption(false);
+    setNewOption("");
+    setNewOptionPrice("")
   };
 
   const { description, name, category, price } = state;
@@ -163,28 +166,32 @@ function Detail(props) {
     setNewOption(e.target.value);
   };
 
+  const handleOptionPriceChange = (e) => {
+    setNewOptionPrice(e.target.value);
+  };
+
+
   const submitNewOption = () => {
-    if (newOption.trim() !== "") {
-      // thêm newOption vào mảng nếu nó khác rỗng
-      const updatedDishOptions = [...dish.options, newOption];
-      console.log(`http://117.4.194.207:3003/dish/add-option/${dish._id}`, {
-        option: [newOption],
-      });
+    if (newOption.trim() !== "" && newOptionPrice.trim !== "") {
+      const newestOption = {
+        name: newOption,
+        price: newOptionPrice
+      };
       axios
         .post(
           `http://117.4.194.207:3003/dish/add-option/${dish._id}`,
           {
-            option: [newOption],
+            option: newestOption,
           },
           config
         )
         .then((response) => {
-          // update option
-          // console.log(response.data);
-          dish.options = response.data.options;
-          setUpdatedDish({ ...updatedDish, options: updatedDishOptions });
-          setNewOption(""); // Reset the newOption state
-          setIsAddOption(false); // Hide the input field after adding the new option
+          const updatedOptions = response.data.options;
+          dish.options = updatedOptions;
+          setUpdatedDish({ ...updatedDish, options: updatedOptions });
+          setNewOption("");
+          setNewOptionPrice("");
+          setIsAddOption(false);
         })
         .catch((error) => {
           console.log(error);
@@ -193,13 +200,10 @@ function Detail(props) {
   };
 
   const removeOptionHandler = (opt) => {
-    const abc = { option: opt };
-    console.log(`http://117.4.194.207:3003/dish/delete-option/${dish._id}`, {
-      option: [opt],
-    });
     axios
       .delete(
-        `http://117.4.194.207:3003/dish/delete-option/${dish._id}?option=${opt}`
+        `http://117.4.194.207:3003/dish/delete-option/${dish._id}?name=${opt.name}`
+
       )
       .then((response) => {
         // Xử lý thành công khi xóa
@@ -370,54 +374,77 @@ function Detail(props) {
                 type="text"
                 onChange={changeHandler}
               ></input>
-
-              <div className={cx("dtOption")}>
-                Lựa Chọn:
-                {dish.options.map((opt, index) => (
-                  <span key={index} className={cx("dtOptionItem")}>
-                    {opt}
-                    {isAddOption && (
-                      <span
-                        className={cx("removeOption")}
-                        onClick={() => removeOptionHandler(opt)}
-                      >
-                        Xoá
-                      </span>
-                    )}
-                    <br />
-                  </span>
-                ))}
-                {isAddOption && (
-                  <Fragment>
-                    <div className={cx("dtAddOptionGroup")}>
-                      <input
-                        className={cx("dtInputAddOption")}
-                        placeholder="Nhập Tuỳ Chọn Mới"
-                        value={newOption} // Set the value of the input field to the newOption state
-                        onChange={handleOptionChange} // Update the newOption state on input change
-                      />
-                      <button
-                        className={cx("dtSubmitOption", {
-                          hided: newOption.trim() !== "" || "",
-                        })}
-                        onClick={cancelHandler2}
-                      >
-                        Huỷ
-                      </button>
-                      <button
-                        className={cx("dtSubmitOption", {
-                          hided: !(newOption.trim() !== "") || "",
-                        })}
-                        onClick={submitNewOption}
-                      >
-                        OK
-                      </button>
-                    </div>
-                  </Fragment>
-                )}
-              </div>
             </div>
           </div>
+
+          <div className={cx("dtOption")}>
+            <span className={cx("dtOptionFirstItem")}>
+              Tuỳ Chọn:
+            </span>
+            <div className="column-flex">
+              {dish.options.map((opt, index) => (
+                <span key={index} className={cx("dtOptionItem")}>
+                  <div className={cx("")}>{opt.name}</div>
+                  <div className={cx("")}>
+                    {opt.price !== null ? (
+                      opt.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+                    ) : (
+                      "0 đ"
+                    )}
+                  </div>
+                  {isAddOption && (
+                    <span
+                      className={cx("removeOption")}
+                      onClick={() => removeOptionHandler(opt)}
+                    >
+                      Xoá
+                    </span>
+                  )}
+                  <br />
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {isAddOption && (
+            <Fragment>
+              <div className={cx("dtAddOptionGroup")}>
+                <div className={cx("column-flex")}>
+                  <input
+                    className={cx("dtInputAddOption")}
+                    placeholder="Nhập Tuỳ Chọn Mới"
+                    value={newOption} // Set the value of the input field to the newOption state
+                    onChange={handleOptionChange} // Update the newOption state on input change
+                  />
+                  <input
+                    type="number"
+                    className={cx("dtInputAddOption")}
+                    placeholder="Nhập Giá"
+                    value={newOptionPrice} // Set the value of the input field to the newOption state
+                    onChange={handleOptionPriceChange} // Update the newOption state on input change
+                  />
+                </div>
+
+                <button
+                  className={cx("dtSubmitOption", {
+                    hided: newOption.trim() !== "" || "",
+                  })}
+                  onClick={cancelHandler2}
+                >
+                  Huỷ
+                </button>
+                <button
+                  className={cx("dtSubmitOption", {
+                    hided: !(newOption.trim() !== "") || "",
+                  })}
+                  onClick={submitNewOption}
+                >
+                  OK
+                </button>
+              </div>
+            </Fragment>
+          )}
+
           <div className={cx("dtButtonGroup")}>
             {/* <button className={cx("dtAddOption")}>Thêm Tuỳ Chọn</button> */}
             {!hideBox && (
