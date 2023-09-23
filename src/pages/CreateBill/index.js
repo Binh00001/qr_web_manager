@@ -25,6 +25,7 @@ function CreateBill() {
     const [foodFailName, setFoodFailName] = useState("");
     const [amoutRemain, setAmountRemain] = useState(0);
     const [tables, setTables] = useState([]);
+    const [optionList, setOptionList] = useState([]);
     const [tableMessage, setTableMessage] = useState("");
     const arrayFood = [];
 
@@ -145,6 +146,27 @@ function CreateBill() {
             });
     }, [reload]);
 
+    function handleSelectOption(optionName, optionPrice) {
+        // Check if the option already exists in the list
+        const optionExists = optionList.some((option) => option.name === optionName && option.price === optionPrice);
+
+        if (optionExists) {
+            // If the option exists, remove it from the list
+            const updatedOptionList = optionList.filter((option) => !(option.name === optionName && option.price === optionPrice));
+            setOptionList(updatedOptionList);
+        } else {
+            if (optionPrice === 0) {
+                // If the optionPrice is 0, remove any existing options with the same name
+                const updatedOptionList = optionList.filter((option) => option.name !== optionName);
+                setOptionList(updatedOptionList);
+            } else {
+                // If the option doesn't exist, add it to the list
+                const newOption = { name: optionName, price: optionPrice };
+                setOptionList([...optionList, newOption]);
+            }
+        }
+    }
+
     function addDetail() {
         let food = {
             id: obj._id,
@@ -153,7 +175,7 @@ function CreateBill() {
             price: obj.price,
             category: obj.category,
             number: quantity,
-            options: check,
+            options: optionList,
         };
         let data = JSON.parse(sessionStorage.getItem("obj"));
         if (data === null) {
@@ -213,7 +235,7 @@ function CreateBill() {
         <div className={cx("cbWrapper")}>
             {!(!tableMessage) && (
                 <Fragment>
-                    <div className={cx("checkTableOverlay")} onClick={() => {setTableMessage("")}}></div>
+                    <div className={cx("checkTableOverlay")} onClick={() => { setTableMessage("") }}></div>
                     <div className={cx("checkTableBox")}>
                         <div className={cx("checkTableMsg")}>{tableMessage}</div>
                     </div>
@@ -295,7 +317,7 @@ function CreateBill() {
                         ))}
                     </div>
                     <div className={cx("mContent")} >
-                        {(addFood && obj !== {}) && (
+                        {(addFood && obj !== null) && (
                             <Fragment>
                                 <div className={cx("addFoodWrapper")}>
                                     <div className={cx("addFoodFlexBox")}>
@@ -319,20 +341,26 @@ function CreateBill() {
                                     </div>
 
                                     <div className={cx("addFoodOption")}>
-                                        {obj.options
-                                            .map((item, index) => (
-                                                <div key={index} className={cx("optionCheck")}>
-                                                    <input
-                                                        onClick={() => setCheck(item)}
-                                                        type="radio"
-                                                        name="check"
-                                                        value={item}
-                                                        id={index}
-                                                    />
-                                                    <label htmlFor={index}>{item}</label>
+                                        {console.log(obj.options)}
+                                        {obj.options.map((item, index) => {
+                                            const isSelected = optionList.some(
+                                                (option) => option.name === item.name && option.price === item.price
+                                            );
+
+                                            return (
+                                                <div
+                                                    key={item._id}
+                                                    className={cx("optionItem", { selectedOption: isSelected })}
+                                                    onClick={() => handleSelectOption(item.name, item.price)}
+                                                >
+                                                    <div className={cx("optionName")}>{item.name}</div>
+                                                    <div className={cx("optionPrice")}>
+                                                        {item.price === null ? "0đ" : `${item.price.toLocaleString("vn-VN", { currency: "VND" })}đ`}
+                                                    </div>
+
                                                 </div>
-                                            ))
-                                        }
+                                            );
+                                        })}
                                     </div>
                                     <button className={cx("addFoodConfirmButton")} onClick={addDetail}>
                                         {!add && "xác nhận"}

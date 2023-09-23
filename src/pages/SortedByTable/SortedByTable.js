@@ -149,6 +149,7 @@ function SortedByTable() {
                 { "staffId": cashier.cashierId },
             )
             .then((response) => {
+                console.log(response);
                 setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
             })
             .catch((error) => {

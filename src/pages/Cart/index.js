@@ -100,10 +100,11 @@ function Cart() {
     };
 
     const getTotalBill = () => {
-        return cartStored.reduce(
-            (total, food) => total + food.price * food.number,
-            0
-        );
+        return cartStored.reduce((total, food) => {
+            const mainItemPrice = food.price * food.number;
+            const optionPrices = food.options.reduce((optionTotal, opt) => optionTotal + (opt.price || 0), 0);
+            return total + mainItemPrice + optionPrices;
+        }, 0);
     };
     const getOrderData = () => {
         return cartStored.map((food) => ({
@@ -112,7 +113,7 @@ function Cart() {
             options: food.options,
         }));
     };
-
+    
     const deleteCartHandle = () => {
         sessionStorage.clear();
         navigate("/sortedbytable")
@@ -146,14 +147,14 @@ function Cart() {
                                 <img className={cx("")} src={food.img} alt="Dish" />
                             </div>
                             <div className={cx("infoBox")}>
-                                <div className={cx("name")}>Tên Món: {food.name}</div>
-                                <div className={cx("options")}>Tuỳ Chọn: {food.options}</div>
+                                <div className={cx("name")}>Món: {food.name}</div>
+                                <div className={cx("options")}>Tuỳ Chọn: {food.options.map((opt) => (
+                                    <div>{opt.name} +{opt.price === null ? "0đ" : `${opt.price.toLocaleString("vn-VN", { currency: "VND" })}đ`}</div>
+                                ))}</div>
                                 <div className={cx("number")}>Số Lượng: {food.number}</div>
-                                <div className={cx("price")}>Đơn Giá:
-                                    {" " + food.price.toLocaleString("vi-VN", {
-                                        style: "currency",
-                                        currency: "VND",
-                                    })}</div>
+                                <div className={cx("price")}>Giá:
+                                    {`${(food.number * food.price + food.options.reduce((acc, opt) => acc + (opt.price || 0), 0)).toLocaleString("vi-VN")}đ`}
+                                </div>
                             </div>
                             <div className={cx("deleteItem")} onClick={() => removeFromObj(food.id)}>Xóa</div>
                         </div>
