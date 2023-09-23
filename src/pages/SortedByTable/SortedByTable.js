@@ -146,7 +146,7 @@ function SortedByTable() {
         axios
             .put(
                 `${process.env.REACT_APP_API_URL}/cart/payByStaff/${cartId}`,
-                { "staffId" : cashier.cashierId },
+                { "staffId": cashier.cashierId },
             )
             .then((response) => {
                 setCartPaidChange(prevCartPaidChange => !prevCartPaidChange);
@@ -622,7 +622,11 @@ function SortedByTable() {
                                                                         {order.dish_name}
                                                                     </div>
                                                                     <div className={cx("hItemOption")}>
-                                                                        <span>{order.options}</span>
+                                                                        <span>
+                                                                            {order.options.map((opt, index) => (
+                                                                                <div>{opt.name}</div>
+                                                                            ))} 
+                                                                        </span>
                                                                     </div>
                                                                     <div className={cx("hItemQuantity")}>
                                                                         {order.number}
@@ -718,29 +722,29 @@ function SortedByTable() {
                                                             </Fragment>
                                                         )}
                                                         {/* {isAdmin === "STAFF" && ( */}
-                                                            <Fragment>
-                                                                {cart.status === "WAITPAY" && (
-                                                                    <div className={cx("hItemButtonGroup")}>
-                                                                        <div className={cx("")}>
-                                                                            <button
-                                                                                className={cx("cancelBillButton")}
-                                                                                onClick={() => handleSetCancelBill(cart._id)}
-                                                                            >
-                                                                                Huỷ Đơn
-                                                                            </button>
-                                                                        </div>
-                                                                        <div className={cx("")}>
-                                                                            <button
-                                                                                id="PayButton"
-                                                                                className={cx("readyBillButton")}
-                                                                                onClick={() => handleSetPaidBill(cart._id)}
-                                                                            >
-                                                                                THU TIỀN
-                                                                            </button>
-                                                                        </div>
+                                                        <Fragment>
+                                                            {cart.status === "WAITPAY" && (
+                                                                <div className={cx("hItemButtonGroup")}>
+                                                                    <div className={cx("")}>
+                                                                        <button
+                                                                            className={cx("cancelBillButton")}
+                                                                            onClick={() => handleSetCancelBill(cart._id)}
+                                                                        >
+                                                                            Huỷ Đơn
+                                                                        </button>
                                                                     </div>
-                                                                )}
-                                                            </Fragment>
+                                                                    <div className={cx("")}>
+                                                                        <button
+                                                                            id="PayButton"
+                                                                            className={cx("readyBillButton")}
+                                                                            onClick={() => handleSetPaidBill(cart._id)}
+                                                                        >
+                                                                            THU TIỀN
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            )}
+                                                        </Fragment>
                                                         {/* )} */}
                                                         {cart.paymentMethod === "BANK" && (
                                                             <Fragment>
