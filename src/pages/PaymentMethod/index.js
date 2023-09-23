@@ -266,8 +266,9 @@ function PaymentMethod() {
         navigate("/showall")
     }
 
-    const handlePickedBank = (value) => {
-        setShowBankInforName(value)
+    const handlePickedBank = (name, number) => {
+        setShowBankInforName(name);
+        setBankNumber(number)
     }
 
     const handlePickedPaymentMethod = (value) => {
