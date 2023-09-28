@@ -50,7 +50,7 @@ function PaymentMethod() {
             },
         ],
     });
-    
+
     const vietQR = new VietQR({
         clientID: '4244e11f-e282-4e3c-af39-6d9749c99e44',
         apiKey: '2f317b30-113a-45c5-aaf7-192d8926a15f',
@@ -261,6 +261,15 @@ function PaymentMethod() {
                 });
         }
     }
+
+    const handleSaveQR = () => {
+        // Tạo một đối tượng <a> để tạo liên kết tải ảnh
+        const a = document.createElement('a');
+        a.href = qrURL;
+        a.download = `PayByQrScanTo${showBankInforName}.png`; // Đặt tên cho tập tin được tải về
+
+        a.click();
+    };
 
     const handleBackButton = () => {
         navigate("/showall")
@@ -505,9 +514,15 @@ function PaymentMethod() {
                                                 <Fragment>
                                                     {qrGenerated && (
                                                         <div className={cx("BankQRCode")}>
-                                                            <img src={qrURL} alt="QR-CODE"></img>
+                                                            <img src={qrURL} id="TPBankQR" alt="QR-CODE"></img>
                                                         </div>
                                                     )}
+                                                    <div className={cx("BankQRSaved")}>
+                                                        <button onClick={handleSaveQR}>
+                                                            Lưu Mã QR
+                                                        </button>
+                                                    </div>
+
                                                     <div className={cx("BankID")}>20869042001
                                                         <img
                                                             src={copyIcon}
@@ -525,9 +540,15 @@ function PaymentMethod() {
                                                 <Fragment>
                                                     {qrGenerated && (
                                                         <div className={cx("BankQRCode")}>
-                                                            <img src={qrURL} alt="QR-CODE"></img>
+                                                            <img src={qrURL} id="VietinBankQR" alt="QR-CODE"></img>
                                                         </div>
                                                     )}
+                                                    <div className={cx("BankQRSaved")}>
+                                                        <button onClick={handleSaveQR}>
+                                                            Lưu Mã QR
+                                                        </button>
+                                                    </div>
+
                                                     <div className={cx("BankID")}>
                                                         105869252053
                                                         <img
@@ -571,10 +592,10 @@ function PaymentMethod() {
                     </div>
                 </Fragment>
                 {pickedPaymentMethod !== "" && (
-                <Fragment>
-                    <button id="confirmPaymentButton" onClick={() => { sendBill(pickedPaymentMethod) }}>Gửi Hoá Đơn</button>
-                </Fragment>
-            )}
+                    <Fragment>
+                        <button id="confirmPaymentButton" onClick={() => { sendBill(pickedPaymentMethod) }}>Gửi Hoá Đơn</button>
+                    </Fragment>
+                )}
             </div>
         </Fragment>
     );

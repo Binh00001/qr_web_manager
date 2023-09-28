@@ -205,7 +205,19 @@
                         max-width: 200px;
                     }
                 }
-
+                .BankQRSaved{ 
+                  display: flex;
+                  justify-content: center;
+                  button{
+                    padding: 5px 10px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: #2ed573;
+                    color: #fff;
+                    margin: 10px 10px 0 10px;
+                    font-size: 1.05rem;
+                  }
+                }
                 .BankID {
                     margin: 10px;
                     display: flex;
