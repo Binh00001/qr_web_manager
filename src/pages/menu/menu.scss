@@ -22,6 +22,10 @@
   overflow-y: auto;
   position: relative;
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
   .mNavBar {
     // margin-left: 3%;
     width: 100%;
@@ -203,6 +207,7 @@
 @media (max-width: 768px) {
   .mTopBar {
     justify-content: space-around;
+
     .mText {
       font-size: 0.9rem;
       margin: 0;
@@ -212,7 +217,8 @@
       // border: 1px solid black;
       border-radius: 10px;
     }
-    .active{
+
+    .active {
       background-color: #f04d4d;
       color: #fff;
     }
@@ -229,26 +235,32 @@
         margin: 0 2%;
       }
     }
-    .mContent{
+
+    .mContent {
       // justify-content: space-around;
       margin-top: 10px;
-      .mItem{
+
+      .mItem {
         min-height: 100px;
         // height: 15%;
         margin: 0 auto 30px auto;
-        .mHoverBox{
-          .optionsHoverBox{
+
+        .mHoverBox {
+          .optionsHoverBox {
             width: 90%;
           }
 
         }
-        .mItemBox{
+
+        .mItemBox {
           min-height: 230px;
-          .mImageBorder{
+
+          .mImageBorder {
             min-height: 100px;
             min-width: 150px;
             height: 150px;
-            img{
+
+            img {
               width: 160px;
             }
           }
