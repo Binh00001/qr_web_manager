@@ -94,7 +94,7 @@ function TableActive() {
     return (
         <Fragment>
             <div className={cx("hAllTable")}>
-                {tables.map((table, index) => (
+                {tables !== null && tables.map((table, index) => (
                     <button
                         onClick={() => clickHandler(table)}
                         key={index}

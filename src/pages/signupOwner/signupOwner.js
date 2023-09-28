@@ -60,13 +60,14 @@ function Signup() {
         `${process.env.REACT_APP_API_URL}/group/allByOwner`, config
       )
       .then((response) => {
+        console.log(response);
         setListGroup(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  
+
   //get listcashier
   useEffect(() => {
     axios
@@ -468,10 +469,10 @@ function Signup() {
           {isSignUp && (
             <Fragment>
               <div className={cx("signupStateBar")}>
-                  <div className={cx("signupStateItem", {active: signupState === "Tạo Chi Nhánh"})} onClick={() => setSignupState("Tạo Chi Nhánh")}>
+                <div className={cx("signupStateItem", { active: signupState === "Tạo Chi Nhánh" })} onClick={() => setSignupState("Tạo Chi Nhánh")}>
                   Tạo Chi Nhánh
                 </div>
-                <div className={cx("signupStateItem",  {active: signupState === "Tạo Tài Khoản"})} onClick={() => setSignupState("Tạo Tài Khoản")}>
+                <div className={cx("signupStateItem", { active: signupState === "Tạo Tài Khoản" })} onClick={() => setSignupState("Tạo Tài Khoản")}>
                   Tạo Tài Khoản
                 </div>
               </div>
@@ -607,8 +608,8 @@ function Signup() {
                           {isOpen && (
                             <div>
                               <div className={cx("spDropdownWrapper")}>
-                                {listGroup
-                                  .map((user, index) => (
+                                {Array.isArray(listGroup) && listGroup.length > 0 ? (
+                                  listGroup.map((user, index) => (
                                     <div
                                       key={index}
                                       className={cx("spDropdownContent")}
@@ -618,10 +619,16 @@ function Signup() {
                                     >
                                       {user.name}
                                     </div>
-                                  ))}
+                                  ))
+                                ) : (
+                                  <div className={cx("spDropdownContent")}>
+                                    Hãy Tạo Chi Nhánh
+                                  </div>
+                                )}
                               </div>
                             </div>
                           )}
+
                         </div>
                       </div>
                     </form>
@@ -642,8 +649,8 @@ function Signup() {
           {isAccountManager && (
             <Fragment>
               <div className={cx("amWrapper")}>
-                {listGroup
-                  .map((group, index) => (
+                {Array.isArray(listGroup) && listGroup.length > 0 ? (
+                  listGroup.map((group, index) => (
                     <Fragment>
                       <div className={cx("amGroupBox")}>
                         <div className={cx("amGroupName")} onClick={() => toggleOpenGroup(group._id)}>
@@ -713,14 +720,20 @@ function Signup() {
                       </div>
                     </Fragment>
                   ))
-                }
+                ) : (
+                  <div className={cx("amItem")}>
+                    <div className={cx("amCenter")}>
+                      Chưa Có Group Nào
+                    </div>
+                  </div>
+                )}
               </div>
             </Fragment>
           )}
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default Signup;

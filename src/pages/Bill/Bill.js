@@ -240,7 +240,7 @@ function Bill() {
                         >
                           Tất Cả
                         </div>
-                        {listGroup
+                        {listGroup !== null && listGroup
                           .map((user, index) => (
                             <div
                               key={index}
@@ -288,7 +288,7 @@ function Bill() {
               <p>Hôm Nay Chưa Có Hoá Đơn</p>
             </div>
           } */}
-          {displayCart
+          {displayCart !== null && displayCart
             .filter((cart) => cart.status !== "CANCEL" && cart.paymentMethod === paidMethod)
             .map((cart, index) => (
               <div key={index} className={cx("bItem")}>
@@ -332,7 +332,7 @@ function Bill() {
                       <div className={cx("bTitleText")}>Tuỳ Chọn</div>
                       <div className={cx("bTitleText")}>Số Lượng</div>
                     </div>
-                    {cart.order.map((order, orderIndex) => (
+                    {cart.order !== null && cart.order.map((order, orderIndex) => (
                       <div className={cx("bFoodItem")} key={orderIndex}>
                         <div className={cx("bFoodName")}>{order.dish_name}</div>
                         <div className={cx("bFoodOption")}>

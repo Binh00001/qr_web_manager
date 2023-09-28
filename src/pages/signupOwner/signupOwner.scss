@@ -76,15 +76,16 @@
     max-width: 1200px;
     margin: 0 auto;
     height: 100%;
-    .signupStateBar{
+
+    .signupStateBar {
       margin-top: 20px;
       display: flex;
       width: 80%;
       margin-left: 10%;
       justify-content: space-between;
       min-width: 210px;
-      
-      .signupStateItem{
+
+      .signupStateItem {
         width: 50%;
         display: flex;
         justify-content: center;
@@ -93,7 +94,8 @@
         background-color: #fff;
         border-radius: 10px;
       }
-      .active{
+
+      .active {
         background-color: #2ecc71;
         color: #fff;
         font-weight: 600;
@@ -107,6 +109,7 @@
       margin: 5vh auto 80vh auto;
       border-radius: 15px;
       min-height: 200px;
+
       .spBox {
         margin-top: 35px;
         display: flex;
@@ -114,6 +117,7 @@
         min-height: 50%;
         width: 100%;
         justify-content: center;
+
         input {
           width: 75%;
           height: 45px;
@@ -123,6 +127,7 @@
           background-color: #fff;
         }
       }
+
       .spRegisterBox {
         border-top: #3498db 1px solid;
         width: 75%;
@@ -316,6 +321,7 @@
       margin: 2% auto;
 
       .amLeft {
+
         .amItemInfo {
           // max-width: 78%;
           word-break: break-all;
@@ -420,25 +426,36 @@
 
 }
 
+.amCenter{
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
 @media (max-width: 768px) {
   .lgBody {
     .spContent {
-      .spGroupContainer{
+      .spGroupContainer {
         width: 95%;
-        .spBox{
+
+        .spBox {
           margin-top: 30px;
         }
-        .spRegisterBox{
+
+        .spRegisterBox {
           width: 80%;
           margin: 20px auto;
           display: flex;
           justify-content: space-around;
+
           button {
             margin-left: 0;
             width: 100%;
           }
         }
       }
+
       .spRightContainer {
         width: 95%;
 

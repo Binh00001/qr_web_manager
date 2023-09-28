@@ -382,7 +382,7 @@ function Detail(props) {
               Tuỳ Chọn:
             </span>
             <div className="column-flex">
-              {dish.options.map((opt, index) => (
+              {dish.options !== null && dish.options.map((opt, index) => (
                 <span key={index} className={cx("dtOptionItem")}>
                   <div className={cx("")}>{opt.name}</div>
                   <div className={cx("")}>
