@@ -102,7 +102,7 @@ function Cart() {
     const getTotalBill = () => {
         return cartStored.reduce((total, food) => {
             const mainItemPrice = food.price * food.number;
-            const optionPrices = food.options.reduce((optionTotal, opt) => optionTotal + (opt.price || 0), 0);
+            const optionPrices = food.number * food.options.reduce((optionTotal, opt) => optionTotal + (opt.price || 0), 0);
             return total + mainItemPrice + optionPrices;
         }, 0);
     };
@@ -153,7 +153,7 @@ function Cart() {
                                 ))}</div>
                                 <div className={cx("number")}>Số Lượng: {food.number}</div>
                                 <div className={cx("price")}>Giá:
-                                    {`${(food.number * food.price + food.options.reduce((acc, opt) => acc + (opt.price || 0), 0)).toLocaleString("vi-VN")}đ`}
+                                    {`${(food.number * food.price + food.number * food.options.reduce((acc, opt) => acc + (opt.price || 0), 0)).toLocaleString("vi-VN")}đ`}
                                 </div>
                             </div>
                             <div className={cx("deleteItem")} onClick={() => removeFromObj(food.id)}>Xóa</div>
