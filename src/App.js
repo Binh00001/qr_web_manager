@@ -10,12 +10,18 @@ import "moment/locale/vi";
 
 const ReddotShowContext = createContext();
 
+const CallStaffListContext = createContext();
+
 const IsAdminContext = createContext();
 
 const BillInProgressContext = createContext();
 
 export function useReddotShowContext() {
   return useContext(ReddotShowContext);
+}
+
+export function useCallStaffListContext() {
+  return useContext(CallStaffListContext);
 }
 
 export function useBillInProgress() {
@@ -56,7 +62,6 @@ function App() {
     const socket = io(process.env.REACT_APP_API_URL);
     socket.on("newCallStaff", (response) => {
       if (isAdmin === "cashier") {
-        console.log(response);
         if (response.cashier_id === cashierInfo.cashierId) {
           setNewPing(response);
         }
@@ -101,49 +106,39 @@ function App() {
       });
   }, []);
 
+  //get call staff list everytime its have new ping
   useEffect(() => {
-    const fetchData = () => {
-      axios
-        .get(
-          `${process.env.REACT_APP_API_URL}/call-staff/all/${cashierInfo.cashierId}?time=3360`
-        )
-        .then((response) => {
-          if (response.data === "No call staff created") {
-            setRequests([]);
-          } else {
-            const newRequests = response.data;
-            setRequests(newRequests);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    };
-
-    fetchData();
-
-    const interval = setInterval(() => {
-      fetchData();
-    }, 30000);
-
-    return () => {
-      clearInterval(interval);
-    };
+    axios
+      .get(
+        `${process.env.REACT_APP_API_URL}/call-staff/all/${cashierInfo.group_id}?time=10`
+      )
+      .then((response) => {
+        if (response.data === "No call staff created") {
+          setRequests([]);
+        } else {
+          const newRequests = response.data;
+          setRequests(newRequests);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [newPing]);
 
-  useEffect(() => {
-    const anyRedDot = requests.some((request) => {
-      return removeRedDot(request);
-    });
 
+
+  //show reddot if there is atleast 1 not checked
+  useEffect(() => {
+    const anyRedDot = requests.some((request) => request.isChecked === false);
     setReddotShow(anyRedDot);
   }, [requests]);
 
+  //get list cart
   useEffect(() => {
     const fetchData = () => {
       axios
         .get(
-          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashierInfo.cashierId}?time= 60`
+          `${process.env.REACT_APP_API_URL}/cart/menu/allByCashier/${cashierInfo.cashierId}?time=0`
         )
         .then((response) => {
           if (response.data !== "No carts created") {
@@ -163,6 +158,7 @@ function App() {
     };
   }, [newPing, checkBill]);
 
+  //remove reddot after 1 min
   const removeRedDot = (request) => {
     if (requests.length > 0 && request) {
       const createdAt =
@@ -188,7 +184,9 @@ function App() {
       <IsAdminContext.Provider value={isAdmin}>
         <ReddotShowContext.Provider value={reddotShow}>
           <BillInProgressContext.Provider value={billInProgress}>
-            <MainRoutes />
+            <CallStaffListContext.Provider value={requests}>
+              <MainRoutes />
+            </CallStaffListContext.Provider>
           </BillInProgressContext.Provider>
         </ReddotShowContext.Provider>
       </IsAdminContext.Provider>

@@ -1,10 +1,9 @@
 import styles from "./DefaultLayout.scss";
 import classNames from "classnames";
-import logo from "~/components/assets/image/food-logo-design-template-restaurant-free-png.webp";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "react-auth-kit";
 import { useReddotShowContext, useIsAdminContext } from "~/App";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 // import io from "socket.io-client";
 // import ting from "~/components/assets/sound/ting.mp3";
 // import moment from "moment";

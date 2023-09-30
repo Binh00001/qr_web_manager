@@ -6,7 +6,7 @@ import styles from "~/pages/SortedByTable/SortedByTable.scss";
 import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
-import { useIsAdminContext, useBillInProgress } from "~/App";
+import { useIsAdminContext, useBillInProgress, useCallStaffListContext } from "~/App";
 import "moment/locale/vi";
 
 
@@ -16,6 +16,7 @@ const cx = classNames.bind(styles);
 
 function SortedByTable() {
     const isAdmin = useIsAdminContext();
+    const CallStaffListContext = useCallStaffListContext();
     const [tables, setTables] = useState([]);
     const [newCallStaff, setNewCallStaff] = useState([]);
     const [newCart, setNewCart] = useState([]);
@@ -53,10 +54,8 @@ function SortedByTable() {
     //socket
     useEffect(() => {
         const socket = io(process.env.REACT_APP_API_URL);
-
         socket.on("newCallStaff", (response) => {
             setNewCallStaff(response);
-            console.log(response);
         });
         socket.on("newCart", (response) => {
             setNewCart(response);
@@ -209,6 +208,13 @@ function SortedByTable() {
         }
     }
 
+    const hasCallStaffReQuest = (tableNumber) => {
+        let tabelCallStaffList = CallStaffListContext.filter(request => request.table === tableNumber)
+        if(tabelCallStaffList.some((request) => request.isChecked === false)){
+            return true;
+        }
+    }
+
     return (
         <Fragment>
             <Fragment>
@@ -227,7 +233,7 @@ function SortedByTable() {
                             )}
                             {/* {showTableMap && (
                                 <Fragment>
-                                    <button id="switchShowPayBill" onClick={() => setShowTotalPayBill(!showTotalPayBill)}>
+                                    <button id="switchShowPayBill" onClick={() => }>
                                         Đơn Chưa Thu: {showTotalPayBill ? "Số Lượng" : "Giá Tiền"}
                                     </button>
                                 </Fragment>
@@ -280,7 +286,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
@@ -330,7 +336,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
@@ -379,7 +385,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
@@ -431,7 +437,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
@@ -483,7 +489,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
@@ -532,7 +538,7 @@ function SortedByTable() {
                                                         <div className={cx("tableBillMoneyIcon", !hasAddEffect2 ? "hided" : "")}>
                                                             {calcBillWaitPay(table.name)}
                                                         </div>
-                                                        <div className={cx("tableCallStaffIcon")}>
+                                                        <div className={cx("tableCallStaffIcon", !hasCallStaffReQuest(table.name) ? "hided" : "")}>
                                                             <img src={staffIcon} alt="CS"></img>
                                                         </div>
                                                     </div>
