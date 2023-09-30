@@ -44,11 +44,7 @@
     .sbtFilterItem {
         min-width: 100px;
         height: 30px;
-        // margin: 20px 15px 0 15px;
         border-radius: 8px;
-        // border: 1px solid;
-        // background-color: transparent;
-        // font-size: 1rem;
         width: 30%;
         font-size: 0.8rem;
         margin: 15px 0 0 0;
@@ -62,103 +58,10 @@
     }
 }
 
-.addEffect1 {
-    background-color: #ffdd59;
-    // border: 2px #3498db solid;
-    border-radius: 10px;
-}
+.addEffect1 {}
 
-.addEffect2 {
-    background-color: #4bcffa;
-    // border: 2px #3498db solid;
-    border-radius: 10px;
-}
+.addEffect2 {}
 
-// .addEffect3{
-//     background-color: #0be881;
-//     // border: 2px #3498db solid;
-//     border-radius: 10px;
-// }
-
-.sbtItem {
-    // position: absolute;
-
-    .sbtIconBorder {
-        height: 75px;
-        width: 90px;
-        position: relative;
-
-        img {
-            height: 75px;
-            width: 90px;
-            object-fit: cover;
-        }
-
-        .sbtName {
-            position: absolute;
-            width: 90px;
-            text-align: center;
-            height: 30px;
-            font-size: 1.5rem;
-            top: 20px;
-            font-weight: 600;
-        }
-
-        .reddot {
-            top: -10px;
-            right: -10px;
-            position: absolute;
-            height: 25px;
-            width: 25px;
-            background-color: red;
-            border-radius: 50%;
-            text-align: center;
-            color: #ecf0f1;
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .Paydot {
-            top: 20px;
-            right: 0px;
-            position: absolute;
-            // height: 25px;
-            // width: 25px;
-
-            text-align: center;
-            // color: #ecf0f1;
-            font-weight: 600;
-            font-size: 1rem;
-
-            div {
-                border: 1px solid black;
-                color: #202124;
-                padding: 2px 5px;
-                border-radius: 10px;
-                background-color: #0be881;
-            }
-
-            span {
-                background-color: #f04d4d;
-                top: 0px;
-                right: -10px;
-                position: absolute;
-                height: 25px;
-                width: 25px;
-                background-color: #0be881;
-                border-radius: 50%;
-                text-align: center;
-                // color: #ecf0f1;
-                font-weight: 600;
-                font-size: 1rem;
-            }
-        }
-
-        .hided {
-            display: none;
-        }
-    }
-}
 
 .GroupBox {
     height: calc(100vh - 140px);
@@ -167,44 +70,106 @@
     justify-content: space-around;
 }
 
-.firstGroup {
-    width: calc(100vw - 15px);
+.firstGroup,
+.secondGroup,
+.thirdGroup,
+.fourthGroup,
+.fifthGroup,
+.sixthGroup {
     display: flex;
-    justify-content: space-between;
-}
+    width: 100vw;
+    justify-content: space-around;
 
-.secondGroup {
-    width: calc(100vw - 15px);
-    display: flex;
-    justify-content: space-between;
-}
-
-.thirdGroup {
-    width: calc(100vw - 15px);
-    display: flex;
-    justify-content: space-between;
-
-    .totalBillText {
-        align-self: center;
+    .tableBox {
         display: flex;
-        font-size: 1.2rem;
+        width: 30%;
+        height: 100px;
+        justify-content: space-between;
+        border: 1px solid black;
+        border-radius: 10px;
 
-        span {
-            padding: 0 5px;
+        .tableTitle {
+            width: 30%;
+            border-right: 1px solid black;
+            display: flex;
+            justify-content: center;
+
+            span {
+                align-self: center;
+                font-size: 25px;
+            }
+        }
+
+        .tableSubTitle {
+            width: 70%;
+
+            .tableIcon {
+                position: relative;
+                width: 100%;
+                margin-top: 3px;
+                height: 21px;
+
+                .tableBillInProGressIcon {
+                    left: 2%;
+                    min-height: 23px;
+                    position: absolute;
+                    border-radius: 5px;
+                    min-width: 30%;
+                    text-align: center;
+                    background-color: #f04d4d;
+                }
+
+                .tableBillMoneyIcon {
+                    right: calc(50% - 15%);
+                    min-height: 23px;
+                    position: absolute;
+                    border-radius: 5px;
+                    min-width: 30%;
+                    text-align: center;
+                    background-color: #0be881;
+                }
+
+                .tableCallStaffIcon {
+                    right: 2%;
+                    min-height: 23px;
+                    position: absolute;
+                    border-radius: 15px;
+                    min-width: 30%;
+                    text-align: center;
+                    background-color: #0be881;
+
+                    img {
+                        margin-top: 4px;
+                        margin-left: 0.5px;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .tableListMoney {
+                margin-top: 6px;
+                margin-left: 2%;
+
+                div {
+                    background-color: #0be881;
+                    width: fit-content;
+                    border-radius: 5px;
+                    padding: 0 5px;
+                    margin-top: 1px;
+                }
+            }
         }
     }
 }
 
-.fourthGroup {
-    width: calc(100vw - 15px);
-    display: flex;
+.thirdGroup, .fourthGroup {
     justify-content: space-between;
-
+    margin-left: 1.5%;
     .totalBillText {
+        margin-right: 5%;
         align-self: center;
         display: flex;
         font-size: 1.2rem;
-
         span {
             padding: 0 5px;
         }
@@ -212,25 +177,22 @@
 }
 
 .fifthGroup {
-    width: calc(100vw - 15px);
-    display: flex;
     justify-content: space-between;
+    div{
+        margin: 0 1.5%;
+    }
 }
 
-.sixthGroup {
-    width: calc(100vw - 15px);
-    display: flex;
-    justify-content: space-between;
+.hided {
+    display: none;
 }
 
 .hBody {
     .hBillContainer {
         position: relative;
         min-height: 730px;
-        // height: 100vh;
         width: 100%;
 
-        // border-right: #202124 2px solid;
         .hListBill {
             width: 100%;
             display: flex;
@@ -334,8 +296,9 @@
                             font-weight: 600;
                             margin-bottom: 5px;
                             text-align: center;
-                            span{
-                                div{
+
+                            span {
+                                div {
                                     text-align: center;
                                 }
                             }
@@ -398,7 +361,8 @@
                     border-top-left-radius: 0;
                     border-bottom-left-radius: 0;
                 }
-                #PayButton{
+
+                #PayButton {
                     background-color: #3498db;
                     color: #000;
                 }

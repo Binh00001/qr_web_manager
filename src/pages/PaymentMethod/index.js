@@ -81,7 +81,7 @@ function PaymentMethod() {
                     if (filtedBank.length > 0) {
                         setBankBin(filtedBank[0].bin)
                     } else {
-                        console.error('Bank not found:', showBankInforName);
+                        // console.error('Bank not found:', showBankInforName);
                     }
                 })
                 .catch((err) => {
@@ -105,7 +105,6 @@ function PaymentMethod() {
                     "template": "compact"
                 })
                 .then((data) => {
-                    console.log(data);
                     if (data.data.data) {
                         setQrURL(data.data.data.qrDataURL);
                         setQrGenerated(true);
