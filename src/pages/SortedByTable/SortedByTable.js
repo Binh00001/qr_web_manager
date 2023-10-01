@@ -6,19 +6,19 @@ import styles from "~/pages/SortedByTable/SortedByTable.scss";
 import { useState } from "react";
 import axios from "axios";
 import moment from "moment";
-import { useIsAdminContext, useBillInProgress, useCallStaffListContext } from "~/App";
+import { useIsAdminContext } from "~/App";
 import "moment/locale/vi";
 
-
+import checkMark from "~/components/assets/image/check-mark.png"
 import staffIcon from "~/components/assets/image/human-icon.png"
 
 const cx = classNames.bind(styles);
 
 function SortedByTable() {
     const isAdmin = useIsAdminContext();
-    const CallStaffListContext = useCallStaffListContext();
     const [tables, setTables] = useState([]);
     const [newCallStaff, setNewCallStaff] = useState([]);
+    const [CallStaffList, setCallStaffList] = useState([]);
     const [newCart, setNewCart] = useState([]);
     const [listCart, setListCart] = useState([]);
     const [listCartPicked, setListCartPicked] = useState([]);
@@ -31,6 +31,7 @@ function SortedByTable() {
     const [showTotalPayBill, setShowTotalPayBill] = useState(true);
     const [cartPaidChange, setCartPaidChange] = useState(true);
     const [showTableMap, setShowTableMap] = useState(true);
+    const [reloadCSL, setReloadCSL] = useState(true);
     const [showImage, setShowImage] = useState("");
 
     const navigate = useNavigate();
@@ -100,7 +101,6 @@ function SortedByTable() {
     //get tablelist
     useEffect(() => {
         axios
-            // .get(`http://117.4.194.207:3003/table/allByCashier/%{cashier.id}`)
             .get(
                 `${process.env.REACT_APP_API_URL}/table/allByCashier/${cashier.group_id}`
             )
@@ -111,6 +111,25 @@ function SortedByTable() {
                 console.log(error);
             });
     }, []);
+
+    //get request list in 10min
+    useEffect(() => {
+        axios
+            .get(
+                `${process.env.REACT_APP_API_URL}/call-staff/all/${cashier.group_id}?time=10`
+            )
+            .then((response) => {
+                if (response.data === "No call staff created") {
+                    setCallStaffList([]);
+                } else {
+                    const newRequests = response.data;
+                    setCallStaffList(newRequests);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [newCallStaff, reloadCSL]);
 
     const handleClickTableName = (value) => {
         setTablePicked(value)
@@ -209,10 +228,27 @@ function SortedByTable() {
     }
 
     const hasCallStaffReQuest = (tableNumber) => {
-        let tabelCallStaffList = CallStaffListContext.filter(request => request.table === tableNumber)
-        if(tabelCallStaffList.some((request) => request.isChecked === false)){
+        let tabelCallStaffList = CallStaffList.filter(request => request.table === tableNumber)
+        if (tabelCallStaffList.some((request) => request.isChecked === false)) {
             return true;
         }
+    }
+
+    const handleCheckedCallStaff = (id) => {
+        axios
+            .put(
+                `${process.env.REACT_APP_API_URL}/call-staff/check/${id}`,
+                { "staffId": cashier.cashierId },
+                config
+            )
+            .then((response) => {
+                if(response.data === true){
+                    setReloadCSL(!reloadCSL)
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     return (
@@ -307,7 +343,6 @@ function SortedByTable() {
                                         )
                                     })}
                             </div>
-
 
                             <div className={cx("secondGroup")}>
                                 {tables.filter(table => ["4", "5", "6"].includes(table.name))
@@ -569,13 +604,23 @@ function SortedByTable() {
                                 <nav className={cx("sbtFilterBar")}>
                                     <button
                                         className={cx("sbtFilterItem", {
+                                            active: choosedStatus === "CALLSTAFF",
+                                        })}
+                                        onClick={() => {
+                                            handleGetStatusFilter("CALLSTAFF");
+                                        }}
+                                    >
+                                        Hỗ Trợ
+                                    </button>
+                                    <button
+                                        className={cx("sbtFilterItem", {
                                             active: choosedStatus === "WAITPAY",
                                         })}
                                         onClick={() => {
                                             handleGetStatusFilter("WAITPAY");
                                         }}
                                     >
-                                        Chưa Thu Tiền
+                                        Thu Tiền
                                     </button>
                                     <button
                                         className={cx("sbtFilterItem", {
@@ -595,11 +640,37 @@ function SortedByTable() {
                                             handleGetStatusFilter("COMPLETED");
                                         }}
                                     >
-                                        Đã Hoàn Thành
+                                        Đã Xong
                                     </button>
                                 </nav>
 
-                                {(listCartPicked === "No carts created" || listCartPicked.length === 0) && (
+                                {choosedStatus === "CALLSTAFF" && (CallStaffList.filter(request => (request.table === tablePicked)).length > 0) && (
+                                    <Fragment>
+                                        {console.log(CallStaffList.filter(request => (request.table === tablePicked)))}
+                                        {CallStaffList
+                                            .filter(request => (request.table === tablePicked))
+                                            .map((callStaff, index) => (
+                                                <Fragment key={index}>
+                                                    <div className={cx("sbtCallStaffRequest", callStaff.isChecked ? "greyBG" : "")}>
+                                                        <div className={cx("sbtCSRLeft")}>
+                                                            <div className={cx("sbtCSRName")}>Tên: {callStaff.customer_name}</div>
+                                                            <div className={cx("sbtCSRTime")}>Thời Gian: {callStaff.createdAt}</div>
+                                                            <div className={cx("sbtCSRStatus")}>Trạng Thái: {callStaff.isChecked ? "Checked" : "Chưa Check"}</div>
+                                                        </div>
+                                                        <div
+                                                            className={cx("sbtCSRRight", callStaff.isChecked ? "hided" : "")}
+                                                            onClick={() => handleCheckedCallStaff(callStaff._id)}
+                                                        >
+                                                            <img src={checkMark} alt="ICON" className={cx(callStaff.isChecked ? "hided" : "")}></img>
+                                                        </div>
+                                                    </div>
+                                                </Fragment>
+                                            ))
+                                        }
+                                    </Fragment>
+                                )}
+
+                                {(listCartPicked === "No carts created" || listCartPicked.length === 0) && choosedStatus !== "CALLSTAFF" && (
                                     <Fragment>
                                         <div className={cx("NoCartsNotification")}>
                                             Hiện Chưa Có Đơn

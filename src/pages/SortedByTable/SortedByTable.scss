@@ -58,9 +58,37 @@
     }
 }
 
+.sbtCallStaffRequest{
+    display: flex;
+    width: 90%;
+    margin:20px 5%;
+    border: 1px solid black;
+    border-radius: 10px;
+    .sbtCSRLeft{
+        width: 80%;
+        padding: 5px;
+    }
+    .sbtCSRRight{
+        min-width: 40px;
+        display: flex;
+        width: 20%;
+        padding: 5px;
+        border-left: 1px solid black;
+        img{
+            margin-left: calc(50% - 20px);
+            width: 40px;
+            align-self: center;
+        }
+    }
+    .hided {
+        display: none;
+    }
+}
+
 .addEffect1 {}
 
-.addEffect2 {}
+.addEffect2 {
+}
 
 
 .GroupBox {
@@ -116,7 +144,7 @@
                     border-radius: 5px;
                     min-width: 30%;
                     text-align: center;
-                    background-color: #f04d4d;
+                    background-color: #3498db;
                 }
 
                 .tableBillMoneyIcon {
@@ -136,7 +164,7 @@
                     border-radius: 15px;
                     min-width: 30%;
                     text-align: center;
-                    background-color: #0be881;
+                    background-color: #f04d4d;
 
                     img {
                         margin-top: 4px;
@@ -185,6 +213,10 @@
 
 .hided {
     display: none;
+}
+
+.greyBG {
+    background-color: #bdc3c7;
 }
 
 .hBody {

@@ -106,7 +106,7 @@ function App() {
       });
   }, []);
 
-  //get call staff list everytime its have new ping
+  //get call staff list everytime its have new ping in 10min
   useEffect(() => {
     axios
       .get(
