@@ -16,10 +16,13 @@
 }
 
 .choosePaymentBody {
-    height: calc(100vh - 60px);
+    min-height: calc(100vh - 60px);
     max-width: 100vw;
     // margin-top: 58px;
     background-color: #f1f2f6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .margintop {
         // height: 2px;
@@ -154,7 +157,6 @@
         }
 
         .PayByBankBottomContainer {
-            min-height: 80vh;
 
             .AddImage {
                 font-size: 1.3rem;
@@ -165,7 +167,7 @@
                 background-color: #f04d4d;
                 color: #fff;
                 border-radius: 10px;
-
+                margin-bottom: 10px;
                 .custom-file {
 
                     // padding: 10px;
@@ -244,14 +246,14 @@
     height: 60px;
     min-width: 140px;
     width: 80%;
-    left: 10%;
+    margin-left: 10%;
     font-size: 2rem;
-    position: fixed;
-    bottom: 40px;
     background-color: #2ed573;
     border: 2px solid #fff;
     border-radius: 15px;
     color: #fff;
+    margin-bottom: 40px;
+    margin-top: 40px;
 }
 
 .successContainer {

@@ -462,7 +462,6 @@ function PaymentMethod() {
                 </div>
                 <Fragment>
                     <div className={cx("choosePaymentBody")}>
-                        <div className={cx("margintop")}></div>
                         {showGuide && (
                             <Fragment>
                                 <div className={cx("guideOverlay")}>
@@ -476,26 +475,14 @@ function PaymentMethod() {
                                 </div>
                             </Fragment>
                         )}
-                        <div className={cx("PayByMoneyBox")} onClick={() => handlePickedPaymentMethod("MONEY")}>
-                            <div className={cx("PayByMoneyIconBorder")}>
-                                <img src={payByMoneyIcon} alt="$"></img>
-                            </div>
-                            <div className={cx("PayByMoneyTitle")}>Thanh Toán Bằng Tiền Mặt</div>
-                            {pickedPaymentMethod === "MONEY" && (
-                                <Fragment>
-                                    <div className={cx("PickedIcon")}>
-                                        <img src={tickIcon} alt="picked"></img>
-                                    </div>
-                                </Fragment>
-                            )}
-                        </div>
-                        <div className={cx("PayByBankBox")} onClick={() => handlePickedPaymentMethod("BANK")}>
-                            <div className={cx("PayByBankTopContainer")}>
-                                <div className={cx("PayByBankIconBorder")}>
-                                    <img src={payByBankIcon} alt="$"></img>
+                        <div>
+                        <div className={cx("margintop")}></div>
+                            <div className={cx("PayByMoneyBox")} onClick={() => handlePickedPaymentMethod("MONEY")}>
+                                <div className={cx("PayByMoneyIconBorder")}>
+                                    <img src={payByMoneyIcon} alt="$"></img>
                                 </div>
-                                <div className={cx("PayByBankTitle")}>Chuyển Khoản Bằng QR</div>
-                                {pickedPaymentMethod === "BANK" && (
+                                <div className={cx("PayByMoneyTitle")}>Thanh Toán Bằng Tiền Mặt</div>
+                                {pickedPaymentMethod === "MONEY" && (
                                     <Fragment>
                                         <div className={cx("PickedIcon")}>
                                             <img src={tickIcon} alt="picked"></img>
@@ -503,98 +490,113 @@ function PaymentMethod() {
                                     </Fragment>
                                 )}
                             </div>
-                            {pickedPaymentMethod === "BANK" && (
-                                <Fragment>
-                                    <div className={cx("PayByBankBottomContainer")}>
-                                        {/* list danh sach bank */}
-                                        <div className={cx("BankListItem")}>
-                                            <div className={cx("BankName")} onClick={() => handlePickedBank("TPBank", "20869042001")}>TPBank</div>
-                                            {showBankInforName === "TPBank" && (
-                                                <Fragment>
-                                                    {qrGenerated && (
-                                                        <div className={cx("BankQRCode")}>
-                                                            <img src={qrURL} id="TPBankQR" alt="QR-CODE"></img>
+                            <div className={cx("PayByBankBox")} onClick={() => handlePickedPaymentMethod("BANK")}>
+                                <div className={cx("PayByBankTopContainer")}>
+                                    <div className={cx("PayByBankIconBorder")}>
+                                        <img src={payByBankIcon} alt="$"></img>
+                                    </div>
+                                    <div className={cx("PayByBankTitle")}>Chuyển Khoản Bằng QR</div>
+                                    {pickedPaymentMethod === "BANK" && (
+                                        <Fragment>
+                                            <div className={cx("PickedIcon")}>
+                                                <img src={tickIcon} alt="picked"></img>
+                                            </div>
+                                        </Fragment>
+                                    )}
+                                </div>
+                                {pickedPaymentMethod === "BANK" && (
+                                    <Fragment>
+                                        <div className={cx("PayByBankBottomContainer")}>
+                                            {/* list danh sach bank */}
+                                            <div className={cx("BankListItem")}>
+                                                <div className={cx("BankName")} onClick={() => handlePickedBank("TPBank", "20869042001")}>TPBank</div>
+                                                {showBankInforName === "TPBank" && (
+                                                    <Fragment>
+                                                        {qrGenerated && (
+                                                            <div className={cx("BankQRCode")}>
+                                                                <img src={qrURL} id="TPBankQR" alt="QR-CODE"></img>
+                                                            </div>
+                                                        )}
+                                                        <div className={cx("BankQRSaved")}>
+                                                            <button onClick={handleSaveQR}>
+                                                                Lưu Mã QR
+                                                            </button>
                                                         </div>
-                                                    )}
-                                                    <div className={cx("BankQRSaved")}>
-                                                        <button onClick={handleSaveQR}>
-                                                            Lưu Mã QR
-                                                        </button>
-                                                    </div>
 
-                                                    <div className={cx("BankID")}>20869042001
-                                                        <img
-                                                            src={copyIcon}
-                                                            alt="copy"
-                                                            onClick={() => handleCopyClick("20869042001")}
-                                                        ></img></div>
-                                                    <div className={cx("BankOwnerName")}>TONG CHAU BINH</div>
-                                                </Fragment>
-                                            )}
-                                        </div>
+                                                        <div className={cx("BankID")}>20869042001
+                                                            <img
+                                                                src={copyIcon}
+                                                                alt="copy"
+                                                                onClick={() => handleCopyClick("20869042001")}
+                                                            ></img></div>
+                                                        <div className={cx("BankOwnerName")}>TONG CHAU BINH</div>
+                                                    </Fragment>
+                                                )}
+                                            </div>
 
-                                        <div className={cx("BankListItem")}>
-                                            <div className={cx("BankName")} onClick={() => handlePickedBank("VietinBank", "105869252053")}>VietinBank</div>
-                                            {showBankInforName === "VietinBank" && (
-                                                <Fragment>
-                                                    {qrGenerated && (
-                                                        <div className={cx("BankQRCode")}>
-                                                            <img src={qrURL} id="VietinBankQR" alt="QR-CODE"></img>
+                                            <div className={cx("BankListItem")}>
+                                                <div className={cx("BankName")} onClick={() => handlePickedBank("VietinBank", "105869252053")}>VietinBank</div>
+                                                {showBankInforName === "VietinBank" && (
+                                                    <Fragment>
+                                                        {qrGenerated && (
+                                                            <div className={cx("BankQRCode")}>
+                                                                <img src={qrURL} id="VietinBankQR" alt="QR-CODE"></img>
+                                                            </div>
+                                                        )}
+                                                        <div className={cx("BankQRSaved")}>
+                                                            <button onClick={handleSaveQR}>
+                                                                Lưu Mã QR
+                                                            </button>
                                                         </div>
-                                                    )}
-                                                    <div className={cx("BankQRSaved")}>
-                                                        <button onClick={handleSaveQR}>
-                                                            Lưu Mã QR
-                                                        </button>
-                                                    </div>
 
-                                                    <div className={cx("BankID")}>
-                                                        105869252053
-                                                        <img
-                                                            src={copyIcon}
-                                                            alt="copy"
-                                                            onClick={() => handleCopyClick("20869042001")}
-                                                        ></img>
-                                                    </div>
-                                                    <div className={cx("BankOwnerName")}>TONG CHAU BINH VIETINBANK</div>
-                                                </Fragment>
-                                            )}
-                                        </div>
+                                                        <div className={cx("BankID")}>
+                                                            105869252053
+                                                            <img
+                                                                src={copyIcon}
+                                                                alt="copy"
+                                                                onClick={() => handleCopyClick("20869042001")}
+                                                            ></img>
+                                                        </div>
+                                                        <div className={cx("BankOwnerName")}>TONG CHAU BINH VIETINBANK</div>
+                                                    </Fragment>
+                                                )}
+                                            </div>
 
-                                        {/* clone test */}
-                                        <div className={cx("AddImage", { active: isActive })}>
-                                            {/* <label htmlFor="image_detail">Ảnh Minh Hoạ:</label> */}
-                                            <div className="custom-file">
-                                                <input
-                                                    onChange={handleFileInputChange}
-                                                    type="file"
-                                                    id="image_detail"
-                                                    name="image_detail"
-                                                    accept="image/png,image/jpeg,image/jpg"
-                                                    required
-                                                    className="custom-file-input"
-                                                />
-                                                <label
-                                                    id="file-label"
-                                                    className="custom-file-label"
-                                                    htmlFor="image_detail"
-                                                >
-                                                    Thêm Ảnh Giao Dịch
-                                                </label>
+                                            {/* clone test */}
+                                            <div className={cx("AddImage", { active: isActive })}>
+                                                {/* <label htmlFor="image_detail">Ảnh Minh Hoạ:</label> */}
+                                                <div className="custom-file">
+                                                    <input
+                                                        onChange={handleFileInputChange}
+                                                        type="file"
+                                                        id="image_detail"
+                                                        name="image_detail"
+                                                        accept="image/png,image/jpeg,image/jpg"
+                                                        required
+                                                        className="custom-file-input"
+                                                    />
+                                                    <label
+                                                        id="file-label"
+                                                        className="custom-file-label"
+                                                        htmlFor="image_detail"
+                                                    >
+                                                        Thêm Ảnh Giao Dịch
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Fragment>
-
-                            )}
+                                    </Fragment>
+                                )}
+                            </div>
                         </div>
+
+                        {pickedPaymentMethod !== "" && (
+                            <Fragment>
+                                <button id="confirmPaymentButton" onClick={() => { sendBill(pickedPaymentMethod) }}>Gửi Hoá Đơn</button>
+                            </Fragment>
+                        )}
                     </div>
                 </Fragment>
-                {pickedPaymentMethod !== "" && (
-                    <Fragment>
-                        <button id="confirmPaymentButton" onClick={() => { sendBill(pickedPaymentMethod) }}>Gửi Hoá Đơn</button>
-                    </Fragment>
-                )}
             </div>
         </Fragment>
     );
