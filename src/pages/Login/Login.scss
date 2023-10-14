@@ -57,17 +57,20 @@
 
         .lgAccountBox {
           width: 80%;
+          min-width: 240px;
           margin: 2vh auto;
           margin-top: 5vh;
         }
 
         .lgPasswordBox {
           width: 80%;
+          min-width: 240px;
           margin: 2vh auto;
         }
 
         .lgLoginAsOwner {
           width: 80%;
+          min-width: 240px; 
           margin: 2vh auto;
           div {
             display: flex;
@@ -90,6 +93,7 @@
         }
         .lgLoginButtonBox {
           width: 80%;
+          min-width: 240px;
           margin: 2vh auto;
 
           input {
@@ -172,7 +176,7 @@
 
         .lg4flex {
           position: absolute;
-          bottom: 20vh;
+          bottom: 10vh;
           left: calc(50% - 130px);
         }
       }
