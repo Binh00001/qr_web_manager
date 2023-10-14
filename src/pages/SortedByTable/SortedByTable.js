@@ -267,13 +267,6 @@ function SortedByTable() {
                                     </div>
                                 </Fragment>
                             )}
-                            {/* {showTableMap && (
-                                <Fragment>
-                                    <button id="switchShowPayBill" onClick={() => }>
-                                        Đơn Chưa Thu: {showTotalPayBill ? "Số Lượng" : "Giá Tiền"}
-                                    </button>
-                                </Fragment>
-                            )} */}
                         </Fragment>
                     )}
                     {isAdmin === "STAFF" && (

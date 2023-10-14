@@ -207,36 +207,6 @@ function TableManager() {
           <div className={cx("TopBar")}>
             <div className={cx("tmgTopBarWrapper")}>
               <div className={cx("tmgText")}>
-                {/* <div className={cx("dropdown")} onClick={toggleDropdown}>
-                  <div id="cashier">
-                    {selectedCashierName || "Chọn Chi Nhánh"}
-                  </div>
-                  {isOpen && (
-                    <div>
-                      <div className={cx("dropdownWrapper")}>
-                        <div
-                          className={cx("dropdownContent")}
-                          onClick={() => handleDropdownItemClick("")}
-                        >
-                          Huỷ Chọn
-                        </div>
-                        {listCashier
-                          .filter((user) => (user.cashierName !== "admin"))
-                          .map((user, index) => (
-                            <div
-                              key={index}
-                              className={cx("dropdownContent")}
-                              onClick={() => handleDropdownItemClick(user.cashierName, user.id)}
-                            >
-                              {user.cashierName}
-                            </div>
-                          ))
-                        }
-
-                      </div>
-                    </div>
-                  )}
-                </div> */}
               </div>
               <div className={cx("tmgText")}>
                   <Fragment>
