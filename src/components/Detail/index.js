@@ -70,8 +70,6 @@ function Detail(props) {
       });
   };
 
-  console.log(dish);
-
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
       const fileInput = e.target;
