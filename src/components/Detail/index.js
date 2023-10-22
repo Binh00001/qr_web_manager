@@ -17,7 +17,7 @@ function Detail(props) {
   const [formChanged, setFormChanged] = useState(false);
   const [isBestSale, setIsBestSale] = useState(false);
   const [newOption, setNewOption] = useState("");
-  const [newOptionPrice, setNewOptionPrice] = useState("");
+  const [newOptionPrice, setNewOptionPrice] = useState("0");
   const [state, setState] = useState({
     name: "",
     description: "",
@@ -69,6 +69,8 @@ function Detail(props) {
         console.log(error);
       });
   };
+
+  console.log(dish);
 
   const changeHandler = (e) => {
     if (e.target.name === "image_detail") {
@@ -225,7 +227,6 @@ function Detail(props) {
   };
 
   const deleteItemHandle = () => {
-    console.log(dish._id);
     axios
       .delete(`http://117.4.194.207:3003/dish/delete/${dish._id}`, config)
       .then((response) => {
@@ -420,7 +421,7 @@ function Detail(props) {
                     type="number"
                     className={cx("dtInputAddOption")}
                     placeholder="Nhập Giá"
-                    value={newOptionPrice} // Set the value of the input field to the newOption state
+                    value={(newOptionPrice !== "0") ? newOptionPrice : ""} // Set the value of the input field to the newOption state
                     onChange={handleOptionPriceChange} // Update the newOption state on input change
                   />
                 </div>
