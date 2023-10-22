@@ -88,8 +88,12 @@ function Login() {
     }
   };
 
-  const handleOwnerLogin = () => {
-    setCheckOwner(!checkOwner)
+  const handleOwnerLogin = (role) => {
+    if (role === "staff") {
+      setCheckOwner(false)
+    }else if(role === "manager"){
+      setCheckOwner(true)
+    }
   }
 
   return (
@@ -122,6 +126,16 @@ function Login() {
             </div>
           </div>
           <div className={cx("lgRightContainer")}>
+            {forUser && (
+              <div className={cx("lgPickLoginPerson")}>
+                <div className={cx((checkOwner && forUser) ? "" : "active")} onClick={() => handleOwnerLogin("staff")}>
+                  Nhân Viên
+                </div>
+                <div className={cx((checkOwner && forUser) ? "active" : "")} onClick={() => handleOwnerLogin("manager")}>
+                  Quản Lý
+                </div>
+              </div>
+            )}
             <form className={cx("lgBox")} onSubmit={handleSubmit}>
               <div className={cx("lgAccountBox")}>
                 <input
@@ -155,18 +169,6 @@ function Login() {
                 <button type="submit" value="Log in">
                   Login
                 </button>
-              </div>
-              <div className={cx("lgLoginAsOwner")}>
-                {(checkOwner && forUser) &&
-                  <div onClick={() => handleOwnerLogin()}>
-                    Đăng Nhập Nhân Viên
-                  </div>
-                }
-                {(!checkOwner && forUser) &&
-                  <div onClick={() => handleOwnerLogin()}>
-                    Đăng Nhập Chủ Cửa Hàng
-                  </div>
-                }
               </div>
             </form>
 

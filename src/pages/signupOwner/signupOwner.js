@@ -611,7 +611,7 @@ function Signup() {
                                 {Array.isArray(listGroup) && listGroup.length > 0 ? (
                                   listGroup.map((user, index) => (
                                     <div
-                                      key={index}
+                                      key={user.name}
                                       className={cx("spDropdownContent")}
                                       onClick={() =>
                                         handleDropdownItemClick(user.name, user._id)
@@ -662,13 +662,16 @@ function Signup() {
                             {listCashier
                               .filter(cart => (cart.group_id === group._id && cart.role === "MANAGER"))
                               .map((user, index) => (
-                                <div className={cx("amItem")} key={index}>
+                                <div className={cx("amItem")} key={user.name}>
                                   <div className={cx("amLeft")}>
                                     <div className={cx("amItemInfo")}>
                                       Tên: {user.name}
                                     </div>
                                     <div className={cx("amItemInfo")}>
                                       Tài Khoản: {user.cashierName}
+                                    </div>
+                                    <div className={cx("amItemInfo")}>
+                                      role: {user.role}
                                     </div>
                                   </div>
                                   <div className={cx("amRight")}>
@@ -690,13 +693,16 @@ function Signup() {
                             {listCashier
                               .filter(cart => (cart.group_id === group._id && cart.role === "STAFF"))
                               .map((user, index) => (
-                                <div className={cx("amItem")} key={index}>
+                                <div className={cx("amItem")} key={user.name}>
                                   <div className={cx("amLeft")}>
                                     <div className={cx("amItemInfo")}>
                                       Tên: {user.name}
                                     </div>
                                     <div className={cx("amItemInfo")}>
                                       Tài Khoản: {user.cashierName}
+                                    </div>
+                                    <div className={cx("amItemInfo")}>
+                                      role: {user.role}
                                     </div>
                                   </div>
                                   <div className={cx("amRight")}>
